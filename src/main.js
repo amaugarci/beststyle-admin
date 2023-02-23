@@ -60,7 +60,7 @@ import router from './router'
 import pinia from './pinia'
 
 // 权限控制
-import './permission'
+// import './permission'
 
 // 引入svg图标注册脚本
 import 'vite-plugin-svg-icons/register'
