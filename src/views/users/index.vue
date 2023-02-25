@@ -1,6 +1,6 @@
 <template>
     <div class="">
-      Home
+      users
     </div>
 </template>
 
@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'home',
+  name: 'users',
   components: {
   },
   data:()=>({

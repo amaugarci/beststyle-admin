@@ -1,18 +1,18 @@
-const Home = () => import('@/views/home/index.vue')
+const Users = () => import('@/views/users/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
   {
-    path: '/home',
+    path: '/users',
     component: Layout,
-    name: 'home',
+    name: 'users',
     children: [
       {
         path: '',
-        name: 'home',
-        component: Home,
+        name: 'users',
+        component: Users,
         meta: {
-          title: 'home',
+          title: 'users',
           affix: true,
         },
       },
