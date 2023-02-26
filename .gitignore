@@ -3,6 +3,7 @@ node_modules
 .DS_Store
 dist
 dist-ssr
+package-lock.json
 
 # local env files
 .env.local
