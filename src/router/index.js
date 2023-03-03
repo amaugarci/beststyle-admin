@@ -9,7 +9,7 @@ import order from './modules/order'
 import financial from './modules/financial'
 import news from './modules/news'
 import system from './modules/system'
-// import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import {useAuthStore} from '@/pinia/modules/useAuthStore';
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -34,16 +34,13 @@ const router = createRouter({
     }
   },
 })
-// router.beforeEach(async (to) => {
-//   const publicPages = ['/login'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const auth = useAuthStore();
-//   if(auth.user==null&&auth.token){
-//     auth.fetchUser();
-//   }
-//   if (authRequired && !auth.token) {
-//       auth.returnUrl = to.name;
-//       return '/login';
-//   }
-// });
+router.beforeEach(async (to) => {
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const auth = useAuthStore();
+  if (authRequired && !auth.token) {
+      auth.returnUrl = to.name;
+      return '/login';
+  }
+});
 export default router

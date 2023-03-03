@@ -5,7 +5,6 @@ export default [
   {
     path: '/financial',
     component: Layout,
-    name: 'financial',
     children: [
       {
         path: '',

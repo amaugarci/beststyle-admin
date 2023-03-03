@@ -199,3 +199,7 @@ body {
         transform: translateY(-700px) rotate(600deg);
     }
 }
+
+body .login-class{ border-radius: 5px; width: 100%;margin: 0px;}
+body .login-class .layui-layer-content{ color:#000; width: 100%; text-align: center;padding: 20px 30px}
+body .login-class .layui-layer-btn{ padding: 0px;height:50px;display:flex; align-items: center;}

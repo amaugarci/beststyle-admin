@@ -5,7 +5,6 @@ export default [
   {
     path: '/users',
     component: Layout,
-    name: 'users',
     children: [
       {
         path: '',
