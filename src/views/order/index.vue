@@ -55,7 +55,8 @@
             <th>{{item.money}}</th>
             <th>{{Number(item.totalBalance)-Number(item.money)}}</th>
             <th class="textSuccess">{{item.price}}</th>
-            <th class="textDanger">{{item.lastprice}}</th>
+            <th v-if="item.lastprice!='-'" class="textDanger">{{item.lastprice}}</th>
+            <th v-else class="">-</th>
             <th>{{moment().utc(new Date(Number(item.time))).local().format("MM-DD hh:mm:ss") }}</th>
             <th>{{moment().utc(new Date(Number(item.lasttime))).local().format("MM-DD hh:mm:ss") }}</th>
             <th v-if="item.status==1&&item.during==180" class="textDanger">-{{0.01*Number(item.money)*Number(item.symbol.lossRatio.split(',')[0])}}</th>
@@ -64,12 +65,13 @@
             <th v-else-if="item.status==2&&item.during==180" class="textSuccess">{{0.01*Number(item.money)*Number(item.symbol.profitRatio.split(',')[0])}}</th>
             <th v-else-if="item.status==2&&item.during==300" class="textSuccess">{{0.01*Number(item.money)*Number(item.symbol.profitRatio.split(',')[1])}}</th>
             <th v-else-if="item.status==2&&item.during==600" class="textSuccess">{{0.01*Number(item.money)*Number(item.symbol.profitRatio.split(',')[2])}}</th>
+            <th v-else-if="item.status==3" class="textSuccess">0</th>
             <th v-else>-</th>
             <th v-if="item.status==0">过程</th>
             <th v-else>已结算</th>
           </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
   </div>
 </div></template>
 
@@ -80,7 +82,6 @@ import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import axios from 'axios'
 import moment from 'moment'
-import './app.css'
 export default defineComponent({
   name: 'order',
   components: {

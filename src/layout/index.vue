@@ -68,7 +68,7 @@
         </p>
       </router-link>
     </div>
-    <div class="content grow p-3">
+    <div class="content grow">
       <Content />
     </div>
   </div>

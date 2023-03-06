@@ -61,7 +61,6 @@
 import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import axios from 'axios'
-import './app.css'
 export default defineComponent({
   name: 'commodity',
   components: {
