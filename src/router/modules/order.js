@@ -5,7 +5,6 @@ export default [
   {
     path: '/order',
     component: Layout,
-    name: 'order',
     children: [
       {
         path: '',

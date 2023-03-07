@@ -5,7 +5,6 @@ export default [
   {
     path: '/system',
     component: Layout,
-    name: 'system',
     children: [
       {
         path: '',

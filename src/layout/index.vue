@@ -9,7 +9,7 @@
           </span>
           <BIconPencilSquare class="edit inline-block mt-[3px]"/>
         </span>
-        <BIconPower class="out inline-block" />
+        <BIconPower @click="signOut" class="out inline-block" />
       </div>
       <router-link to="home" class="menu-item p-4" active-class="active">
         <BIconHouse class="icon mr-[10px]"/>
@@ -80,6 +80,9 @@ import { defineComponent } from 'vue'
 import './app.css'
 import { BIconPersonCircle,BIconPencilSquare,BIconPower,BIconHouse,BIconPeople,BIconBagCheck,BIconCardList,BIconCreditCard2Back,BIconNewspaper } from 'bootstrap-icons-vue';
 import Content from './components/Content/index.vue';
+import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import { mapState,mapActions  } from 'pinia'
+
 
 export default defineComponent({
   name: 'layout',
@@ -98,7 +101,24 @@ export default defineComponent({
   data: () => ({
   }),
   methods: {
-
+    ...mapActions(useAuthStore, ['logout']),
+    signOut(){
+      layer.config({
+        skin: 'logout-class'
+      })
+      layer.open({
+        title:false,
+        content: '立即退出？',
+        btn:['取消','确定'],
+        btnAlign: 'c',
+        closeBtn: 0,
+        shadeClose:1,
+        btn2 :()=>{
+          console.log('aaa');this.logout();
+          this.$router.push({ name: 'login' })
+        }
+      });
+    },
   }
 });
 </script>

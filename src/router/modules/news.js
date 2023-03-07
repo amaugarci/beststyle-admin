@@ -5,7 +5,6 @@ export default [
   {
     path: '/news',
     component: Layout,
-    name: 'news',
     children: [
       {
         path: '',
