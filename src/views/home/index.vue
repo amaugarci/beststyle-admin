@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="p-3">
       <!-- alert -->
       <div class="flex items-center breadcrumb justify-between mb-2">
          <p>Home</p>
          <BIconArrowRepeat/>
       </div>
-      <div class="alert alert-warning">
+      <!-- <div class="alert alert-warning">
         <p>
         {{ alert }}
         </p>
@@ -14,74 +14,74 @@
         <p>
         {{ info }}
         </p>
-      </div>
+      </div> -->
       <!-- combobox -->
-      <div class="row">
-        <div class="col-3">
+      <div class="row" v-if="form">
+        <div class="col-3 px-[15px]">
           <div class="card border-primary">
             <div class="card-header bg-primary text-white">
               会员总数
             </div>
             <div class="card-body">
-              <b id="HomeUserCount">727</b>
+              <b id="HomeUserCount">{{form.count}}</b>
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 px-[15px]" v-if="form">
           <div class="card border-success">
             <div class="card-header bg-success text-white">
               会员总余额
             </div>
             <div class="card-body">
-              <b id="HomeUserMoney">434483550.31</b>
+              <b id="HomeUserMoney">{{ form.balance }}</b>
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 px-[15px]" v-if="form">
           <div class="card border-warning">
             <div class="card-header bg-warning text-white">
               今日订单 / 总额
             </div>
             <div class="card-body">
-              <b id="HomeNowOrder">0</b><b id="HomeNowOrderMoney">0</b>
+              <b id="HomeNowOrder">0</b><b id="HomeNowOrderMoney">{{ form.orderCount }}</b>
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 px-[15px]" v-if="form">
           <div class="card border-info">
             <div class="card-header bg-info text-white">
               盈亏
             </div>
             <div class="card-body">
-              <b id="HomeYingKui">0</b>
+              <b id="HomeYingKui">{{ form.sum }}</b>
             </div>
           </div>
         </div>
       </div>
-      <div class="row mt-3">
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header">
-            财务7天图型报表
+      <div class="row mt-3" v-if="option2">
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              财务7天图型报表
+            </div>
+            <IEcharts ref="chart1"
+              styles="width: 100%;height: 300px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;background: transparent;"
+              :option="financial"
+            />
           </div>
-          <IEcharts
-            styles="width: 100%;height: 300px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;background: transparent;"
-            :option="financial"
-          />
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <div class="card-header">
+              订单7天图型报表
+            </div>
+            <IEcharts ref="chart2"
+              styles="width: 100%;height: 300px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;background: transparent;"
+              :option="option2"
+            />
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header">
-            订单7天图型报表
-          </div>
-          <IEcharts
-            styles="width: 100%;height: 300px; -webkit-tap-highlight-color: transparent; user-select: none; position: relative;background: transparent;"
-            :option="option2"
-          />
-        </div>
-      </div>
-    </div>
     </div>
 </template>
 
@@ -91,7 +91,8 @@
 import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import IEcharts from 'vue3-echarts-v3/src/full.js';
-import './app.css'
+import axios from 'axios'
+import moment from 'moment'
 layer.config({
   skin: 'login-class'
 })
@@ -102,78 +103,120 @@ export default defineComponent({
     IEcharts
   },
   data:()=>({
-    alert:'每次刷新页面需要点击一下空白处才会播提示音（一般情况下无需点击浏览器的刷新）。修改密码请点击左上角的编辑图标。',
-    info:'如果想静音可以右键点击浏览器当前标签页，选择“将这个网站静音”。',
-    financial:{
-        color: ["#003366", "#006699", "#4cabce"],
-        dataset: {
-          source: [
-            ["type", "2012", "2013", "2014", "2015", "2016"],
-            ["充值", 6037744, 2427715, 1701971,1389552, 310064, 100000,0],
-            ["提现", 2240940, 1804252, 3017733, 2993741, 726780,3261155,20000.0],
-            ["手续费", 0,0,0,0,0,0,0],
-          ]
-        },
-        legend: {},
-        xAxis: {
-          type: "category",
-          axisTick: {
-            show: true
-          }
-        },
-        yAxis: {
-          axisTick: {
-            show: true
-          }
-        },
-        series: [{
-            type: "bar",
-            seriesLayoutBy: "row"
-          }, {
-            type: "bar",
-            seriesLayoutBy: "row"
-          }, {
-            type: "bar",
-            seriesLayoutBy: "row"
-          }
-        ]
-      },
-      option2:{
-        color: ["#003366", "#006699", "#4cabce"],
-        dataset: {
-          source: [
-            ["type", "2012", "2013", "2014", "2015", "2016"],
-            ["充值", 6037744, 2427715, 1701971,1389552, 310064, 100000,0],
-            ["提现", 2240940, 1804252, 3017733, 2993741, 726780,3261155,20000.0],
-            ["手续费", 0,0,0,0,0,0,0],
-          ]
-        },
-        legend: {},
-        xAxis: {
-          type: "category",
-          axisTick: {
-            show: true
-          }
-        },
-        yAxis: {
-          axisTick: {
-            show: true
-          }
-        },
-        series: [{
-            type: "bar",
-            seriesLayoutBy: "row"
-          }, {
-            type: "bar",
-            seriesLayoutBy: "row"
-          }, {
-            type: "bar",
-            seriesLayoutBy: "row"
-          }
-        ]
-      }
+    form:null,
+    // alert:'每次刷新页面需要点击一下空白处才会播提示音（一般情况下无需点击浏览器的刷新）。修改密码请点击左上角的编辑图标。',
+    // info:'如果想静音可以右键点击浏览器当前标签页，选择“将这个网站静音”。',
+    financial:null,
+    option2:null,
+    date:["type"],
+    with:['提现'],
+    recharge:['充值'],
+    rise:["买涨"],
+    low:["买跌"]
   }),
+  mounted() {
+    this.chartRefs = {
+      chart1: this.$refs.chart1,
+      chart2: this.$refs.chart2,
+    };
+    this.getDetail();
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   methods:{
+    async getDetail() {
+      try {
+        const response = await axios.get('/details');
+        this.form={
+          balance:response.data.balance,
+          count:response.data.count,
+          orderCount:response.data.orderCount,
+          sum:response.data.sum
+        }
+        let charts = response.data.charts;
+        for(let i=charts.length-1;i>=0;i--){
+          this.date.push(charts[i].date);
+          this.with.push(charts[i].with);
+          this.recharge.push(charts[i].recharge);
+          this.rise.push(charts[i].rise);
+          this.low.push(charts[i].low);
+        }
+        this.financial={
+            color: ["#C23531", "#2F4554", "#61A0A8"],
+            dataset: {
+              source: [
+                [...this.date],
+                [...this.recharge],
+                [...this.with],
+                ["手续费", 0,0,0,0,0,0,0],
+              ]
+            },
+            legend: {},
+            xAxis: {
+              type: "category",
+              axisTick: {
+                show: true
+              }
+            },
+            yAxis: {
+              axisTick: {
+                show: true
+              }
+            },
+            series: [{
+                type: "bar",
+                seriesLayoutBy: "row"
+              }, {
+                type: "bar",
+                seriesLayoutBy: "row"
+              }, {
+                type: "bar",
+                seriesLayoutBy: "row"
+              }
+            ]
+        };
+        this.option2={
+          color: ["#C23531", "#2F4554"],
+          dataset: {
+            source: [
+              [...this.date],
+              [...this.rise],
+              [...this.low],
+            ]
+          },
+          legend: {},
+          xAxis: {
+            type: "category",
+            axisTick: {
+              show: true
+            }
+          },
+          yAxis: {
+            axisTick: {
+              show: true
+            }
+          },
+          series: [{
+              type: "bar",
+              seriesLayoutBy: "row"
+            }, {
+              type: "bar",
+              seriesLayoutBy: "row"
+            }
+          ]
+        };
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
+    handleResize() {
+      Object.keys(this.chartRefs).forEach((key) => {
+        this.chartRefs[key].resize();
+      });
+    },
   }
 })
 </script>
