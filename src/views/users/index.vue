@@ -36,6 +36,7 @@
             <th>帐号</th>
             <th>姓名</th>
             <th>余额</th>
+            <th>银行</th>
             <th>最近登陆</th>
             <th>登陆IP</th>
             <th>风控</th>
@@ -49,8 +50,11 @@
             <td v-else>离线</td>
             <td>{{item.id}}</td>
             <td>{{ item.accountnumber}}</td>
-            <td>{{ item.name }}</td>
+            <td v-if="item.bank">{{ item.bank.realname }}</td>
+            <td v-else>-</td>
             <td >{{ item.cash_amount }}</td>
+            <td  v-if="item.bank">已绑定</td>
+            <td v-else>未绑定</td>
             <th v-if="item.lastlogin">{{moment().utc(new Date(item.lastlogin)).local().format("MM-DD hh:mm:ss") }}</th>
             <td v-else>-</td>
             <td v-if="item.IP">{{ item.IP }}</td>
@@ -75,6 +79,8 @@
               </button>
               <div ref="container" class="dropdown-menu lg:ml-[30%] xl:ml-[40%]" :class="{show:dropdown[index]}" style="position: absolute;">
                 <a class="dropdown-item" @click="showDialogDetail(index)">编辑详情</a>
+                <a class="dropdown-item" @click="showOfflinePayment(index)">强制离线</a>
+                
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" @click="showDeleteUser(index)">删除帐户</a>
               </div>
@@ -88,7 +94,7 @@
   </div>
   <div class="z-[99999] w-[400px] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 py-[10px] bg-[#fff] rounded-[5px]"  v-if="showdetail">
     <div class="flex flex-row justify-between w-full items-center p-3">
-      <p>用户详情 [姓名:{{ users[index].name }}]</p>
+      <p>用户详情 [UID:{{ users[index].id }}]</p>
       <BIconX class="text-[20px]" @click="()=>showdetail=false"/>
     </div>
     <div class="border-t-[1px] p-3">
@@ -97,20 +103,44 @@
         <input  class="form-control" v-model="form.accountnumber">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">Phone</label>
+        <input type="number" class="form-control" v-model="form.phonenumber">
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">姓名</label>
         <input  class="form-control" v-model="form.name">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">余额</label>
-        <input type="number" class="form-control" v-model="form.cash_amount">
+        <label class="w-[30%]">密码</label>
+        <input class="form-control" v-model="form.password">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">密码</label>
-        <input  class="form-control" v-model="form.password">
+        <label class="w-[30%]">银行帐号</label>
+        <input type="text" class="form-control" v-model="form.bankname">
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">银行名称</label>
+        <input type="text" class="form-control" v-model="form.cardnumber">
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">开户地址</label>
+        <input type="text" class="form-control" v-model="form.address">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">安全码</label>
         <input type="number"  class="form-control" v-model="form.securityNumber">
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">安全码</label>
+        <p class="w-[100%]">{{moment().utc(new Date(form.created_at)).local().format("MM-DD hh:mm:ss") }}</p>
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">登陆时间</label>
+        <p class="w-[100%]">{{form.IP }}</p>
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <label class="w-[30%]">登陆IP</label>
+        <p class="w-[100%]">{{form.lastlogin }}</p>
       </div>
       <button class="btn btn-success btn-block w-full" @click="saveDetail()">保存</button>
     </div>
@@ -166,6 +196,7 @@ export default defineComponent({
               ...this.form
           });
           if(response.data.status==1){
+            this.users[this.index]=response.data.user;
             layer.config({
               skin: ''
             })
@@ -233,6 +264,22 @@ export default defineComponent({
            this.showDialog();
        };
     },
+    async OfflineUser(index) {
+      try{
+          const response=await axios.get(`/useroffline/${this.users[index].id}`);
+          if(response.data.status==1){
+            layer.config({
+              skin: ''
+            })
+            layer.msg("操作成功");
+          }else{
+              this.showDialog();
+          }
+       }
+       catch(error) {
+           this.showDialog();
+       };
+    },
     async getUsers() {
       try {
         const response = await axios.get('/users');
@@ -275,11 +322,34 @@ export default defineComponent({
       this.form={
         id:this.users[index].id,
         accountnumber:this.users[index].accountnumber,
+        phonenumber:this.users[index].bank.phonenumber,
         password:'',
+        bankname:this.users[index].bank.name,
+        cardnumber:this.users[index].bank.cardnumber,
+        address:this.users[index].bank.address,
         securityNumber:null,
-        name:this.users[index].name,
+        name:this.users[index].bank.realname,
         cash_amount:this.users[index].cash_amount,
+        created_at:this.users[index].created_at,
+        IP:this.users[index].IP,
+        lastlogin:this.users[index].lastlogin
       }
+    },
+    showOfflinePayment(index){
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title:`信息`,
+        content: `是否将该用户强制离线?`,
+        btn:['确定','取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          this.OfflineUser(index);
+          layer.close(i);
+        },
+      });
     },
     showDeleteUser(index){
       layer.config({

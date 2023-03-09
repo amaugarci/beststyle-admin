@@ -3,10 +3,12 @@ import axios from 'axios'
 export const useAuthStore = defineStore('useAuthStore', {
   state: () => ({
     token:localStorage.getItem('token'),
+    system:null,
     returnUrl:'home',
   }),
   getters:{
     getToken:(state)=>state.token,
+    getSystem:(state)=>state.system,
     getReturnUrl:(state)=>state.returnUrl,
   },
   actions: {
@@ -16,6 +18,13 @@ export const useAuthStore = defineStore('useAuthStore', {
     },
     setReturnUrl(value) {
       this.returnUrl=value;
+    },
+    async fetchSystem () {
+      try {
+        const { data } = await axios.get('/system');
+        this.system=data.system;
+      }catch (e) {
+      }
     },
     logout () {
       this.token=null;
