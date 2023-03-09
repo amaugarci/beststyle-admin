@@ -6,7 +6,14 @@
     </div>
     <div class="card">
       <div class="card-header">
-        <button class="btn btn-success btn-sm" @click="()=>{showdialog=true; edit=false}">添加</button>
+        <button class="btn btn-success btn-sm" @click="() => {
+          showdialog = true; edit = false; form = {
+            title: '',
+            description: '',
+            status: true,
+            type: true,
+          }
+        }">添加</button>
       </div>
       <table class="table table-hover table-sm mb-0">
         <thead>
@@ -20,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item,index) in news" :key="item.id">
+          <tr v-for="(item, index) in news" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.description }}</td>
@@ -29,31 +36,42 @@
             <td v-if="item.status">显示</td>
             <td v-else>隐藏</td>
             <td>
-              <button class="btn btnSuccess btn-sm mr-2" @click="editNews(index)" >查看</button>
-              <button
-                class="btn btnDanger btn-sm" @click="showDeleteNews(index)">拒绝</button>
+              <button class="btn btnSuccess btn-sm mr-2" @click="editNews(index)">查看</button>
+              <button class="btn btnDanger btn-sm" @click="showDeleteNews(index)">拒绝</button>
             </td>
-            </tr>
+          </tr>
         </tbody>
       </table>
     </div>
     <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
     </div>
   </div>
-  <div class="z-[99999] w-[400px] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 py-[10px] bg-[#fff] rounded-[5px]"  v-if="showdialog">
+  <div
+    class="z-[99999] w-[400px] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 py-[10px] bg-[#fff] rounded-[5px]"
+    v-if="showdialog">
     <div class="flex flex-row justify-between w-full items-center p-3">
       <p>添加</p>
-      <BIconX class="text-[20px]" @click="()=>showdialog=false"/>
+      <BIconX class="text-[20px]" @click="() => showdialog = false" />
     </div>
     <div class="border-t-[1px] p-3">
       <div class="flex flex-row justify-between items-center py-3">
-        <input  class="form-control" v-model="form.title">
+        <input class="form-control" v-model="form.title">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <textarea class="form-control mb-3" style="height: 300px;" rows="10" v-model="form.description" required=""></textarea>
+        <textarea class="form-control mb-3" style="height: 300px;" rows="10" v-model="form.description"
+          required=""></textarea>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <select class="form-control" v-model="form.status"><option value=1>显示</option><option value=0>隐藏</option></select>
+        <select class="form-control" v-model="form.status">
+          <option value=1>显示</option>
+          <option value=0>隐藏</option>
+        </select>
+      </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <select class="form-control" v-model="form.type">
+          <option value=1>资讯</option>
+          <option value=0>公告</option>
+        </select>
       </div>
       <button class="btn btn-success btn-block w-full" @click="save()">保存</button>
     </div>
@@ -65,7 +83,7 @@
 <script>
 
 import { defineComponent } from 'vue'
-import { BIconArrowRepeat,BIconX } from 'bootstrap-icons-vue';
+import { BIconArrowRepeat, BIconX } from 'bootstrap-icons-vue';
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
@@ -76,12 +94,13 @@ export default defineComponent({
   },
   data: () => ({
     news: null,
-    showdialog:false,
-    edit:false,
-    form:{
-      title:'',
-      description:'',
-      status:true
+    showdialog: false,
+    edit: false,
+    form: {
+      title: '',
+      description: '',
+      status: true,
+      type: true,
     }
   }),
   mounted() {
@@ -100,68 +119,68 @@ export default defineComponent({
         console.log(error);
       };
     },
-    save(){
-      if(this.edit){
+    save() {
+      if (this.edit) {
         this.updateNews();
-      }else{
+      } else {
         this.saveNews()
       }
     },
     async updateNews() {
-      try{
-          const response=await axios.post(`/updatenews/${this.form.id}`, {
-              ...this.form
-          });
-          if(response.data.status==1){
-            layer.config({
-              skin: ''
-            })
-            layer.msg("操作成功");
-            this.showdialog=false;
-            this.refresh();
-          }else{
-              this.showDialog();
-          }
-      }
-      catch(error) {
+      try {
+        const response = await axios.post(`/updatenews/${this.form.id}`, {
+          ...this.form
+        });
+        if (response.data.status == 1) {
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.showdialog = false;
+          this.refresh();
+        } else {
           this.showDialog();
+        }
+      }
+      catch (error) {
+        this.showDialog();
       };
     },
     async saveNews() {
-      try{
-          const response=await axios.post(`/createnews`, {
-              ...this.form
-          });
-          if(response.data.status==1){
-            layer.config({
-              skin: ''
-            })
-            layer.msg("操作成功");
-            this.showdialog=false;
-            this.refresh();
-          }else{
-              this.showDialog();
-          }
-      }
-      catch(error) {
+      try {
+        const response = await axios.post(`/createnews`, {
+          ...this.form
+        });
+        if (response.data.status == 1) {
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.showdialog = false;
+          this.refresh();
+        } else {
           this.showDialog();
+        }
+      }
+      catch (error) {
+        this.showDialog();
       };
     },
-    editNews(index){
-      this.edit=true;
-      this.form={
+    editNews(index) {
+      this.edit = true;
+      this.form = {
         ...this.news[index]
       }
-      this.showdialog=true;
+      this.showdialog = true;
     },
-    showDeleteNews(index){
+    showDeleteNews(index) {
       layer.config({
         skin: ''
       })
-    layer.open({
-        title:`删除用户`,
+      layer.open({
+        title: `删除用户`,
         content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
-        btn:['确定','取消'],
+        btn: ['确定', '取消'],
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
@@ -172,21 +191,21 @@ export default defineComponent({
       });
     },
     async deleteNews(index) {
-      try{
-          const response=await axios.get(`/newsdelete/${this.news[index].id}`);
-          if(response.data.status==1){
-            layer.config({
-              skin: ''
-            })
-            layer.msg("操作成功");
-            this.refresh();
-          }else{
-              this.showDialog();
-          }
-       }
-       catch(error) {
-           this.showDialog();
-       };
+      try {
+        const response = await axios.get(`/newsdelete/${this.news[index].id}`);
+        if (response.data.status == 1) {
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
+        } else {
+          this.showDialog();
+        }
+      }
+      catch (error) {
+        this.showDialog();
+      };
     },
     refresh() {
       this.orders = null;

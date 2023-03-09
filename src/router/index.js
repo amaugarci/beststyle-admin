@@ -38,9 +38,13 @@ router.beforeEach(async (to) => {
   const publicPages = ['/login'];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
+  if(auth.system==null&&auth.token){
+    auth.fetchSystem();
+  }
   if (authRequired && !auth.token) {
       auth.returnUrl = to.name;
       return '/login';
   }
+  
 });
 export default router

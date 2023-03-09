@@ -32,7 +32,10 @@
         <thead>
           <tr>
             <th>ID</th>
+            <th>UID</th>
+            <th>帐号</th>
             <th>姓名</th>
+            <th>Phone</th>
             <th>类型</th>
             <th>到帐金额</th>
             <th>当前金额</th>
@@ -46,15 +49,20 @@
         <tbody id="GoodsList">
           <tr v-for="(item,index) in payments" :key="item.id">
             <td>{{ item.id }}</td>
+            <td>{{ item.player.id }}</td>
+            <td>{{ item.player.accountnumber }}</td>
             <th>{{item.player.name}}</th>
+            <th v-if="item.player.bank">{{item.player.bank.phonenumber}}</th>
+            <th v-else></th>
             <th v-if="item.dir">充值</th>
             <th v-else>提现</th>
             <th>{{item.amount}}</th>
             <th>{{item.player.cash_amount}}</th>
-            <th v-if="item.status==0&&item.dir">{{Number(item.player.cash_amount)+Number(item.amount)}}</th>
-            <th v-else-if="item.status==0&&!item.dir">{{Number(item.player.cash_amount)-Number(item.amount)}}</th>
+            <th v-if="item.status==0&&item.dir">{{Number(item.lastprice)+Number(item.amount)}}</th>
+            <th v-else-if="item.status==0&&!item.dir">{{Number(item.lastprice)-Number(item.amount)*(1+Number(getSystem.withdrawPercent)/100)}}</th>
             <th v-else>{{ item.player.cash_amount}}</th>
-            <th>{{ item.detail }}</th>
+            <th v-if="item.status==4">管理员操作充值</th>
+            <th v-else>用户员操作</th>
             <th>{{moment().utc(new Date(item.created_at)).local().format("MM-DD hh:mm:ss") }}</th>
             <th v-if="item.status==0">
               <button class="btn btnSuccess btn-sm mr-2" @click="showConformPayment(index)">符合</button>
@@ -79,6 +87,8 @@
 
 import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
+import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import { mapState,mapActions  } from 'pinia'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
@@ -89,6 +99,9 @@ export default defineComponent({
   data: () => ({
     payments:null
   }),
+  computed:{
+    ...mapState(useAuthStore, ['getSystem']),
+  },
   mounted(){
     this.getPayments();
   },
