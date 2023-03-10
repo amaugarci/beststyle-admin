@@ -48,7 +48,7 @@
         <tbody id="GoodsList">
           <tr v-for="(item,index) in orders" :key="item.id">
             <td>{{ item.id }}</td>
-            <th>{{item.player.name}}</th>
+            <th>{{item.player.realname}}</th>
             <th>{{item.symbol.name}}</th>
             <th v-if="item.dir" class="textDanger">买涨</th>
             <th v-else class="textSuccess">买跌</th>

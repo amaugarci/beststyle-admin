@@ -46,12 +46,11 @@
         </thead>
         <tbody id="GoodsList">
           <tr v-for="(item,index) in users" :key="item.id">
-            <td v-if="item.status">在线</td>
+            <td v-if="!item.offline">在线</td>
             <td v-else>离线</td>
             <td>{{item.id}}</td>
-            <td>{{ item.accountnumber}}</td>
-            <td v-if="item.bank">{{ item.bank.realname }}</td>
-            <td v-else>-</td>
+            <td>{{ item.name}}</td>
+            <td >{{ item.realname }}</td>
             <td >{{ item.cash_amount }}</td>
             <td  v-if="item.bank">已绑定</td>
             <td v-else>未绑定</td>
@@ -100,7 +99,7 @@
     <div class="border-t-[1px] p-3">
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">帐号</label>
-        <input  class="form-control" v-model="form.accountnumber">
+        <input  class="form-control" v-model="form.name">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">Phone</label>
@@ -108,7 +107,7 @@
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">姓名</label>
-        <input  class="form-control" v-model="form.name">
+        <input  class="form-control" v-model="form.realname">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%]">密码</label>
@@ -155,6 +154,7 @@ import { defineComponent } from 'vue'
 import { BIconArrowRepeat,BIconX } from 'bootstrap-icons-vue';
 import axios from 'axios'
 import moment from 'moment'
+import { playSound } from '../../plugins/sound';
 export default defineComponent({
   name: 'users',
   components: {
@@ -162,6 +162,7 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
+    message:'',
     users: null,
     dropdown:[],
     index:null,
@@ -203,10 +204,12 @@ export default defineComponent({
             layer.msg("操作成功");
             this.showdetail=false;
           }else{
+              this.message=response.data.message;
               this.showDialog();
           }
       }
       catch(error) {
+        this.message='出现意想不到的问题';
           this.showDialog();
       };
     },
@@ -222,10 +225,12 @@ export default defineComponent({
             })
             layer.msg("操作成功");
           }else{
-              this.showDialog();
+            this.message=response.data.message;
+            this.showDialog();
           }
       }
       catch(error) {
+        this.message='出现意想不到的问题';
           this.showDialog();
       };
     },
@@ -240,10 +245,12 @@ export default defineComponent({
             })
             layer.msg("操作成功");
           }else{
-              this.showDialog();
+            this.message=response.data.message;
+            this.showDialog();
           }
        }
        catch(error) {
+        this.message='出现意想不到的问题';
            this.showDialog();
        };
     },
@@ -257,10 +264,12 @@ export default defineComponent({
             layer.msg("操作成功");
             this.refresh();
           }else{
-              this.showDialog();
+            this.message=response.data.message;
+            this.showDialog();
           }
        }
        catch(error) {
+        this.message='出现意想不到的问题';
            this.showDialog();
        };
     },
@@ -273,10 +282,12 @@ export default defineComponent({
             })
             layer.msg("操作成功");
           }else{
+              this.message=response.data.message;
               this.showDialog();
           }
        }
        catch(error) {
+           this.message='出现意想不到的问题';
            this.showDialog();
        };
     },
@@ -316,20 +327,20 @@ export default defineComponent({
           layer.close(i);
         },
       });
+      // playSound(2);
     },
     showDialogDetail(index){
       this.showdetail=true;
       this.form={
         id:this.users[index].id,
-        accountnumber:this.users[index].accountnumber,
+        name:this.users[index].name,
         phonenumber:this.users[index].bank.phonenumber,
-        password:'',
+        realname:this.users[index].bank.realname,
         bankname:this.users[index].bank.name,
+        password:'',
         cardnumber:this.users[index].bank.cardnumber,
         address:this.users[index].bank.address,
         securityNumber:null,
-        name:this.users[index].bank.realname,
-        cash_amount:this.users[index].cash_amount,
         created_at:this.users[index].created_at,
         IP:this.users[index].IP,
         lastlogin:this.users[index].lastlogin
@@ -375,7 +386,7 @@ export default defineComponent({
         type: 1,
         offset: 'b',
         title: false,
-        content: '无效的参数',
+        content: this.message,
         closeBtn: 0,
         shadeClose: 1,
       });

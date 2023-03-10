@@ -50,8 +50,8 @@
           <tr v-for="(item,index) in payments" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.player.id }}</td>
-            <td>{{ item.player.accountnumber }}</td>
-            <th>{{item.player.name}}</th>
+            <td>{{ item.player.name }}</td>
+            <th>{{item.player.realname}}</th>
             <th v-if="item.player.bank">{{item.player.bank.phonenumber}}</th>
             <th v-else></th>
             <th v-if="item.dir">充值</th>

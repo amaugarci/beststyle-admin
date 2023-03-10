@@ -82,7 +82,7 @@ import { BIconPersonCircle,BIconPencilSquare,BIconPower,BIconHouse,BIconPeople,B
 import Content from './components/Content/index.vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 import { mapState,mapActions  } from 'pinia'
-
+import Echo from 'laravel-echo';
 
 export default defineComponent({
   name: 'layout',
@@ -100,6 +100,14 @@ export default defineComponent({
   },
   data: () => ({
   }),
+  created(){
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: import.meta.env.VITE_PUSHER_APP_KEY,
+        cluster: import.meta.env.VITE_USHER_APP_CLUSTER,
+        forceTLS: true
+    });
+  },
   methods: {
     ...mapActions(useAuthStore, ['logout']),
     signOut(){
