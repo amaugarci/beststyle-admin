@@ -102,14 +102,17 @@ export default defineComponent({
   data: () => ({
   }),
   created(){
-    window.Echo.private('chat')
-      .listen('MessageSent', (e) => {
-        this.messages.push({
-          message: e.message.message,
-          user: e.user
-        });
+      window.Echo.channel('order')
+      .listen('OrderSent', (e) => {
+         console.log(e);
       });
       console.log('ssss');
+      window.Echo.connector.pusher.connection.bind('connected', function () {
+          console.log('Connected to Pusher');
+      });
+      window.Echo.connector.pusher.connection.bind('disconnected', function () {
+          console.log('Disconnected from Pusher');
+      });
     playSound(2);
   },
   methods: {

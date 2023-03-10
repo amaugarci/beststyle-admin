@@ -14,8 +14,9 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: window.location.hostname,
     cluster: import.meta.env.VITE_USHER_APP_CLUSTER,
-    forceTLS: true
+    authEndpoint: 'http://localhost:8000/broadcasting/auth',
 });
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
