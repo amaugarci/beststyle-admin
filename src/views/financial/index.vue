@@ -50,8 +50,8 @@
           <tr v-for="(item,index) in payments" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.player.id }}</td>
-            <td>{{ item.player.accountnumber }}</td>
-            <th>{{item.player.name}}</th>
+            <td>{{ item.player.name }}</td>
+            <th>{{item.player.realname}}</th>
             <th v-if="item.player.bank">{{item.player.bank.phonenumber}}</th>
             <th v-else></th>
             <th v-if="item.dir">充值</th>
@@ -88,6 +88,7 @@
 import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import {notifyStore} from '@/pinia/modules/notificationStore';
 import { mapState,mapActions  } from 'pinia'
 import axios from 'axios'
 import moment from 'moment'
@@ -104,8 +105,10 @@ export default defineComponent({
   },
   mounted(){
     this.getPayments();
+    this.deletePayments();
   },
   methods: {
+    ...mapActions(notifyStore, ['deletePayments']),
     moment: function () {
       return moment;
     },
