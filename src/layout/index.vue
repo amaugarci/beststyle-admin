@@ -83,7 +83,7 @@ import Content from './components/Content/index.vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 import { mapState,mapActions  } from 'pinia'
 import Echo from 'laravel-echo';
-import { playSound } from '../../plugins/sound';
+import { playSound } from '../plugins/sound';
 
 export default defineComponent({
   name: 'layout',
@@ -109,6 +109,7 @@ export default defineComponent({
           user: e.user
         });
       });
+      console.log('ssss');
     playSound(2);
   },
   methods: {
