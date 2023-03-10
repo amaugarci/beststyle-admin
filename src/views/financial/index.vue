@@ -88,6 +88,7 @@
 import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import {notifyStore} from '@/pinia/modules/notificationStore';
 import { mapState,mapActions  } from 'pinia'
 import axios from 'axios'
 import moment from 'moment'
@@ -104,8 +105,10 @@ export default defineComponent({
   },
   mounted(){
     this.getPayments();
+    this.deletePayments();
   },
   methods: {
+    ...mapActions(notifyStore, ['deletePayments']),
     moment: function () {
       return moment;
     },
