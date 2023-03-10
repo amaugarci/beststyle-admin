@@ -83,6 +83,7 @@ import Content from './components/Content/index.vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 import { mapState,mapActions  } from 'pinia'
 import Echo from 'laravel-echo';
+import { playSound } from '../../plugins/sound';
 
 export default defineComponent({
   name: 'layout',
@@ -101,12 +102,14 @@ export default defineComponent({
   data: () => ({
   }),
   created(){
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: import.meta.env.VITE_PUSHER_APP_KEY,
-        cluster: import.meta.env.VITE_USHER_APP_CLUSTER,
-        forceTLS: true
-    });
+    window.Echo.private('chat')
+      .listen('MessageSent', (e) => {
+        this.messages.push({
+          message: e.message.message,
+          user: e.user
+        });
+      });
+    playSound(2);
   },
   methods: {
     ...mapActions(useAuthStore, ['logout']),
