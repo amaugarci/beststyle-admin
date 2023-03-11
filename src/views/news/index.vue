@@ -10,8 +10,8 @@
           showdialog = true; edit = false; form = {
             title: '',
             description: '',
-            status: true,
-            type: true,
+            status: '1',
+            type: '1',
           }
         }">添加</button>
       </div>
@@ -20,8 +20,10 @@
           <tr>
             <th>#</th>
             <th>标题</th>
-            <th>时间</th>
+            <th>描述</th>
             <th>发布人</th>
+            <th>时间</th>
+            <th>类型</th>
             <th>状态</th>
             <th width="100">操作</th>
           </tr>
@@ -33,6 +35,9 @@
             <td>{{ item.description }}</td>
             <td v-if="item.admin">管理员</td>
             <td v-else>用户</td>
+            <td>{{moment().utc(new Date(item.updated_at)).local().format("MM-DD hh:mm:ss") }}</td>
+            <td v-if="item.type">资讯</td>
+            <td v-else>公告</td>
             <td v-if="item.status">显示</td>
             <td v-else>隐藏</td>
             <td>
@@ -55,10 +60,10 @@
     </div>
     <div class="border-t-[1px] p-3">
       <div class="flex flex-row justify-between items-center py-3">
-        <input class="form-control" v-model="form.title">
+        <input class="form-control" v-model="form.title" placeholder="标题">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <textarea class="form-control mb-3" style="height: 300px;" rows="10" v-model="form.description"
+        <textarea class="form-control mb-3" style="height: 300px;" rows="10" v-model="form.description" placeholder="描述"
           required=""></textarea>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
@@ -68,7 +73,7 @@
         </select>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <select class="form-control" v-model="form.type">
+        <select class="form-control" v-model="form.type" >
           <option value=1>资讯</option>
           <option value=0>公告</option>
         </select>
@@ -99,8 +104,8 @@ export default defineComponent({
     form: {
       title: '',
       description: '',
-      status: true,
-      type: true,
+      status: '1',
+      type: '1',
     }
   }),
   mounted() {

@@ -104,9 +104,6 @@ export default defineComponent({
   },
   data:()=>({
     form:null,
-    // alert:'每次刷新页面需要点击一下空白处才会播提示音（一般情况下无需点击浏览器的刷新）。修改密码请点击左上角的编辑图标。',
-    // info:'如果想静音可以右键点击浏览器当前标签页，选择“将这个网站静音”。',
-    financial:null,
     option2:null,
     date:["type"],
     with:['提现'],

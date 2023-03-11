@@ -51,26 +51,26 @@
             <td>{{ item.id }}</td>
             <td>{{ item.player.id }}</td>
             <td>{{ item.player.name }}</td>
-            <th>{{item.player.realname}}</th>
-            <th v-if="item.player.bank">{{item.player.bank.phonenumber}}</th>
-            <th v-else></th>
-            <th v-if="item.dir">充值</th>
-            <th v-else>提现</th>
-            <th>{{item.amount}}</th>
-            <th>{{item.player.cash_amount}}</th>
-            <th v-if="item.status==0&&item.dir">{{Number(item.lastprice)+Number(item.amount)}}</th>
-            <th v-else-if="item.status==0&&!item.dir">{{Number(item.lastprice)-Number(item.amount)*(1+Number(getSystem.withdrawPercent)/100)}}</th>
-            <th v-else>{{ item.player.cash_amount}}</th>
-            <th v-if="item.status==4">管理员操作充值</th>
-            <th v-else>用户员操作</th>
-            <th>{{moment().utc(new Date(item.created_at)).local().format("MM-DD hh:mm:ss") }}</th>
-            <th v-if="item.status==0">
+            <td>{{item.player.realname}}</td>
+            <td v-if="item.player.bank">{{item.player.bank.phonenumber}}</td>
+            <td v-else></td>
+            <td v-if="item.dir">充值</td>
+            <td v-else>提现</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.player.cash_amount}}</td>
+            <td v-if="item.status==0&&item.dir">{{Number(item.lastprice)+Number(item.amount)}}</td>
+            <td v-else-if="item.status==0&&!item.dir">{{Number(item.lastprice)-Number(item.amount)*(1+Number(getSystem.witddrawPercent)/100)}}</td>
+            <td v-else>{{ item.player.cash_amount}}</td>
+            <td v-if="item.status==4">管理员操作充值</td>
+            <td v-else>用户员操作</td>
+            <td>{{moment().utc(new Date(item.created_at)).local().format("MM-DD hh:mm:ss") }}</td>
+            <td v-if="item.status==0">
               <button class="btn btnSuccess btn-sm mr-2" @click="showConformPayment(index)">符合</button>
               <button
                 class="btn btnDanger btn-sm" @click="showRejectPayment(index)">拒绝</button>
-            </th>
-            <th v-else-if="item.status==1" class="text-[#dc3545]">拒绝</th>
-            <th v-else>已通过</th>
+            </td>
+            <td v-else-if="item.status==1" class="text-[#dc3545]">拒绝</td>
+            <td v-else>已通过</td>
             <td>
               <button @click="showDeletePayment(index)" class="btn btnDanger btn-sm">
                 删除

@@ -11,7 +11,7 @@
         </span>
         <BIconPower @click="signOut" class="out inline-block" />
       </div>
-      <router-link to="home" key="home" class="menu-item p-4" active-class="active">
+      <router-link to="home" class="menu-item p-4" active-class="active">
         <BIconHouse class="icon mr-[10px]"/>
         <p>
           <p>
@@ -19,7 +19,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="users" key="users" class="menu-item p-4" active-class="active">
+      <router-link to="users" class="menu-item p-4" active-class="active">
         <BIconPeople class="icon mr-[10px]"/>
         <p>
           <p>
@@ -27,7 +27,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="commodity" key="commodity" class="menu-item p-4" active-class="active">
+      <router-link to="commodity" class="menu-item p-4" active-class="active">
         <BIconBagCheck class="icon mr-[10px]"/>
         <p>
           <p>
@@ -35,7 +35,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="Order" key="Order" class="menu-item p-4" active-class="active">
+      <router-link to="Order" class="menu-item p-4" active-class="active">
         <BIconCardList class="icon mr-[10px]"/>
         <p>
           <p>
@@ -44,7 +44,7 @@
         </p>
         <p v-if="getOrder" class="text-[#fff] ml-[40px] w-[15px] h-[15px] text-center rounded-full bg-red-500 text-[8px] flex justify-center items-center">{{getOrder}}</p>
       </router-link>
-      <router-link to="financial" key="nfinancial" class="menu-item p-4" active-class="active">
+      <router-link to="financial" class="menu-item p-4" active-class="active">
         <BIconCreditCard2Back class="icon mr-[10px]"/>
         <p>
           <p>
@@ -53,7 +53,7 @@
         </p>
         <p v-if="getPayment" class="text-[#fff] ml-[40px] w-[15px] h-[15px] text-center rounded-full bg-red-500 text-[8px] flex justify-center items-center">{{ getPayment }}</p>
       </router-link>
-      <router-link to="news" key="news" class="menu-item p-4" active-class="active">
+      <router-link to="news" class="menu-item p-4" active-class="active">
         <BIconNewspaper class="icon mr-[10px]"/>
         <p>
           <p>
@@ -61,7 +61,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="system" key="system" class="menu-item p-4" active-class="active">
+      <router-link to="system" class="menu-item p-4" active-class="active">
         <BIconHouse class="icon mr-[10px]"/>
         <p>
           <p>
@@ -69,9 +69,10 @@
           </p>
         </p>
       </router-link>
+
     </div>
     <div class="content grow">
-      <Content />
+      <router-view />
     </div>
   </div>
 </template>
@@ -99,7 +100,6 @@ export default defineComponent({
     BIconCreditCard2Back,
     BIconCardList,
     BIconPower,
-    Content
   },
   data: () => ({
     audioUrl: '../public/audio/1.mp3',

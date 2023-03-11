@@ -54,7 +54,7 @@
             <td >{{ item.cash_amount }}</td>
             <td  v-if="item.bank">已绑定</td>
             <td v-else>未绑定</td>
-            <th v-if="item.lastlogin">{{moment().utc(new Date(item.lastlogin)).local().format("MM-DD hh:mm:ss") }}</th>
+            <td v-if="item.lastlogin">{{moment().utc(new Date(item.lastlogin)).local().format("MM-DD hh:mm:ss") }}</td>
             <td v-else>-</td>
             <td v-if="item.IP">{{ item.IP }}</td>
             <td v-else>-</td>
@@ -280,6 +280,7 @@ export default defineComponent({
             layer.config({
               skin: ''
             })
+            this.users[index].offline=true;
             layer.msg("操作成功");
           }else{
               this.message=response.data.message;
