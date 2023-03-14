@@ -50,7 +50,7 @@
           <tr v-for="(item,index) in orders" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{item.player.realname}}</td>
-            <td>{{item.symbol.name}}</td>
+            <td>{{item.symbol.displayName}}</td>
             <td v-if="item.dir" class="textDanger">买涨</td>
             <td v-else class="textSuccess">买跌</td>
             <td>{{item.money}}</td>

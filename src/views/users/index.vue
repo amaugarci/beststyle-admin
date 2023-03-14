@@ -243,6 +243,7 @@ export default defineComponent({
             layer.config({
               skin: ''
             })
+            this.users[index].cash_amount=Number(this.users[index].cash_amount)+Number(val);
             layer.msg("操作成功");
           }else{
             this.message=response.data.message;

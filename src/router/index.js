@@ -4,6 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import login from './modules/login'
 import home from './modules/home'
 import users from './modules/users'
+import admins from './modules/admins'
 import commodity from './modules/commodity'
 import order from './modules/order'
 import financial from './modules/financial'
@@ -19,6 +20,7 @@ const router = createRouter({
     },
     ...login,
     ...home,
+    ...admins,
     ...users,
     ...commodity,
     ...order,

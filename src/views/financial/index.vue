@@ -53,7 +53,7 @@
             <td>{{ item.player.name }}</td>
             <td>{{item.player.realname}}</td>
             <td v-if="item.player.bank">{{item.player.bank.phonenumber}}</td>
-            <td v-else></td>
+            <td v-else>-</td>
             <td v-if="item.dir">充值</td>
             <td v-else>提现</td>
             <td>{{item.amount}}</td>

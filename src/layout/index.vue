@@ -19,6 +19,14 @@
           </p>
         </p>
       </router-link>
+      <router-link to="admins" class="menu-item p-4" active-class="active">
+        <BIconPeople class="icon mr-[10px]"/>
+        <p>
+          <p>
+            管理员管理
+          </p>
+        </p>
+      </router-link>
       <router-link to="users" class="menu-item p-4" active-class="active">
         <BIconPeople class="icon mr-[10px]"/>
         <p>
@@ -102,7 +110,7 @@ export default defineComponent({
     BIconPower,
   },
   data: () => ({
-    audioUrl: '../public/audio/1.mp3',
+    audioUrl: '../audio/1.mp3',
     sound: null,
   }),
   computed:{
@@ -116,7 +124,7 @@ export default defineComponent({
       });
       const orderChannel = pusher.subscribe('order');
       orderChannel.bind('OrderSent', ($order)=>{
-        this.audioUrl='../public/audio/1.mp3',
+        this.audioUrl='../audio/1.mp3',
         this.addOrder();
         this.handlePusherEvent();
       });
@@ -124,9 +132,9 @@ export default defineComponent({
       paymentChannel.bind('PaymentSent', ($payment)=>{
         this.addPayment();
         if($payment.dir){
-          this.audioUrl='../public/audio/3.mp3';
+          this.audioUrl='../audio/3.mp3';
         }else{
-          this.audioUrl='../public/audio/2.mp3';
+          this.audioUrl='../audio/2.mp3';
         }
         this.handlePusherEvent();
       });
