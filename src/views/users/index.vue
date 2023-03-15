@@ -88,6 +88,15 @@
         </tbody>
       </table>
     </div>
+    <div v-if="totalitem>1" class="flex items-center justify-center mt-[20px]">
+      <vue-awesome-paginate
+        :total-items='totalitem*10'
+        :items-per-page="10"
+        :max-pages-shown="5"
+        v-model="currentPage"
+        :on-click="onClickHandler"
+      />
+    </div>
     <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdetail">
     </div>
   </div>
@@ -162,6 +171,8 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
+    currentPage:1,
+    totalitem:0,
     message:'',
     users: null,
     dropdown:[],
@@ -179,6 +190,10 @@ export default defineComponent({
   methods: {
     moment: function () {
       return moment;
+    },
+    onClickHandler(value){
+      this.currentPage=value;
+      this.getUsers();
     },
     handleClickOutside(event) {
       if(this.index!=null){
@@ -295,8 +310,9 @@ export default defineComponent({
     },
     async getUsers() {
       try {
-        const response = await axios.get('/users');
-        this.users = response.data.users;
+        const response = await axios.get(`/users?page=${this.currentPage}`);
+        this.users = response.data.users.data;
+        this.totalitem=response.data.users.last_page;
         this.users.forEach(item => {
           this.dropdown.push(false);
         });

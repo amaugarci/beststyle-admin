@@ -80,6 +80,15 @@
         </tbody>
       </table>
   </div>
+  <div v-if="totalitem>1" class="flex items-center justify-center mt-[20px]">
+    <vue-awesome-paginate
+      :total-items='totalitem*10'
+      :items-per-page="10"
+      :max-pages-shown="5"
+      v-model="currentPage"
+      :on-click="onClickHandler"
+    />
+  </div>
 </div></template>
 
 
@@ -98,7 +107,9 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
-    payments:null
+    payments:null,
+    currentPage:1,
+    totalitem:0,
   }),
   computed:{
     ...mapState(useAuthStore, ['getSystem']),
@@ -112,10 +123,15 @@ export default defineComponent({
     moment: function () {
       return moment;
     },
+    onClickHandler(value){
+      this.currentPage=value;
+      this.getPayments();
+    },
     async getPayments() {
       try {
-        const response = await axios.get('/payments');
-        this.payments = response.data.payments;
+        const response = await axios.get(`/payments?page=${this.currentPage}`);
+        this.payments = response.data.payments.data;
+        this.totalitem=response.data.payments.last_page;
       }
       catch (error) {
         console.log(error);

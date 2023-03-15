@@ -89,6 +89,15 @@
         </tbody>
       </table>
   </div>
+  <div v-if="totalitem>1" class="flex items-center justify-center mt-[20px]">
+    <vue-awesome-paginate
+      :total-items='totalitem*10'
+      :items-per-page="10"
+      :max-pages-shown="5"
+      v-model="currentPage"
+      :on-click="onClickHandler"
+    />
+  </div>
 </div></template>
 
 
@@ -108,6 +117,8 @@ export default defineComponent({
   data: () => ({
     orders:null,
     message:'',
+    currentPage:1,
+    totalitem:0,
   }),
   mounted(){
     this.getOrders();
@@ -139,10 +150,15 @@ export default defineComponent({
     moment: function () {
       return moment;
     },
+    onClickHandler(value){
+      this.currentPage=value;
+      this.getOrders();
+    },
     async getOrders() {
       try {
-        const response = await axios.get('/orders');
-        this.orders = response.data.orders;
+        const response = await axios.get(`/orders?page=${this.currentPage}`);
+        this.orders = response.data.orders.data;
+        this.totalitem=response.data.orders.last_page;
       }
       catch (error) {
         console.log(error);

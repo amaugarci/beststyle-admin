@@ -67,6 +67,15 @@
       </tbody>
     </table>
   </div>
+  <div v-if="totalitem>1" class="flex items-center justify-center mt-[20px]">
+    <vue-awesome-paginate
+      :total-items='totalitem*10'
+      :items-per-page="10"
+      :max-pages-shown="5"
+      v-model="currentPage"
+      :on-click="onClickHandler"
+    />
+  </div>
   <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
   </div>
   <div
@@ -116,6 +125,8 @@ export default defineComponent({
     BIconX
   },
   data: () => ({
+    currentPage:1,
+    totalitem:0,
     symbols:null,
     message:'',
     showdialog: false,
@@ -135,12 +146,17 @@ export default defineComponent({
   methods: {
     async getSymbols() {
       try {
-        const response = await axios.get('/symbols');
-        this.symbols = response.data.symbols;
+        const response = await axios.get(`/symbols?page=${this.currentPage}`);
+        this.symbols = response.data.symbols.data;
+        this.totalitem=response.data.symbols.last_page;
       }
       catch (error) {
         console.log(error);
       };
+    },
+    onClickHandler(value){
+      this.currentPage=value;
+      this.getSymbols();
     },
     refresh(){
       this.symbols=null;

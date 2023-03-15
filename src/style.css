@@ -376,6 +376,31 @@ html {
   background-color: rgba(0,0,0,.075);
 }
 
+  .pagination-container {
+    display: flex;
+    column-gap: 10px;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: #3498db;
+    border: 1px solid #3498db;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: #2988c8;
+  }
+
 body .login-class{ border-radius: 5px; width: 100%;margin: 0px;}
 body .login-class .layui-layer-content{ color:#000; width: 100%; text-align: center;padding: 20px 30px}
 body .login-class .layui-layer-btn{ padding: 0px;height:50px;display:flex; align-items: center;}
