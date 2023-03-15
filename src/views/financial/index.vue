@@ -82,8 +82,8 @@
   </div>
   <div v-if="totalitem>1" class="flex items-center justify-center mt-[20px]">
     <vue-awesome-paginate
-      :total-items='totalitem*10'
-      :items-per-page="10"
+      :total-items='totalitem*15'
+      :items-per-page="15"
       :max-pages-shown="5"
       v-model="currentPage"
       :on-click="onClickHandler"
