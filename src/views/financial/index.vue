@@ -54,8 +54,8 @@
             <td>{{item.player.realname}}</td>
             <td v-if="item.player.bank">{{item.player.bank.phonenumber}}</td>
             <td v-else>-</td>
-            <td v-if="item.dir">充值</td>
-            <td v-else>提现</td>
+            <td v-if="item.dir"  class="textSuccess">充值</td>
+            <td v-else class="textDanger">提现</td>
             <td>{{item.amount}}</td>
             <td>{{item.player.cash_amount}}</td>
             <td v-if="item.status==0&&item.dir">{{Number(item.lastprice)+Number(item.amount)}}</td>
