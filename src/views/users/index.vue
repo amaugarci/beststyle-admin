@@ -73,10 +73,10 @@
                 上下分
               </button>
               <button type="button"
-                class="btn btn-info dropdown-toggle btn-sm ml-2" ref="buttons" @click="showDrop(index)">
+                class="btn btn-info dropdown-toggle btn-sm ml-2" :ref="'buttons'+index" @click="showDrop(index)">
                 更多操作
               </button>
-              <div ref="container" class="dropdown-menu lg:ml-[30%] xl:ml-[40%]" :class="{show:dropdown[index]}" style="position: absolute;">
+              <div :ref="'container'+index" class="dropdown-menu lg:ml-[30%] xl:ml-[40%]" :class="{show:dropdown[index]}" style="position: absolute;">
                 <a class="dropdown-item" @click="showDialogDetail(index)">编辑详情</a>
                 <a class="dropdown-item" @click="showOfflinePayment(index)">强制离线</a>
                 
@@ -123,11 +123,11 @@
         <input class="form-control" v-model="form.password">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">银行帐号</label>
+        <label class="w-[30%]">银行名称</label>
         <input type="text" class="form-control" v-model="form.bankname">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">银行名称</label>
+        <label class="w-[30%]">银行帐号</label>
         <input type="text" class="form-control" v-model="form.cardnumber">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
@@ -197,10 +197,10 @@ export default defineComponent({
     },
     handleClickOutside(event) {
       if(this.index!=null){
-        if (this.$refs.container[this.index].contains(event.target)) {
+        if (this.$refs[`container${this.index}`][0].contains(event.target)) {
           return;
         }
-        if (this.$refs.buttons[this.index].contains(event.target)) {
+        if (this.$refs[`buttons${this.index}`][0].contains(event.target)) {
           return;
         }
         this.dropdown[this.index]=false;
@@ -313,6 +313,7 @@ export default defineComponent({
         const response = await axios.get(`/users?page=${this.currentPage}`);
         this.users = response.data.users.data;
         this.totalitem=response.data.users.last_page;
+        this.dropdown=[];
         this.users.forEach(item => {
           this.dropdown.push(false);
         });
@@ -348,16 +349,17 @@ export default defineComponent({
       // playSound(2);
     },
     showDialogDetail(index){
+      console.log(this.users[index]);
       this.showdetail=true;
       this.form={
         id:this.users[index].id,
         name:this.users[index].name,
-        phonenumber:this.users[index].bank.phonenumber,
-        realname:this.users[index].bank.realname,
-        bankname:this.users[index].bank.name,
+        phonenumber:this.users[index].bank==null?'':this.users[index].bank.phonenumber,
+        realname:this.users[index].bank==null?'':this.users[index].bank.realname,
+        bankname:this.users[index].bank==null?'':this.users[index].bank.name,
         password:'',
-        cardnumber:this.users[index].bank.cardnumber,
-        address:this.users[index].bank.address,
+        cardnumber:this.users[index].bank==null?'':this.users[index].bank.cardnumber,
+        address:this.users[index].bank==null?'':this.users[index].bank.address,
         securityNumber:null,
         created_at:this.users[index].created_at,
         IP:this.users[index].IP,
