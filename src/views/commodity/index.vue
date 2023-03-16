@@ -102,7 +102,7 @@
         <input type="text" class="form-control" v-model="form.productName" placeholder="商品名称">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <input type="text" class="form-control" v-model="form.profitRatio" placeholder="商品名称">
+        <input type="text" class="form-control" v-model="form.profitRatio" placeholder="盈利比率">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <input type="text" class="form-control" v-model="form.lossRatio" placeholder="亏损比率">
