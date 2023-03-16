@@ -131,7 +131,7 @@ export default defineComponent({
       const paymentChannel = pusher.subscribe('payment');
       paymentChannel.bind('PaymentSent', ($payment)=>{
         this.addPayment();
-        if($payment.dir){
+        if($payment.payment.dir){
           this.audioUrl='../audio/3.mp3';
         }else{
           this.audioUrl='../audio/2.mp3';
