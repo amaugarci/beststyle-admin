@@ -107,47 +107,47 @@
     </div>
     <div class="border-t-[1px] p-3">
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">帐号</label>
+        <label class="w-[30%] text-[#000]">帐号</label>
         <input  class="form-control" v-model="form.name">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">Phone</label>
+        <label class="w-[30%] text-[#000]">Phone</label>
         <input type="number" class="form-control" v-model="form.phonenumber">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">姓名</label>
+        <label class="w-[30%] text-[#000]">姓名</label>
         <input  class="form-control" v-model="form.realname">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">密码</label>
+        <label class="w-[30%] text-[#000]">密码</label>
         <input class="form-control" v-model="form.password">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">银行名称</label>
+        <label class="w-[30%] text-[#000]">银行名称</label>
         <input type="text" class="form-control" v-model="form.bankname">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">银行帐号</label>
+        <label class="w-[30%] text-[#000]">银行帐号</label>
         <input type="text" class="form-control" v-model="form.cardnumber">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">开户地址</label>
+        <label class="w-[30%] text-[#000]">开户地址</label>
         <input type="text" class="form-control" v-model="form.address">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">安全码</label>
+        <label class="w-[30%] text-[#000]">安全码</label>
         <input type="number"  class="form-control" v-model="form.securityNumber">
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">安全码</label>
-        <p class="w-[100%]">{{moment().utc(new Date(form.created_at)).local().format("MM-DD hh:mm:ss") }}</p>
+        <label class="w-[30%] text-[#000]">登陆时间</label>
+        <p class="w-[100%]">{{moment().utc(new Date(form.created_at)).local().format("yyyy-MM-DD hh:mm:ss") }}</p>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">登陆时间</label>
+        <label class="w-[30%] text-[#000]">登陆IP</label>
         <p class="w-[100%]">{{form.IP }}</p>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
-        <label class="w-[30%]">登陆IP</label>
+        <label class="w-[30%] text-[#000]">上次登录</label>
         <p class="w-[100%]">{{form.lastlogin }}</p>
       </div>
       <button class="btn btn-success btn-block w-full" @click="saveDetail()">保存</button>

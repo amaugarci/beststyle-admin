@@ -41,8 +41,8 @@ export default defineComponent({
   components: {
   },
   data:()=>({
-	username:'admin',
-    password:'123123123',
+	username:'',
+    password:'',
   }),
   computed:{
     ...mapState(useAuthStore, ['getUser','getReturnUrl']),
