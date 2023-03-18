@@ -62,7 +62,10 @@
             <td><input type="text" class="form-control form-control-sm" v-model="item.productName"></td>
             <td><input type="text" class="form-control form-control-sm" v-model="item.profitRatio"></td>
             <td><input type="text" class="form-control form-control-sm" v-model="item.lossRatio"></td>
-            <td><button class="btn btn-success btn-sm" @click="save(index)">保存</button></td>
+            <td>
+              <button class="btn btnSuccess btn-sm mr-2" @click="save(index)">保存</button>
+              <button class="btn btnDanger btn-sm" @click="showDeleteSymbol(index)">拒绝</button>
+            </td>
           </tr>
       </tbody>
     </table>
@@ -144,6 +147,40 @@ export default defineComponent({
     this.getSymbols();
   },
   methods: {
+    showDeleteSymbol(index) {
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title: `删除硬币`,
+        content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
+        btn: ['确定', '取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          this.deleteSymbol(index);
+          layer.close(i);
+          this.refresh();
+        },
+      });
+    },
+    async deleteSymbol(index) {
+      try {
+        const response = await axios.get(`/symboldelete/${this.symbols[index].id}`);
+        if (response.data.status == 1) {
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
+        } else {
+          this.showDialog();
+        }
+      }
+      catch (error) {
+        this.showDialog();
+      };
+    },
     async getSymbols() {
       try {
         const response = await axios.get(`/symbols?page=${this.currentPage}`);
