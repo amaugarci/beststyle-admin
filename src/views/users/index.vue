@@ -54,7 +54,7 @@
             <td >{{ item.cash_amount }}</td>
             <td  v-if="item.bank">已绑定</td>
             <td v-else>未绑定</td>
-            <td v-if="item.lastlogin">{{moment().utc(new Date(item.lastlogin)).local().format("MM-DD hh:mm:ss") }}</td>
+            <td v-if="item.lastlogin">{{moment().utc(new Date(item.lastlogin)).local().format("MM-DD HH:mm:ss") }}</td>
             <td v-else>-</td>
             <td v-if="item.IP">{{ item.IP }}</td>
             <td v-else>-</td>
@@ -140,7 +140,7 @@
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%] text-[#000]">登陆时间</label>
-        <p class="w-[100%]">{{moment().utc(new Date(form.created_at)).local().format("yyyy-MM-DD hh:mm:ss") }}</p>
+        <p class="w-[100%]">{{moment().utc(new Date(form.created_at)).local().format("yyyy-MM-DD HH:mm:ss") }}</p>
       </div>
       <div class="flex flex-row justify-between items-center py-3">
         <label class="w-[30%] text-[#000]">登陆IP</label>

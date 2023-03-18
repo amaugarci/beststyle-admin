@@ -35,7 +35,7 @@
             <td>{{ item.description }}</td>
             <td v-if="item.admin">管理员</td>
             <td v-else>用户</td>
-            <td>{{moment().utc(new Date(item.updated_at)).local().format("MM-DD hh:mm:ss") }}</td>
+            <td>{{moment().utc(new Date(item.updated_at)).local().format("MM-DD HH:mm:ss") }}</td>
             <td v-if="item.type">资讯</td>
             <td v-else>公告</td>
             <td v-if="item.status">显示</td>

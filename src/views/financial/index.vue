@@ -63,7 +63,7 @@
             <td>{{item.player.cash_amount}}</td>
             <td v-if="item.status==4">管理员操作充值</td>
             <td v-else>用户员操作</td>
-            <td>{{moment().utc(new Date(item.created_at)).local().format("MM-DD hh:mm:ss") }}</td>
+            <td>{{moment().utc(new Date(item.created_at)).local().format("MM-DD HH:mm:ss") }}</td>
             <td v-if="item.status==0">
               <button class="btn btnSuccess btn-sm mr-2" @click="showConformPayment(index)">符合</button>
               <button

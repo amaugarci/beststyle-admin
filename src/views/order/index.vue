@@ -58,8 +58,8 @@
             <td class="textSuccess">{{item.price}}</td>
             <td v-if="item.lastprice!='-'" class="textDanger">{{item.lastprice}}</td>
             <td v-else class="">-</td>
-            <td>{{moment().utc(new Date(Number(item.time))).local().format("MM-DD hh:mm:ss") }}</td>
-            <td>{{moment().utc(new Date(Number(item.lasttime))).local().format("MM-DD hh:mm:ss") }}</td>
+            <td>{{moment().utc(new Date(Number(item.time))).local().format("MM-DD HH:mm:ss") }}</td>
+            <td>{{moment().utc(new Date(Number(item.lasttime))).local().format("MM-DD HH:mm:ss") }}</td>
             <td v-if="item.status==1&&item.during==180" class="textDanger">-{{Number(0.01*Number(item.money)*Number(item.symbol.lossRatio.split(',')[0])).toFixed(2)}}</td>
             <td v-else-if="item.status==1&&item.during==300" class="textDanger">-{{Number(0.01*Number(item.money)*Number(item.symbol.lossRatio.split(',')[1])).toFixed(2)}}</td>
             <td v-else-if="item.status==1&&item.during==600" class="textDanger">-{{Number(0.01*Number(item.money)*Number(item.symbol.lossRatio.split(',')[2])).toFixed(2)}}</td>
