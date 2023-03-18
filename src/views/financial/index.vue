@@ -38,8 +38,8 @@
             <th>Phone</th>
             <th>类型</th>
             <th>到帐金额</th>
+            <th>到账后金额</th>
             <th>当前金额</th>
-            <th>后金额</th>
             <th>备注</th>
             <th>时间</th>
             <th>状态</th>
@@ -57,10 +57,10 @@
             <td v-if="item.dir"  class="textSuccess">充值</td>
             <td v-else class="textDanger">提现</td>
             <td>{{item.amount}}</td>
-            <td>{{item.player.cash_amount}}</td>
             <td v-if="item.status==0&&item.dir">{{Number(item.lastprice)+Number(item.amount)}}</td>
             <td v-else-if="item.status==0&&!item.dir">{{Number(item.lastprice)-Number(item.amount)*(1+Number(getSystem.witddrawPercent)/100)}}</td>
-            <td v-else>{{ item.player.cash_amount}}</td>
+            <td v-else>{{ Number(item.lastprice)+Number(item.amount)}}</td>
+            <td>{{item.player.cash_amount}}</td>
             <td v-if="item.status==4">管理员操作充值</td>
             <td v-else>用户员操作</td>
             <td>{{moment().utc(new Date(item.created_at)).local().format("MM-DD hh:mm:ss") }}</td>
