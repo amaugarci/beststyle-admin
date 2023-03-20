@@ -5,29 +5,19 @@
         <BIconArrowRepeat @click="refresh"/>
     </div>
     <div class="card">
-      <!-- <div class="card-header">
+      <div class="card-header">
         <div class="row">
           <div class="input-group col-4 px-[15px]">
             <div class="input-group-prepend">
-              <span class="input-group-text">商品名称</span>
+              <span class="input-group-text">用户帐号</span>
             </div>
-            <input type="text" class="form-control" placeholder="" id="GoodsGO">
+            <input type="text" class="form-control" placeholder="" v-model="name">
           </div>
-          <div class="input-group col-3 px-[15px]">
-            <div class="input-group-prepend">
-              <span class="input-group-text">分类</span>
-            </div>
-            <select class="form-control" id="GoodsGOType">
-              <option value="all">全部</option>
-              <option value="btc">区块链</option>
-              <option value="nf">期货</option>
-            </select>
-          </div>
-          <button class="btn btn-success" onclick="goods.getlist()">搜索</button>
-          <button class="btn btn-info ml-3" onclick="br.href('goods')">重置
+          <button class="btn btn-success" @click="filter">搜索</button>
+          <button class="btn btn-info ml-3" @click="()=>name=''">重置
           </button>
         </div>
-      </div> -->
+      </div>
       <table class="table table-hover table-sm mb-0">
         <thead>
           <tr>
@@ -114,6 +104,7 @@ export default defineComponent({
   data: () => ({
     histories:null,
     index:0,
+    name:'',
     currentPage:1,
     totalitem:0,
   }),
@@ -124,6 +115,11 @@ export default defineComponent({
     this.getTransaction();
   },
   methods: {
+    filter(){
+      this.histories=null;
+      this.currentPage==0;
+      this.getTransaction();
+    },
     moment: function () {
       return moment;
     },
@@ -133,7 +129,7 @@ export default defineComponent({
     },
     async getTransaction() {
       try {
-        const response = await axios.get(`transaction/${this.index}?page=${this.currentPage}`);
+        const response = await axios.get(`transaction/${this.index}?name=${this.name}&page=${this.currentPage}`);
         this.histories = response.data.histories.data;
         this.totalitem=response.data.histories.last_page;
       }
@@ -142,6 +138,7 @@ export default defineComponent({
       };
     },
     refresh(){
+      this.name='';
       this.histories=null;
       this.currentPage==0;
       this.getTransaction();
