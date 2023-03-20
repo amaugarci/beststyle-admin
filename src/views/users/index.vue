@@ -171,6 +171,7 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
+    type:0,
     currentPage:1,
     totalitem:0,
     message:'',
@@ -197,10 +198,10 @@ export default defineComponent({
     },
     handleClickOutside(event) {
       if(this.index!=null){
-        if (this.$refs[`container${this.index}`][0].contains(event.target)) {
+        if (this.$refs[`container${this.index}`]&&this.$refs[`container${this.index}`][0].contains(event.target)) {
           return;
         }
-        if (this.$refs[`buttons${this.index}`][0].contains(event.target)) {
+        if (this.$refs[`buttons${this.index}`]&&this.$refs[`buttons${this.index}`][0].contains(event.target)) {
           return;
         }
         this.dropdown[this.index]=false;
@@ -252,7 +253,8 @@ export default defineComponent({
     async addPayment(index,val) {
       try{
           const response=await axios.post(`/addpayment/${this.users[index].id}`, {
-            cash_amount:val,
+            type:this.type,
+            cash_amount:Math.abs(Number(val)),
           });
           if(response.data.status==1){
             layer.config({
@@ -336,12 +338,35 @@ export default defineComponent({
       })
       layer.open({
         title:`姓名:${this.users[index].name} 上下分 [下分输入负数]`,
-        content: `<input type="number" class='inputPayment' >`,
+        content: `
+           <div class="flex gap-2">
+              <div class="flex items-center mb-4">
+                    <input type="radio" name='type' value="0" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300" checked="">
+                    <label class="text-sm font-medium text-gray-900 ml-2 block">
+                      用户充值 
+                    </label>
+                </div>
+                <div class="flex items-center mb-4">
+                    <input type="radio" name='type'  value="1" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300" >
+                    <label class="text-sm font-medium text-gray-900 ml-2 block">
+                      用户提现
+                    </label>
+                </div>
+                <div class="flex items-center mb-4">
+                    <input type="radio" name='type'  value="2" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300">
+                    <label class="text-sm font-medium text-gray-900 ml-2 block">
+                      活动赠送
+                    </label>
+                </div>
+            </div>
+            <input type="number" class='inputPayment' >`,
         btn:['确定','取消'],
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          const inputValue = layero.find('input').val();
+          this.type=Number(document.querySelector('input[name="type"]:checked').value);
+          const inputValue = layero.find('input[type="number"]').val();
+          // console.log(inputValue);
           this.addPayment(index,inputValue);
           layer.close(i);
         },

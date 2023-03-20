@@ -1,7 +1,7 @@
 <template>
   <div class="content grow p-3" id="getContent">
     <div class="flex items-center breadcrumb justify-between mb-2">
-        <p>订单管理</p>
+        <p> 财务管理 </p>
         <BIconArrowRepeat @click="refresh"/>
     </div>
     <div class="card">
@@ -61,7 +61,9 @@
             <td v-else-if="item.status==0&&!item.dir">{{Number(item.lastprice)-Number(item.amount)*(1+Number(getSystem.witddrawPercent)/100)}}</td>
             <td v-else>{{ Number(item.lastprice)+Number(item.amount)}}</td>
             <td>{{item.player.cash_amount}}</td>
-            <td v-if="item.status==4">管理员操作充值</td>
+            <td v-if="item.status==4">管理员充值 </td>
+            <td v-else-if="item.status==5">管理员提现</td>
+            <td v-else-if="item.status==6">活动赠送</td>
             <td v-else>用户员操作</td>
             <td>{{moment().utc(new Date(item.created_at)).local().format("MM-DD HH:mm:ss") }}</td>
             <td v-if="item.status==0">
@@ -102,7 +104,7 @@ import { mapState,mapActions  } from 'pinia'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
-  name: 'financial',
+  name: 'transaction',
   components: {
     BIconArrowRepeat
   },
@@ -237,7 +239,8 @@ export default defineComponent({
       };
     },
     refresh(){
-      this.orders=null;
+      this.payments=null;
+      this.currentPage=0;
       this.getPayments();
     },
     showDialog(){

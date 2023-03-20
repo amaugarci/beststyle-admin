@@ -8,6 +8,7 @@ import admins from './modules/admins'
 import commodity from './modules/commodity'
 import order from './modules/order'
 import financial from './modules/financial'
+import transaction from './modules/transaction'
 import news from './modules/news'
 import system from './modules/system'
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
@@ -25,6 +26,7 @@ const router = createRouter({
     ...commodity,
     ...order,
     ...financial,
+    ...transaction,
     ...news,
     ...system
   ],

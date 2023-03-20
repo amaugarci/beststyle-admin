@@ -61,6 +61,14 @@
         </p>
         <p v-if="getPayment" class="text-[#fff] ml-[40px] w-[15px] h-[15px] text-center rounded-full bg-red-500 text-[8px] flex justify-center items-center">{{ getPayment }}</p>
       </router-link>
+      <router-link to="transaction" class="menu-item p-4" active-class="active">
+        <BIconCreditCard2Back class="icon mr-[10px]"/>
+        <p>
+          <p>
+            交易记录
+          </p>
+        </p>
+      </router-link>
       <router-link to="news" class="menu-item p-4" active-class="active">
         <BIconNewspaper class="icon mr-[10px]"/>
         <p>
