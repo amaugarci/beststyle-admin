@@ -66,6 +66,14 @@
         <textarea class="form-control mb-3" style="height: 300px;" rows="10" v-model="form.description" placeholder="描述"
           required=""></textarea>
       </div>
+      <p>create time</p>
+      <div class="flex flex-row justify-between items-center py-3">
+        <input type="datetime-local" v-model="form.created_at" class="form-control">
+      </div>
+      <p>update time</p>
+      <div class="flex flex-row justify-between items-center py-3">
+        <input type="datetime-local" class="form-control" v-model="form.updated_at">
+      </div>
       <div class="flex flex-row justify-between items-center py-3">
         <select class="form-control" v-model="form.status">
           <option value=1>显示</option>
@@ -106,6 +114,8 @@ export default defineComponent({
       description: '',
       status: '1',
       type: '1',
+      created_at:null,
+      updated_at:null
     }
   }),
   mounted() {
@@ -174,7 +184,9 @@ export default defineComponent({
     editNews(index) {
       this.edit = true;
       this.form = {
-        ...this.news[index]
+        ...this.news[index],
+        created_at:new Date(this.news[index].created_at).toISOString().slice(0,16),
+        updated_at:new Date(this.news[index].updated_at).toISOString().slice(0,16),
       }
       this.showdialog = true;
     },
