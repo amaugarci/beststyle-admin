@@ -1,48 +1,30 @@
 <template>
   <div class="content grow p-3">
     <div class="flex items-center breadcrumb justify-between mb-2">
-      <p>新闻管理</p>
+      <p>语言管理</p>
       <BIconArrowRepeat @click="refresh" />
     </div>
     <div class="card">
       <div class="card-header">
-        <button class="btn btn-success btn-sm" @click="() => {
-          showdialog = true; edit = false; form = {
-            title: '',
-            description: '',
-            status: '1',
-            type: '1',
-          }
-        }">添加</button>
+        <button class="btn btn-success btn-sm" @click="create">添加</button>
       </div>
       <table class="table table-hover table-sm mb-0">
         <thead>
           <tr>
             <th>#</th>
-            <th>标题</th>
-            <th>描述</th>
-            <th>发布人</th>
-            <th>时间</th>
-            <th>类型</th>
+            <th>语言名称</th>
             <th>状态</th>
             <th width="100">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in news" :key="item.id">
+          <tr v-for="(item, index) in languages" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.title }}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
-            <td v-if="item.admin">管理员</td>
-            <td v-else>用户</td>
-            <td>{{moment().utc(new Date(item.updated_at)).local().format("MM-DD HH:mm:ss") }}</td>
-            <td v-if="item.type">资讯</td>
-            <td v-else>公告</td>
-            <td v-if="item.status">显示</td>
-            <td v-else>隐藏</td>
             <td>
-              <button class="btn btnSuccess btn-sm mr-2" @click="editNews(index)">查看</button>
-              <button class="btn btnDanger btn-sm" @click="showDeleteNews(index)">拒绝</button>
+              <button class="btn btnSuccess btn-sm mr-2" @click="edit(item.id)">查看</button>
+              <button class="btn btnDanger btn-sm" @click="showDelete(index)">拒绝</button>
             </td>
           </tr>
         </tbody>
@@ -106,110 +88,54 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
-    news: null,
-    showdialog: false,
-    edit: false,
-    form: {
-      title: '',
-      description: '',
-      status: '1',
-      type: '1',
-      created_at:null,
-      updated_at:null
-    }
+    languages:null,
   }),
   mounted() {
-    this.getNews();
+    this.getLanguages();
   },
   methods: {
+    create() {
+      this.$router.push(`localization/create`);
+    },
+    edit(index) {
+      this.$router.push(`localization/${index}`);
+    },
     moment: function () {
       return moment;
     },
-    async getNews() {
+    async getLanguages() {
       try {
-        const response = await axios.get('/news');
-        this.news = response.data.news;
+        const response = await axios.get('/localization');
+        this.languages = response.data.localization;
       }
       catch (error) {
         console.log(error);
       };
     },
-    save() {
-      if (this.edit) {
-        this.updateNews();
-      } else {
-        this.saveNews()
-      }
-    },
-    async updateNews() {
-      try {
-        const response = await axios.post(`/updatenews/${this.form.id}`, {
-          ...this.form
-        });
-        if (response.data.status == 1) {
-          layer.config({
-            skin: ''
-          })
-          layer.msg("操作成功");
-          this.showdialog = false;
-          this.refresh();
-        } else {
-          this.showDialog();
-        }
-      }
-      catch (error) {
-        this.showDialog();
-      };
-    },
-    async saveNews() {
-      try {
-        const response = await axios.post(`/createnews`, {
-          ...this.form
-        });
-        if (response.data.status == 1) {
-          layer.config({
-            skin: ''
-          })
-          layer.msg("操作成功");
-          this.showdialog = false;
-          this.refresh();
-        } else {
-          this.showDialog();
-        }
-      }
-      catch (error) {
-        this.showDialog();
-      };
-    },
-    editNews(index) {
-      this.edit = true;
-      this.form = {
-        ...this.news[index],
-        created_at:new Date(this.news[index].created_at).toISOString().slice(0,16),
-        updated_at:new Date(this.news[index].updated_at).toISOString().slice(0,16),
-      }
-      this.showdialog = true;
-    },
-    showDeleteNews(index) {
+    showDelete(index) {
       layer.config({
         skin: ''
       })
       layer.open({
-        title: `新闻用户`,
+        title: `语言用户`,
         content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
         btn: ['确定', '取消'],
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          this.deleteNews(index);
+          this.delete(index);
           layer.close(i);
           this.refresh();
         },
       });
     },
-    async deleteNews(index) {
+    refresh() {
+      this.localization = null;
+      this.getLanguages();
+    },
+    async delete(index) {
       try {
-        const response = await axios.get(`/newsdelete/${this.news[index].id}`);
+        const response = await axios.get(`/localizationdelete/${this.languages[index].id}`);
         if (response.data.status == 1) {
           layer.config({
             skin: ''
@@ -223,10 +149,6 @@ export default defineComponent({
       catch (error) {
         this.showDialog();
       };
-    },
-    refresh() {
-      this.orders = null;
-      this.getNews();
     },
     showDialog() {
       layer.config({

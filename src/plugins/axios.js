@@ -5,7 +5,6 @@ import router from '@/router'
 axios.interceptors.request.use(request => {
   const auth = useAuthStore();
   const token = auth.token;
-  console.log(request.headers);
   if (token) {
     try{
       request.headers['Authorization'] = `Bearer ${token}`;

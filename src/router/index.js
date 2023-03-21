@@ -11,6 +11,7 @@ import financial from './modules/financial'
 import transaction from './modules/transaction'
 import news from './modules/news'
 import system from './modules/system'
+import localization from './modules/localization'
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 const router = createRouter({
   history: createWebHashHistory(),
@@ -28,7 +29,8 @@ const router = createRouter({
     ...financial,
     ...transaction,
     ...news,
-    ...system
+    ...system,
+    ...localization
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

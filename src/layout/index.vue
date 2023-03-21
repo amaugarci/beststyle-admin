@@ -11,7 +11,7 @@
         </span>
         <BIconPower @click="signOut" class="out inline-block" />
       </div>
-      <router-link to="home" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'home'}" class="menu-item p-4" active-class="active">
         <BIconHouse class="icon mr-[10px]"/>
         <p>
           <p>
@@ -19,7 +19,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="admins" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'admins'}" class="menu-item p-4" active-class="active">
         <BIconPeople class="icon mr-[10px]"/>
         <p>
           <p>
@@ -27,7 +27,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="users" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'users'}" class="menu-item p-4" active-class="active">
         <BIconPeople class="icon mr-[10px]"/>
         <p>
           <p>
@@ -35,7 +35,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="commodity" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'commodity'}" class="menu-item p-4" active-class="active">
         <BIconBagCheck class="icon mr-[10px]"/>
         <p>
           <p>
@@ -43,7 +43,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="Order" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'order'}" class="menu-item p-4" active-class="active">
         <BIconCardList class="icon mr-[10px]"/>
         <p>
           <p>
@@ -52,7 +52,7 @@
         </p>
         <p v-if="getOrder" class="text-[#fff] ml-[40px] w-[15px] h-[15px] text-center rounded-full bg-red-500 text-[8px] flex justify-center items-center">{{getOrder}}</p>
       </router-link>
-      <router-link to="financial" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'financial'}" class="menu-item p-4" active-class="active">
         <BIconCreditCard2Back class="icon mr-[10px]"/>
         <p>
           <p>
@@ -61,7 +61,7 @@
         </p>
         <p v-if="getPayment" class="text-[#fff] ml-[40px] w-[15px] h-[15px] text-center rounded-full bg-red-500 text-[8px] flex justify-center items-center">{{ getPayment }}</p>
       </router-link>
-      <router-link to="transaction" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'transaction'}" class="menu-item p-4" active-class="active">
         <BIconCreditCard2Back class="icon mr-[10px]"/>
         <p>
           <p>
@@ -69,7 +69,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="news" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'news'}" class="menu-item p-4" active-class="active">
         <BIconNewspaper class="icon mr-[10px]"/>
         <p>
           <p>
@@ -77,7 +77,7 @@
           </p>
         </p>
       </router-link>
-      <router-link to="system" class="menu-item p-4" active-class="active">
+      <router-link :to="{name:'system'}" class="menu-item p-4" active-class="active">
         <BIconHouse class="icon mr-[10px]"/>
         <p>
           <p>
@@ -85,7 +85,14 @@
           </p>
         </p>
       </router-link>
-
+      <router-link :to="{name:'localization'}" class="menu-item p-4" active-class="active">
+        <BIconGlobe class="icon mr-[10px]"/>
+        <p>
+          <p>
+            本土化
+          </p>
+        </p>
+      </router-link>
     </div>
     <div class="content grow">
       <router-view />
@@ -97,7 +104,7 @@
 <script>
 import { defineComponent } from 'vue'
 import './app.css'
-import { BIconPersonCircle,BIconPencilSquare,BIconPower,BIconHouse,BIconPeople,BIconBagCheck,BIconCardList,BIconCreditCard2Back,BIconNewspaper } from 'bootstrap-icons-vue';
+import { BIconPersonCircle,BIconPencilSquare,BIconPower,BIconHouse,BIconPeople,BIconBagCheck,BIconCardList,BIconCreditCard2Back,BIconNewspaper,BIconGlobe } from 'bootstrap-icons-vue';
 import Content from './components/Content/index.vue';
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 import {notifyStore} from '@/pinia/modules/notificationStore';
@@ -107,6 +114,7 @@ import Pusher from 'pusher-js';
 export default defineComponent({
   name: 'layout',
   components: {
+    BIconGlobe,
     BIconPersonCircle,
     BIconPencilSquare,
     BIconHouse,

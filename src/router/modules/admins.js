@@ -8,7 +8,7 @@ export default [
     children: [
       {
         path: '',
-        name: 'admin',
+        name: 'admins',
         component: Users,
         meta: {
           title: 'admins',
