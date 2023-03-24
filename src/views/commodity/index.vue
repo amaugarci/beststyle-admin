@@ -15,7 +15,8 @@
             displayName: '',
             productName: '',
             profitRatio:'',
-            lossRatio:''
+            lossRatio:'',
+            type:2
           }
         }">添加</button>
       </div>
@@ -51,6 +52,7 @@
             <th>商品名称</th>
             <th width="130">盈利比率</th>
             <th width="130">亏损比率</th>
+            <th>语言</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -62,6 +64,11 @@
             <td><input type="text" class="form-control form-control-sm" v-model="item.productName"></td>
             <td><input type="text" class="form-control form-control-sm" v-model="item.profitRatio"></td>
             <td><input type="text" class="form-control form-control-sm" v-model="item.lossRatio"></td>
+            <td class="flex flex-row justify-between items-center py-3">
+              <select class="form-control" v-model="item.localization_id" >
+                <option v-for="language in languages" :value="language.id">{{ language.name }}</option>
+              </select>
+            </td>
             <td>
               <button class="btn btnSuccess btn-sm mr-2" @click="save(index)">保存</button>
               <button class="btn btnDanger btn-sm" @click="showDeleteSymbol(index)">拒绝</button>
@@ -110,6 +117,11 @@
       <div class="flex flex-row justify-between items-center py-3">
         <input type="text" class="form-control" v-model="form.lossRatio" placeholder="亏损比率">
       </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <select class="form-control" v-model="form.type" >
+          <option v-for="item in languages" :value="item.id">{{ item.name }}</option>
+        </select>
+      </div>
       <button class="btn btn-success btn-block w-full" @click="createSymbol()">保存</button>
     </div>
   </div>
@@ -128,6 +140,7 @@ export default defineComponent({
     BIconX
   },
   data: () => ({
+    languages:null,
     currentPage:1,
     totalitem:0,
     symbols:null,
@@ -140,7 +153,8 @@ export default defineComponent({
       displayName: '',
       productName: '',
       profitRatio:'',
-      lossRatio:''
+      lossRatio:'',
+      type:2,
     }
   }),
   mounted(){
@@ -186,6 +200,7 @@ export default defineComponent({
         const response = await axios.get(`/symbols?page=${this.currentPage}`);
         this.symbols = response.data.symbols.data;
         this.totalitem=response.data.symbols.last_page;
+        this.languages=response.data.languages;
       }
       catch (error) {
         console.log(error);
@@ -204,6 +219,7 @@ export default defineComponent({
         if(this.validation(index)){
           const response=await axios.post(`/updatesymbol/${this.symbols[index].id}`, {
               sort:this.symbols[index].sort,
+              localization_id:this.symbols[index].localization_id,
               displayName:this.symbols[index].displayName,
               productName:this.symbols[index].productName,
               profitRatio:this.symbols[index].profitRatio,

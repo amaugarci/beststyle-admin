@@ -30,7 +30,7 @@ const router = createRouter({
     ...transaction,
     ...news,
     ...system,
-    ...localization
+    // ...localization
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

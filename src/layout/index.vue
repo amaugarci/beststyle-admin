@@ -85,14 +85,14 @@
           </p>
         </p>
       </router-link>
-      <router-link :to="{name:'localization'}" class="menu-item p-4" active-class="active">
+      <!-- <router-link :to="{name:'localization'}" class="menu-item p-4" active-class="active">
         <BIconGlobe class="icon mr-[10px]"/>
         <p>
           <p>
             本土化
           </p>
         </p>
-      </router-link>
+      </router-link> -->
     </div>
     <div class="content grow">
       <router-view />

@@ -12,6 +12,7 @@
             description: '',
             status: '1',
             type: '1',
+            localization_id:2,
           }
         }">添加</button>
       </div>
@@ -25,6 +26,7 @@
             <th>时间</th>
             <th>类型</th>
             <th>状态</th>
+            <th>语言</th>
             <th width="100">操作</th>
           </tr>
         </thead>
@@ -40,6 +42,7 @@
             <td v-else>公告</td>
             <td v-if="item.status">显示</td>
             <td v-else>隐藏</td>
+            <td>{{ item.localization.name }}</td>
             <td>
               <button class="btn btnSuccess btn-sm mr-2" @click="editNews(index)">查看</button>
               <button class="btn btnDanger btn-sm" @click="showDeleteNews(index)">拒绝</button>
@@ -86,6 +89,11 @@
           <option value=0>公告</option>
         </select>
       </div>
+      <div class="flex flex-row justify-between items-center py-3">
+        <select class="form-control" v-model="form.localization_id" >
+          <option v-for="item in languages" :value="item.id">{{ item.name }}</option>
+        </select>
+      </div>
       <button class="btn btn-success btn-block w-full" @click="save()">保存</button>
     </div>
 
@@ -106,10 +114,12 @@ export default defineComponent({
     BIconArrowRepeat
   },
   data: () => ({
+    languages:null,
     news: null,
     showdialog: false,
     edit: false,
     form: {
+      localization_id:2,
       title: '',
       description: '',
       status: '1',
@@ -129,6 +139,7 @@ export default defineComponent({
       try {
         const response = await axios.get('/news');
         this.news = response.data.news;
+        this.languages=response.data.languages;
       }
       catch (error) {
         console.log(error);
