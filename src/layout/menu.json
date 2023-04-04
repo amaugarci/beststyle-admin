@@ -1,0 +1,110 @@
+[
+    {
+      "name": "账号管理",
+      "icon":"user",
+      "submenu":[
+        {
+            "name": "用户管理",
+            "url": "user"
+        },
+        {
+            "name": "管理设置",
+            "url": "admin"
+        }
+      ]
+    },
+    {
+      "name": "分组管理",
+      "icon":"group",
+      "submenu":[
+        {
+            "name": "分组列表",
+            "url": "groups"
+        },
+        {
+            "name": "添加分组",
+            "url": "addgroup"
+        }
+      ]
+    },
+    {
+      "name": "入职管理",
+      "icon":"onboarding",
+      "submenu":[
+        {
+            "name": "职员列表",
+            "url": "onboardings"
+        },
+        {
+            "name": "添加职员",
+            "url": "addonboarding"
+        }
+      ]
+    },
+    {
+      "name": "培训管理",
+      "icon":"training",
+      "submenu":[
+        {
+            "name": "培训列表",
+            "url": "trainings"
+        }
+      ]
+    },
+    {
+      "name": "查重管理",
+      "icon":"check",
+      "submenu":[
+        {
+            "name": "查重列表",
+            "url": "user"
+        },
+        {
+            "name": "添加类目",
+            "url": "admin"
+        }
+      ]
+    },
+    {
+      "name": "素材管理",
+      "icon":"material",
+      "submenu":[
+        {
+            "name": "素材分类",
+            "url": "user"
+        },
+        {
+            "name": "添加素材",
+            "url": "admin"
+        }
+      ]
+    },
+    {
+      "name": "人物包装",
+      "icon":"character",
+      "submenu":[
+        {
+            "name": "包装分类",
+            "url": "user"
+        },
+        {
+            "name": "添加素材",
+            "url": "admin"
+        }
+      ]
+    },
+    {
+      "name": "日志管理",
+      "icon":"log",
+      "submenu":[
+        {
+            "name": "登录日志",
+            "url": "user"
+        },
+        {
+            "name": "前台日志",
+            "url": "admin"
+        }
+      ]
+    }
+]

@@ -3,16 +3,10 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import login from './modules/login'
 import home from './modules/home'
-import users from './modules/users'
-import admins from './modules/admins'
-import commodity from './modules/commodity'
-import order from './modules/order'
-import financial from './modules/financial'
-import transaction from './modules/transaction'
-import news from './modules/news'
-import system from './modules/system'
-import localization from './modules/localization'
-import {useAuthStore} from '@/pinia/modules/useAuthStore';
+import user from './modules/users'
+import group from './modules/group'
+import onboarding from './modules/onboarding'
+import training from './modules/training'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -22,14 +16,11 @@ const router = createRouter({
     },
     ...login,
     ...home,
-    ...admins,
-    ...users,
-    ...commodity,
-    ...order,
-    ...financial,
-    ...transaction,
-    ...news,
-    ...system,
+    ...user,
+    ...group,
+    ...onboarding,
+    ...training,
+
     // ...localization
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -41,16 +32,16 @@ const router = createRouter({
   },
 })
 router.beforeEach(async (to) => {
-  const publicPages = ['/login'];
-  const authRequired = !publicPages.includes(to.path);
-  const auth = useAuthStore();
-  if(auth.system==null&&auth.token){
-    auth.fetchSystem();
-  }
-  if (authRequired && !auth.token) {
-      auth.returnUrl = to.name;
-      return '/login';
-  }
+  // const publicPages = ['/login'];
+  // const authRequired = !publicPages.includes(to.path);
+  // const auth = useAuthStore();
+  // if(auth.system==null&&auth.token){
+  //   auth.fetchSystem();
+  // }
+  // if (authRequired && !auth.token) {
+  //     auth.returnUrl = to.name;
+  //     return '/login';
+  // }
   
 });
 export default router

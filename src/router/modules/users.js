@@ -1,20 +1,30 @@
-const Users = () => import('@/views/users/index.vue')
+const User = () => import('@/views/user/index.vue')
+const Admin = () => import('@/views/admin/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
   {
-    path: '/users',
+    path: '/',
     component: Layout,
     children: [
       {
-        path: '',
-        name: 'users',
-        component: Users,
+        path: 'user',
+        name: 'user',
+        component: User,
         meta: {
-          title: 'users',
+          title: 'user',
           affix: true,
         },
       },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: Admin,
+        meta: {
+          title: 'admin',
+          affix: true,
+        },
+      }
     ],
   },
 ]
