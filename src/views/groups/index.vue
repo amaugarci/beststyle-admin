@@ -38,7 +38,7 @@
               <td v-if="Itemlist[index]">建组时间</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button  >编辑</button>
+                <button ref="useredit"  @click="editUser(1)">编辑</button>
                 <button @click="()=>{showDeleteGroup(1)}" >删除</button>
               </td>
               <td v-else></td>
@@ -47,7 +47,9 @@
       </table>
       <Pagination :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
     </div>
-    
+    <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    </div>
+    <Register ref="dialog" :class="{'hidden':!showdialog}"/>
 </template>
 
 <script>
@@ -59,6 +61,7 @@ import MyButton from '@/components/Button.vue'
 import IconMyButton from '@/components/IconButton.vue'
 import Pagination from '@/components/Pagination.vue'
 import SelectBox from '@/components/SelectBox.vue'
+import Register from './register.vue'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
@@ -69,9 +72,11 @@ export default defineComponent({
     MyButton,
     IconMyButton,
     Pagination,
-    SelectBox
+    SelectBox,
+    Register
   },
   data:()=>({
+    showdialog:false,
     list:Array(15).fill(0),
     Itemlist:Array(4).fill(1),
     currentPage:1,
@@ -94,10 +99,22 @@ export default defineComponent({
     ],
   }),
   mounted() {
-   
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener('click', this.handleClickOutside);
+    next();
   },
 
   methods:{
+    handleClickOutside(event) {
+      if(this.showdialog){
+        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) ||this.$refs.dialog.$el.contains(event.target)){
+        }else{
+          this.showdialog=false;
+        }
+      }
+    },
     showDeleteGroup(index){
       layer.config({
         skin: ''
@@ -120,6 +137,9 @@ export default defineComponent({
         this.index=value;
         this.list=Array(Number(value)).fill(0);
     },
+    editUser(value){
+      this.showdialog=true
+    }
   }
 })
 </script>

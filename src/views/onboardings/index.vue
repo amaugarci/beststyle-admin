@@ -58,8 +58,8 @@
               <td v-if="Itemlist[index]">状态</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button >冻结</button>
-                <button >正常</button>
+                <button @click="()=>showChangeOnboarding(1,true)">冻结</button>
+                <button @click="()=>showChangeOnboarding(1,false)">正常</button>
                 <button ref="useredit"  @click="editUser(1)">编辑</button>
               </td>
               <td v-else></td>
@@ -134,6 +134,34 @@ export default defineComponent({
         }else{
           this.showdialog=false;
         }
+      }
+    },
+    showChangeOnboarding(index, flag){
+      layer.config({
+        skin: ''
+      })
+      if(flag){
+        layer.open({
+          title:`冻结职员`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想冻结?</span>`,
+          btn:['确定','取消'],
+          closeBtn: 0,
+          shadeClose: 1,
+          yes: (i, layero) => {
+            layer.close(i);
+          },
+        });
+      }else{
+        layer.open({
+          title:`正常职员`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想正常?</span>`,
+          btn:['确定','取消'],
+          closeBtn: 0,
+          shadeClose: 1,
+          yes: (i, layero) => {
+            layer.close(i);
+          },
+        });
       }
     },
     changepage(value){

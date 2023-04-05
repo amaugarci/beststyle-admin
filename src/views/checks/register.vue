@@ -66,7 +66,7 @@
             <BIconPlus class="text-[30px]"/>
           </div>
         </div>
-        <input multiple  type="file" style="display:none" ref="imageInput" @change="uploadImage">
+        <input multiple  type="file" accept="image/*" style="display:none" ref="imageInput" @change="uploadImage">
       </div>
       <div class="flex justify-center mt-[50px]">
         <IconMyButton icon="none" name="确定" class="ml-[37px] w-[153px]" ></IconMyButton>

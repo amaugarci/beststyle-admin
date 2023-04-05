@@ -156,7 +156,6 @@ export default defineComponent({
           },
         });
       }
-
     },
     changepage(value){
       this.currentPage=value;

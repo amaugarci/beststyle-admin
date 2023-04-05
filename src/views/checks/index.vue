@@ -45,7 +45,7 @@
               <td v-if="Itemlist[index]">客户电话</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button >删除</button>
+                <button @click="()=>showDeleteCheck(1)">删除</button>
                 <button ref="useredit"  @click="editUser(1)">编辑</button>
               </td>
               <td v-else></td>
@@ -121,6 +121,21 @@ export default defineComponent({
           this.showdialog=false;
         }
       }
+    },
+    showDeleteCheck(index){
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title:`删除查重`,
+        content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
+        btn:['确定','取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          layer.close(i);
+        },
+      });
     },
     changepage(value){
       this.currentPage=value;

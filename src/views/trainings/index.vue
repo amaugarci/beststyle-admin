@@ -33,7 +33,7 @@
                 <td  class="flex justify-around items-center text-[#0B88F9]">
                   <button @click="()=>{showAddCate()}">添加下级分类</button>
                   <button @click="()=>{showAddCate(1)}">编辑</button>
-                  <button >删除</button>
+                  <button @click="()=>showDeleteTraining(1)">删除</button>
                 </td>
               </tr>
               <template v-for="(childItem, childIndex) in item.children" :key="childIndex" >
@@ -49,7 +49,7 @@
                     <td  class="flex justify-around items-center text-[#0B88F9]">
                       <button @click="()=>{showAddCate()}">添加下级分类</button>
                       <button @click="()=>{showAddCate(1)}">编辑</button>
-                      <button >删除</button>
+                      <button @click="()=>showDeleteTraining(1)">删除</button>
                     </td>
                   </tr>
                   <template v-for="(grandChildItem, grandChildIndex) in childItem.children" :key="grandChildIndex">
@@ -65,7 +65,7 @@
                       <td  class="flex justify-around items-center text-[#0B88F9]">
                         <button ref="cateadd" @click="addlast(1)" >添加下级分类</button>
                         <button @click="()=>{showAddCate(1)}">编辑</button>
-                        <button >删除</button>
+                        <button @click="()=>showDeleteTraining(1)">删除</button>
                       </td>
                     </tr>
                     <template v-for="(ggrandChildItem, ggrandChildIndex) in grandChildItem.children" :key="ggrandChildIndex">
@@ -75,7 +75,7 @@
                         <td  class="flex justify-around items-center text-[#0B88F9]">
                           <button class="invisible" >添加下级分类</button>
                           <button ref="cateedit" @click="editlast(1)" >编辑</button>
-                          <button >删除</button>
+                          <button @click="()=>showDeleteTraining(1)">删除</button>
                         </td>
                       </tr>
                     </template>
@@ -197,6 +197,21 @@ export default defineComponent({
           },
         });
       }
+    },
+    showDeleteTraining(index){
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title:`删除培训`,
+        content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
+        btn:['确定','取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          layer.close(i);
+        },
+      });
     },
     editlast(value){
       this.showdialog=true
