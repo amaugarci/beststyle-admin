@@ -6,10 +6,6 @@
         {
             "name": "用户管理",
             "url": "user"
-        },
-        {
-            "name": "管理设置",
-            "url": "admin"
         }
       ]
     },
@@ -57,12 +53,16 @@
       "submenu":[
         {
             "name": "查重列表",
-            "url": "user"
+            "url": "checks"
         },
         {
             "name": "添加类目",
-            "url": "admin"
-        }
+            "url": "addcheck"
+        },
+        {
+          "name": "添加状态",
+          "url": "addcstate"
+      }
       ]
     },
     {
@@ -99,11 +99,11 @@
       "submenu":[
         {
             "name": "登录日志",
-            "url": "user"
+            "url": "logs"
         },
         {
-            "name": "前台日志",
-            "url": "admin"
+            "name": "系统白名单",
+            "url": "ips"
         }
       ]
     }

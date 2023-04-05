@@ -13,16 +13,17 @@
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] items-center">
         <p class="font-black mr-[17px]">分组</p>
-        <SelectBox placeholder="选择分组"  :groups="[]" :group="group" class="w-[281px]"/>
+        <input type="text" placeholder="分组名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px]">
       </div>
+      <!-- <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] items-center">
+        <p class="font-black mr-[17px]">分组</p>
+        <SelectBox placeholder="选择分组"  :groups="[]" :group="group" class="w-[281px]"/>
+      </div> -->
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] items-center">
         <p class="font-black mr-[17px]">组长</p>
         <SelectBox placeholder="选择组长"  :groups="[]" :group="group" class="w-[281px]"/>
       </div>
-      <!-- <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] items-center">
-        <p class="font-black mr-[17px]">分组</p>
-        <input type="text" placeholder="分组名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px]">
-      </div>
+      <!-- 
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] items-center">
         <p class="font-black mr-[17px]">组长</p>
         <input type="text" placeholder="组长姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px]">

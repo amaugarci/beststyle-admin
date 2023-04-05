@@ -12,7 +12,6 @@ package-lock.json
 
 # Log files
 # Logs
-logs
 *.log
 yarn.lock
 npm-debug.log*

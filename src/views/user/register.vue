@@ -1,5 +1,5 @@
 <template>
-   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[500px] bg-[#FFFFFF] fixed top-1/2 left-1/2 -translate-y-2/3 -translate-x-1/2">
+   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[600px] bg-[#FFFFFF] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
       <div class="flex items-center">
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
         <p class="font-black text-[#0B88F9]">添加用户</p>
@@ -14,12 +14,20 @@
             <input type="text" placeholder="输入姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px] mr-[28px]">
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
+            <p class="font-black mr-[17px]">部门</p>
+            <SelectBox placeholder="选择部门"  :groups="[]" :group="group" class="w-[281px]"/>
+        </div>
+        <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">分组</p>
             <SelectBox placeholder="选择分组"  :groups="[]" :group="group" class="w-[281px]"/>
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">状态</p>
             <SelectBox placeholder="选择状态"  :groups="[]" :group="group" class="w-[281px]"/>
+        </div>
+        <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center ">
+            <p class="font-black mr-[17px]">角色</p>
+            <SelectBox placeholder="输入角色"  :groups="[]" :group="group" class="w-[281px]"/>
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center ">
             <p class="font-black mr-[17px]">IP地址</p>

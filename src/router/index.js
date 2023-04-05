@@ -7,6 +7,8 @@ import user from './modules/users'
 import group from './modules/group'
 import onboarding from './modules/onboarding'
 import training from './modules/training'
+import check from './modules/check'
+import log from './modules/log'
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -20,6 +22,8 @@ const router = createRouter({
     ...group,
     ...onboarding,
     ...training,
+    ...check,
+    ...log,
 
     // ...localization
   ],

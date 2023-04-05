@@ -119,7 +119,7 @@ export default defineComponent({
   methods:{
     handleClickOutside(event) {
       if(this.showdialog){
-        if((this.$refs.useredit && this.$refs.useredit[0].contains(event.target))||this.$refs.addbutton.$el.contains(event.target) || this.$refs.dialog.$el.contains(event.target)){
+        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) || this.$refs.addbutton.$el.contains(event.target) || this.$refs.dialog.$el.contains(event.target)){
         }else{
           this.showdialog=false;
         }

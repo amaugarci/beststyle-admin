@@ -19,7 +19,12 @@
 input:focus{
   outline: none;
 }
-
+option{
+  color: #000;
+}
+option.default{
+  color: #9CA3AF;
+}
 td, th{
   border: 1px solid #DBDBDB;
   padding-top: 12px;
@@ -42,7 +47,6 @@ select:focus{
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #495057;
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;

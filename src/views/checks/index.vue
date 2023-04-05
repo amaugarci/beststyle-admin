@@ -1,13 +1,12 @@
 <template>
     <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
-       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-       <MyButton name="入职管理" :active="false"></MyButton>
-       <MyButton name="职员列表" :active="true"></MyButton>
+      <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
+       <MyButton name="分组管理" :active="false"></MyButton>
+       <MyButton name="分组列表" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" placeholder="姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <SelectBox placeholder="部门"  :groups="groups" :group="group" class="w-[200px]"/>
-      <SelectBox placeholder="分组"  :groups="groups" :group="group"/>
+      <input type="text" placeholder="账号" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <SelectBox @onchange="changegroup" placeholder=" 选择平台"  :groups="groups" :group="group" class="w-[200px]"/>
       <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">
@@ -15,51 +14,38 @@
           <thead>
             <tr>
               <th class="w-[55px]">序号</th>
-              <th>姓名</th>
-              <th>性别</th>
-              <th>年龄</th>
-              <th>国籍</th>
-              <th>婚否</th>
-              <th>入职时间</th>
-              <th>岗位</th>
-              <th>电话</th>
-              <th>介绍人</th>
-              <th>介绍人电话</th>
-              <th>合同时间</th>
-              <th>状态</th>
-              <th class="w-[170px]">操作</th>
+              <th>业务组</th>
+              <th>业务员</th>
+              <th>平台</th>
+              <th>平台账号</th>
+              <th>客户姓名</th>
+              <th>客户简介</th>
+              <th>客户状态</th>
+              <th>客户电话</th>
+              <th class="w-[172px]">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item,index) in list" :key="index">
               <td >{{ index+1 }}</td>
-              <td v-if="Itemlist[index]">姓名</td>
+              <td v-if="Itemlist[index]">业务组</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">性别</td>
+              <td v-if="Itemlist[index]">业务员</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">年龄</td>
+              <td v-if="Itemlist[index]">平台</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">国籍</td>
+              <td v-if="Itemlist[index]">平台账号</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">婚否</td>
+              <td v-if="Itemlist[index]">客户姓名</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">入职时间</td>
+              <td v-if="Itemlist[index]">客户简介</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">岗位</td>
+              <td v-if="Itemlist[index]">客户状态</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">电话</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">介绍人</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">介绍人电话</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">合同时间</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">状态</td>
+              <td v-if="Itemlist[index]">客户电话</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button >冻结</button>
-                <button >正常</button>
+                <button >删除</button>
                 <button ref="useredit"  @click="editUser(1)">编辑</button>
               </td>
               <td v-else></td>
@@ -86,7 +72,7 @@ import Register from './register.vue'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
-  name: 'onboardings',
+  name: 'checks',
   components: {
     BIconArrowRepeat,
     IEcharts,
@@ -130,7 +116,7 @@ export default defineComponent({
   methods:{
     handleClickOutside(event) {
       if(this.showdialog){
-        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) ||this.$refs.dialog.$el.contains(event.target)){
+        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) || this.$refs.dialog.$el.contains(event.target)){
         }else{
           this.showdialog=false;
         }
@@ -138,6 +124,10 @@ export default defineComponent({
     },
     changepage(value){
       this.currentPage=value;
+    },
+    changegroup(value){
+      console.log(value);
+      this.group=value;
     },
     onchangePage(value){
         this.index=value;

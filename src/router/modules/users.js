@@ -16,15 +16,15 @@ export default [
           affix: true,
         },
       },
-      {
-        path: 'admin',
-        name: 'admin',
-        component: Admin,
-        meta: {
-          title: 'admin',
-          affix: true,
-        },
-      }
+      // {
+      //   path: 'admin',
+      //   name: 'admin',
+      //   component: Admin,
+      //   meta: {
+      //     title: 'admin',
+      //     affix: true,
+      //   },
+      // }
     ],
   },
 ]

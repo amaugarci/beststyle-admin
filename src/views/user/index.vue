@@ -18,8 +18,10 @@
               <th class="w-[55px]">序号</th>
               <th>用户名</th>
               <th>姓名</th>
+              <th>部门</th>
               <th>分组</th>
               <th>状态</th>
+              <th>角色</th>
               <th>管理员</th>
               <th>IP地址</th>
               <th>地区</th>
@@ -33,9 +35,13 @@
               <td v-else></td>
               <td v-if="Itemlist[index]">姓名</td>
               <td v-else></td>
+              <td v-if="Itemlist[index]">部门</td>
+              <td v-else></td>
               <td v-if="Itemlist[index]">分组</td>
               <td v-else></td>
               <td v-if="Itemlist[index]">状态</td>
+              <td v-else></td>
+              <td v-if="Itemlist[index]">角色</td>
               <td v-else></td>
               <td v-if="Itemlist[index]">管理员</td>
               <td v-else></td>
@@ -44,8 +50,8 @@
               <td v-if="Itemlist[index]">地区</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button >冻结</button>
-                <button >正常</button>
+                <button @click="()=>showChangeUser(1, true)" >冻结</button>
+                <button @click="()=>showChangeUser(1, false)">正常</button>
                 <button ref="useredit" @click="editUser(1)" >编辑</button>
               </td>
               <td v-else></td>
@@ -116,11 +122,41 @@ export default defineComponent({
   methods:{
     handleClickOutside(event) {
       if(this.showdialog){
-        if((this.$refs.useredit && this.$refs.useredit[0].contains(event.target)) ||this.$refs.addbutton.$el.contains(event.target) || this.$refs.dialog.$el.contains(event.target)){
+        console.log(event.target);
+        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) ||this.$refs.addbutton.$el.contains(event.target) || this.$refs.dialog.$el.contains(event.target)){
         }else{
           this.showdialog=false;
         }
       }
+    },
+    showChangeUser(index, flag){
+      layer.config({
+        skin: ''
+      })
+      if(flag){
+        layer.open({
+          title:`冻结用户`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想冻结?</span>`,
+          btn:['确定','取消'],
+          closeBtn: 0,
+          shadeClose: 1,
+          yes: (i, layero) => {
+            layer.close(i);
+          },
+        });
+      }else{
+        layer.open({
+          title:`正常用户`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想正常?</span>`,
+          btn:['确定','取消'],
+          closeBtn: 0,
+          shadeClose: 1,
+          yes: (i, layero) => {
+            layer.close(i);
+          },
+        });
+      }
+
     },
     changepage(value){
       this.currentPage=value;
