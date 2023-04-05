@@ -38,11 +38,11 @@ export default {
         }
     },
     mounted(){
-        // this.value.submenu.forEach(item => {
-        //     if(this.currentUrl.includes(item.url)){
-        //         this.showSubmenu=true;
-        //     }
-        // });
+        this.value.submenu.forEach(item => {
+            if(this.currentUrl.includes(item.url)){
+                this.showSubmenu=true;
+            }
+        });
     },
     methods: {
         toggleSubmenu() {
