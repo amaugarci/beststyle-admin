@@ -7,6 +7,8 @@ import user from './modules/users'
 import group from './modules/group'
 import onboarding from './modules/onboarding'
 import training from './modules/training'
+import material from './modules/material'
+import character from './modules/character'
 import check from './modules/check'
 import log from './modules/log'
 const router = createRouter({
@@ -22,6 +24,8 @@ const router = createRouter({
     ...group,
     ...onboarding,
     ...training,
+    ...material,
+    ...character,
     ...check,
     ...log,
 

@@ -71,11 +71,7 @@
       "submenu":[
         {
             "name": "素材分类",
-            "url": "user"
-        },
-        {
-            "name": "添加素材",
-            "url": "admin"
+            "url": "materials"
         }
       ]
     },
@@ -85,11 +81,7 @@
       "submenu":[
         {
             "name": "包装分类",
-            "url": "user"
-        },
-        {
-            "name": "添加素材",
-            "url": "admin"
+            "url": "characters"
         }
       ]
     },

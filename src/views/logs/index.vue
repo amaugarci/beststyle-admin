@@ -39,7 +39,7 @@
               <td v-if="Itemlist[index]">预览权限</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button >删除</button>
+                <button @click="()=>{showDeleteLog(1)}">删除</button>
                 <!-- <button ref="useredit"  @click="editUser(1)">编辑</button> -->
               </td>
               <td v-else></td>
@@ -103,6 +103,21 @@ export default defineComponent({
   },
 
   methods:{
+    showDeleteLog(index){
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title:`删除日志`,
+        content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
+        btn:['确定','取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          layer.close(i);
+        },
+      });
+    },
     handleClickOutside(event) {
       if(this.showdialog){
         if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) || this.$refs.dialog.$el.contains(event.target)){

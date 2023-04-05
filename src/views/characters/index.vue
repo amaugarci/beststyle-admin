@@ -1,8 +1,8 @@
 <template>
     <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-       <MyButton name="培训管理" :active="false"></MyButton>
-       <MyButton name="培训列表" :active="true"></MyButton>
+       <MyButton name="人物包装" :active="false"></MyButton>
+       <MyButton name="包装分类" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
       <input type="text" placeholder="分类ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
@@ -103,7 +103,7 @@ import Register from './register.vue'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
-  name: 'trainings',
+  name: 'characters',
   components: {
     BIconArrowRepeat,
     BIconChevronRight, 

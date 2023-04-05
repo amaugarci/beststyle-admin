@@ -44,7 +44,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import {BIconArrowRepeat,BIconPlus,BIconXCircle } from 'bootstrap-icons-vue';
+import {BIconArrowRepeat,BIconPlus, BIconXCircle } from 'bootstrap-icons-vue';
 import IconMyButton from '@/components/IconButton.vue'
 import SelectBox from '@/components/SelectBox.vue'
 import axios from 'axios'
