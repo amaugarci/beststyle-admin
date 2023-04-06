@@ -1,5 +1,5 @@
 const Characters = () => import('@/views/characters/index.vue')
-// const AddGroups = () => import('@/views/addgroup/index.vue')
+const Charactergroup = () => import('@/views/charactergroup/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
@@ -16,15 +16,15 @@ export default [
           affix: true,
         },
       },
-      // {
-      //   path: 'addgroup',
-      //   name: 'addgroup',
-      //   component: AddGroups,
-      //   meta: {
-      //     title: 'addgroup',
-      //     affix: true,
-      //   },
-      // }
+      {
+        path: 'charactergroup',
+        name: 'charactergroup',
+        component: Charactergroup,
+        meta: {
+          title: 'charactergroup',
+          affix: true,
+        },
+      }
     ],
   },
 ]

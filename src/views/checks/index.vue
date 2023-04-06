@@ -2,7 +2,7 @@
     <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
        <MyButton name="分组管理" :active="false"></MyButton>
-       <MyButton name="分组列表" :active="true"></MyButton>
+       <MyButton name="查重列表" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
       <input type="text" placeholder="账号" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
