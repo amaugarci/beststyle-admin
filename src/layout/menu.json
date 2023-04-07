@@ -60,12 +60,12 @@
             "url": "checks"
         },
         {
-            "name": "添加类目",
-            "url": "addcheck"
+            "name": "类目列表",
+            "url": "categories"
         },
         {
-          "name": "添加状态",
-          "url": "addcstate"
+          "name": "状态列表",
+          "url": "states"
       }
       ]
     },

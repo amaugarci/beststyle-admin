@@ -10,7 +10,7 @@
         </span>
         <BIconPower @click="signOut" class="float-right text-[25px] text-[#BAA372] inline-block" :class="{'hidden':!append}"/>
       </div>
-      <router-link :to="{name:'home'}" class="flex items-end bg-[#494B52] px-[24px] nav-link py-4 text-[18px]" active-class="active-nav-link">
+      <router-link :to="{name:'home'}" class="flex items-center bg-[#494B52] px-[24px]  nav-link py-4 text-[16px]" active-class="active-nav-link">
         <img :src="currentUrl.includes('home')?'../src/assets/icons/chome.svg':'../src/assets/icons/home.svg'"  class="icon mr-[12px] font-bold text-[22px] " />
         <p class="font-bold leading-none"  :class="{'hidden':!append}">
             首页

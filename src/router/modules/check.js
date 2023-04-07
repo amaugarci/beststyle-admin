@@ -1,6 +1,6 @@
 const Checks = () => import('@/views/checks/index.vue')
-const Addcheck = () => import('@/views/addcheck/index.vue')
-const Addcstate = () => import('@/views/addcstate/index.vue')
+const Categories = () => import('@/views/categories/index.vue')
+const States = () => import('@/views/states/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
@@ -18,20 +18,20 @@ export default [
         },
       },
       {
-        path: 'addcheck',
-        name: 'addcheck',
-        component: Addcheck,
+        path: 'categories',
+        name: 'categories',
+        component: Categories,
         meta: {
-          title: 'addcheck',
+          title: 'categories',
           affix: true,
         },
       },
       {
-        path: 'addcstate',
-        name: 'addcstate',
-        component: Addcstate,
+        path: 'states',
+        name: 'states',
+        component: States,
         meta: {
-          title: 'addcstate',
+          title: 'states',
           affix: true,
         },
       }
