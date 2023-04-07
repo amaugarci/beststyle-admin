@@ -19,7 +19,6 @@
               <th>分组</th>
               <th>IP地址</th>
               <th>登录时间</th>
-              <th>预览权限</th>
               <th class="w-[170px]">操作</th>
             </tr>
           </thead>
@@ -36,7 +35,6 @@
               <td v-else></td>
               <td v-if="Itemlist[index]">登录时间</td>
               <td v-else></td>
-              <td v-if="Itemlist[index]">预览权限</td>
               <td v-else></td>
               <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
                 <button @click="()=>{showDeleteLog(1)}">删除</button>

@@ -1,5 +1,5 @@
 const Materials = () => import('@/views/materials/index.vue')
-// const AddGroups = () => import('@/views/addgroup/index.vue')
+const Materialgroup = () => import('@/views/materialgroup/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
@@ -16,15 +16,15 @@ export default [
           affix: true,
         },
       },
-      // {
-      //   path: 'addgroup',
-      //   name: 'addgroup',
-      //   component: AddGroups,
-      //   meta: {
-      //     title: 'addgroup',
-      //     affix: true,
-      //   },
-      // }
+      {
+        path: 'materialgroup',
+        name: 'materialgroup',
+        component: Materialgroup,
+        meta: {
+          title: 'materialgroup',
+          affix: true,
+        },
+      }
     ],
   },
 ]

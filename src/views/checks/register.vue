@@ -1,10 +1,20 @@
 <template>
-   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[1100px] bg-[#FFFFFF] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[1100px] bg-[#FFFFFF] fixed top-[50px] left-1/2 -translate-x-1/2">
       <div class="flex items-center">
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
-        <p class="font-black text-[#0B88F9]">添加用户</p>
+        <p class="font-black text-[#0B88F9]">添加查重</p>
       </div>
-      <div class="mt-[53px] grid grid-cols-2 w-[900px] ">
+      <p class="font-black mr-[17px] top-[50px] right-[180px] absolute">头像：</p>
+      <div @click="selectImage" class="w-[100px] h-[130px] mt-[25px] top-[0px] right-[80px] absolute">
+        <div v-if="image" class=" relative">
+          <img :src="image" class="w-[100px] h-[130px] mt-[10px]"/>
+        </div>
+        <div v-else  class="flex items-center justify-center flex-shrink-0 flex-shrink-0 bg-[#F0F0F0] w-[100px] h-[130px]">
+          <BIconPlus class="text-[30px]"/>
+        </div>
+        <input type="file" accept="image/*" style="display:none" ref="imageInput" @change="uploadImage">
+      </div>
+      <div class="mt-[100px] grid grid-cols-2 w-[900px] ">
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">平台</p>
             <SelectBox placeholder="选择平台"  :groups="[]" :group="group" class="w-[281px]"/>
@@ -60,13 +70,13 @@
         </div>
       </div>
       <div class="w-full flex justify-center mt-[50px]">
-        <div class="w-[825px] flex items-center gap-1 overflow-x-auto">
+        <div class="w-[825px] flex items-center gap-2 overflow-x-auto">
           <img v-for="(item,index) in images" :src="item" class=" w-[150px] h-[200px]"/>
-          <div @click="selectImage" class="flex items-center justify-center flex-shrink-0 flex-shrink-0 bg-[#F0F0F0] w-[150px] h-[200px]">
+          <div @click="selectImages" class="flex items-center justify-center flex-shrink-0 flex-shrink-0 bg-[#F0F0F0] w-[150px] h-[200px]">
             <BIconPlus class="text-[30px]"/>
           </div>
         </div>
-        <input multiple  type="file" accept="image/*" style="display:none" ref="imageInput" @change="uploadImage">
+        <input multiple  type="file" accept="image/*" style="display:none" ref="imageInputs" @change="uploadImages">
       </div>
       <div class="flex justify-center mt-[50px]">
         <IconMyButton icon="none" name="确定" class="ml-[37px] w-[153px]" ></IconMyButton>
@@ -91,17 +101,25 @@ export default defineComponent({
   data:()=>({
     career:'',
     images:[],
+    image:null,
   }),
   methods:{
-    selectImage() {
-      this.$refs.imageInput.click()
+    selectImages() {
+      this.$refs.imageInputs.click()
     },
-    uploadImage() {
-      let files = this.$refs.imageInput.files;
+    uploadImages() {
+      let files = this.$refs.imageInputs.files;
       for(let i=0;i<files.length; i++){
         console.log('aaa');
         this.images.push('https://i.ibb.co/Xjwh9Rv/3.png');
       }
+    },
+    selectImage() {
+      this.$refs.imageInput.click()
+    },
+    uploadImage() {
+      let file = this.$refs.imageInput.file;
+      this.image=('https://i.ibb.co/Xjwh9Rv/3.png');
     }
   }
 })

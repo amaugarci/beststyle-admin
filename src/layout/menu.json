@@ -14,12 +14,12 @@
       "icon":"group",
       "submenu":[
         {
-            "name": "分组列表",
-            "url": "groups"
+            "name": "部门列表",
+            "url": "departments"
         },
         {
-            "name": "添加分组",
-            "url": "addgroup"
+            "name": "分组列表",
+            "url": "groups"
         }
       ]
     },
@@ -44,6 +44,10 @@
         {
             "name": "培训列表",
             "url": "trainings"
+        },
+        {
+          "name": "培训分类",
+          "url": "traininggroup"
         }
       ]
     },
@@ -70,8 +74,12 @@
       "icon":"material",
       "submenu":[
         {
-            "name": "素材分类",
+            "name": "素材列表",
             "url": "materials"
+        },
+        {
+          "name": "素材分类",
+          "url": "materialgroup"
         }
       ]
     },
@@ -80,8 +88,12 @@
       "icon":"character",
       "submenu":[
         {
-            "name": "包装分类",
+            "name": "包装列表",
             "url": "characters"
+        },
+        {
+          "name": "包装分类",
+          "url": "charactergroup"
         }
       ]
     },

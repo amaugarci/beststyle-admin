@@ -1,4 +1,5 @@
 const Trainings = () => import('@/views/trainings/index.vue')
+const Traininggroup = () => import('@/views/traininggroup/index.vue')
 // const AddGroups = () => import('@/views/addgroup/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
@@ -16,15 +17,15 @@ export default [
           affix: true,
         },
       },
-      // {
-      //   path: 'addgroup',
-      //   name: 'addgroup',
-      //   component: AddGroups,
-      //   meta: {
-      //     title: 'addgroup',
-      //     affix: true,
-      //   },
-      // }
+      {
+        path: 'traininggroup',
+        name: 'traininggroup',
+        component: Traininggroup,
+        meta: {
+          title: 'traininggroup',
+          affix: true,
+        },
+      }
     ],
   },
 ]
