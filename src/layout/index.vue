@@ -10,13 +10,16 @@
         </span>
         <BIconPower @click="signOut" class="float-right text-[25px] text-[#BAA372] inline-block" :class="{'hidden':!append}"/>
       </div>
-      <router-link :to="{name:'home'}" class="flex items-center bg-[#494B52] px-[24px]  nav-link py-4 text-[16px]" active-class="active-nav-link">
+      <router-link :to="{name:'home'}" class="flex items-center text-center bg-[#494B52] px-[24px]  nav-link py-4 text-[16px]" active-class="active-nav-link">
         <img :src="currentUrl.includes('home')?'../src/assets/icons/chome.svg':'../src/assets/icons/home.svg'"  class="icon mr-[12px] font-bold text-[22px] " />
         <p class="font-bold leading-none"  :class="{'hidden':!append}">
             首页
         </p>
       </router-link>
-      <MainMenu v-for="(item, index) in menu" :value="item" :append="append"/>
+      <template  v-if="getAdmin" v-for="(item, index) in menu">
+        <MainMenu v-if="isAvailable(item)" :value="item" :append="append"/>
+      </template>
+      
     </div>
     <div class="h-auto min-w-980 bg-white w-full min-w-[980px] relative">
       <div class="w-full py-[18.2px] px-[17px] flex items-center">
@@ -34,7 +37,6 @@ import { defineComponent } from 'vue'
 import { BIconPersonCircle, BIconPower} from 'bootstrap-icons-vue';
 import Content from './components/Content/index.vue';
 import { useAuthStore } from '@/pinia/modules/useAuthStore';
-import { notifyStore } from '@/pinia/modules/notificationStore';
 import { mapState, mapActions } from 'pinia'
 import { Howl, Howler } from 'howler';
 import Pusher from 'pusher-js';
@@ -59,11 +61,24 @@ export default defineComponent({
     }
   },
   computed: {
+      ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted() {
   },
   methods: {
-   
+    ...mapActions(useAuthStore,['logout']),
+   isAvailable(item){
+    for(let i=0;i<item.submenu.length; i++){
+      if(this.getAdmin.permissions[item.submenu[i].id]){
+        return true;
+      }
+    }
+    return true;
+   },
+   signOut(){
+    this.logout();
+    this.$router.push({name:'login'});
+   }
   }
 });
 </script>

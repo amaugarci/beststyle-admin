@@ -4,8 +4,14 @@
       "icon":"user",
       "submenu":[
         {
+            "id": 2,
             "name": "用户管理",
             "url": "user"
+        },
+        {
+            "id": 3,
+            "name": "角色管理",
+            "url": "roles"
         }
       ]
     },
@@ -14,10 +20,12 @@
       "icon":"group",
       "submenu":[
         {
+            "id": 5,
             "name": "部门列表",
             "url": "departments"
         },
         {
+          "id": 6,
             "name": "分组列表",
             "url": "groups"
         }
@@ -28,12 +36,9 @@
       "icon":"onboarding",
       "submenu":[
         {
+          "id": 8,
             "name": "职员列表",
             "url": "onboardings"
-        },
-        {
-            "name": "添加职员",
-            "url": "addonboarding"
         }
       ]
     },
@@ -42,10 +47,12 @@
       "icon":"training",
       "submenu":[
         {
+            "id": 10,
             "name": "培训列表",
             "url": "trainings"
         },
         {
+          "id": 11,
           "name": "培训分类",
           "url": "traininggroup"
         }
@@ -56,14 +63,17 @@
       "icon":"check",
       "submenu":[
         {
+          "id": 13,
             "name": "查重列表",
             "url": "checks"
         },
         {
-            "name": "类目列表",
+          "id": 14,
+            "name": "平台列表",
             "url": "categories"
         },
         {
+          "id": 15,
           "name": "状态列表",
           "url": "states"
       }
@@ -74,10 +84,12 @@
       "icon":"material",
       "submenu":[
         {
+            "id": 17,
             "name": "素材列表",
             "url": "materials"
         },
         {
+          "id": 18,
           "name": "素材分类",
           "url": "materialgroup"
         }
@@ -88,10 +100,12 @@
       "icon":"character",
       "submenu":[
         {
+            "id": 20,
             "name": "包装列表",
             "url": "characters"
         },
         {
+          "id": 21,
           "name": "包装分类",
           "url": "charactergroup"
         }
@@ -102,10 +116,12 @@
       "icon":"log",
       "submenu":[
         {
+           "id": 23,
             "name": "登录日志",
             "url": "logs"
         },
         {
+            "id": 24,
             "name": "系统白名单",
             "url": "ips"
         }

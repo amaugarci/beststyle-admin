@@ -3,60 +3,52 @@
   </template>
   <Notfound v-else-if="!isAvailable()"/>
   <template v-else>
+    <div class="max-w-[1200px]">
       <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
         <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-        <MyButton name="分组管理" :active="false"></MyButton>
-        <MyButton name="分组列表" :active="true"></MyButton>
+        <MyButton name="账号管理" :active="false"></MyButton>
+        <MyButton name="角色管理" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="分组名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <input type="text" placeholder="角色名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
         <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
-        <IconMyButton v-if="getAdmin.permissions[6]" ref="addbutton"  @onclick="()=>{this.showAddGroup()}" icon="circleplus" name="添加部门" ></IconMyButton>
+        <IconMyButton v-if="getAdmin.permissions[3]" ref="addbutton"  @onclick="()=>showAddRole()" icon="circleplus" name="添加角色" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
         <table class="w-full p-[1px]">
             <thead>
               <tr>
                 <th class="w-[55px]">序号</th>
-                <th>部门名称</th>
-                <th>分组名称</th>
-                <th>组长</th>
-                <th>组内人数</th>
+                <th>角色名称</th>
                 <th>建组时间</th>
-                <th v-if="getAdmin.permissions[6]" class="w-[172px]">操作</th>
+                <th v-if="getAdmin.permissions[3]" class="w-[172px]">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in list" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="groups[index]">{{groups[index].department.name}}</td>
+                <td v-if="roles[index]">{{roles[index].name}}</td>
                 <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].name }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].boss?groups[index].boss.name:'-' }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].count }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">
-                  {{moment().utc(new Date(groups[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td v-if="roles[index]">
+                  {{moment().utc(new Date(roles[index].created_at)).local().format("yyyy-MM-DD") }}
                 </td>
                 <td v-else></td>
-                <td v-if="getAdmin.permissions[6]&&groups[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="showEditGroup(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(groups[index].id)}" >删除</button>
+                <td  v-if="getAdmin.permissions[3]&&roles[index]" class="flex justify-around items-center text-[#0B88F9]">
+                  <button ref="useredit"  @click="showEditRole(index)">编辑</button>
+                  <button @click="()=>{showDeleteRole(roles[index].id)}" >删除</button>
                 </td>
-                <td v-else-if="getAdmin.permissions[6]"></td>
+                <td v-else-if="getAdmin.permissions[3]"></td>
               </tr>
             </tbody>
         </table>
         <Pagination v-if="totalPage" :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
       </div>
-
-      <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
-      </div>
-      <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="groups[itemid]" />
-      <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />
+    </div>
   </template>
+  <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+  </div>
+  <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="roles[itemid]" />
+  <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />
 </template>
 
 <script>
@@ -75,7 +67,7 @@ import Notfound from '@/views/notfound/index.vue'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
-  name: 'groups',
+  name: 'roles',
   components: {
     BIconArrowRepeat,
     IEcharts,
@@ -83,35 +75,46 @@ export default defineComponent({
     IconMyButton,
     Pagination,
     SelectBox,
-    Register,
-    Notfound
+    Notfound,
+    Register
   },
   data:()=>({
-    showdialog:false,
     list:Array(15).fill(0),
-    groups:[],
+    message:'',
+    showdialog:false,
+    itemid:null,
+    roles:[],
     currentPage:1,
     totalPage:null,
     index:15,
     group:'',
+    groups:[
+      {
+        id:1,
+        name:'first'
+      },
+      {
+        id:2,
+        name:'twice'
+      },
+      {
+        id:3,
+        name:'third'
+      }
+    ],
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
-  mounted() {
-    this.getGroups();
+  mounted(){
+    this.getRoles();
     document.addEventListener('click', this.handleClickOutside);
   },
   beforeRouteLeave(to, from, next) {
     document.removeEventListener('click', this.handleClickOutside);
     next();
   },
-
   methods:{
-    ...mapActions(useAuthStore, ['fetchAdmin']),
-    moment: function () {
-      return moment;
-    },
     handleClickOutside(event) {
       if(this.showdialog){
         if(this.$refs.dialog.contains(event.target)){
@@ -119,25 +122,41 @@ export default defineComponent({
         }
       }
     },
-    showDeleteGroup(index){
+    ...mapActions(useAuthStore, ['fetchAdmin']),
+    moment: function () {
+      return moment;
+    },
+    showAddRole(){
+      this.showdialog=true;
+      this.itemid=false;
+    },
+    showEditRole(index){
+      this.itemid=index;
+      this.showdialog=true;
+    },
+    changepage(value){
+      this.currentPage=value;
+      this.getRoles();
+    },
+    showDeleteRole(id){
       layer.config({
         skin: ''
       })
       layer.open({
-        title:`删除分组`,
+        title:`删除角色`,
         content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
         btn:['确定','取消'],
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          this.deleteGroup(index);
+          this.deleteRole(id);
           layer.close(i);
         },
       });
     },
-    async deleteGroup(id) {
+    async deleteRole(id) {
       try {
-        const response = await axios.get(`/deletegroup/${id}`);
+        const response = await axios.get(`/deleterole/${id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
@@ -153,22 +172,23 @@ export default defineComponent({
         console.log(error);
       };
     },
-    changepage(value){
-      this.currentPage=value;
-      this.getGroups();
+    showDialog(){
+        layer.config({
+          skin: 'login-class'
+        })
+        layer.open({
+            type:1,
+            offset:'b',
+            title:false,
+            content: this.message,
+            closeBtn: 0,
+            shadeClose:1,
+        });
     },
     onchangePage(value){
         this.index=value;
         this.changepage(1);
         this.list=Array(Number(value)).fill(0);
-    },
-    showAddGroup(){
-      this.showdialog=true;
-      this.itemid=false;
-    },
-    showEditGroup(index){
-      this.itemid=index;
-      this.showdialog=true;
     },
     async getRoles() {
       try {
@@ -184,22 +204,8 @@ export default defineComponent({
         console.log(error);
       };
     },
-    async getGroups() {
-      try {
-        const response = await axios.get(`/groups?page=${this.currentPage}&count=${this.index}`);
-        if(response.data.status==1){
-          this.groups = response.data.groups.data;
-          this.totalPage=response.data.groups.total;
-        }else{
-          this.fetchAdmin();
-        }
-      }
-      catch (error) {
-        console.log(error);
-      };
-    },
     isAvailable(){
-        if(this.getAdmin.permissions[6]!=null){
+        if(this.getAdmin.permissions[3]!=null){
             return true;
         }
         return false;
@@ -207,7 +213,7 @@ export default defineComponent({
     refresh(){
       this.showdialog=false;
       this.currentPage=1;
-      this.getGroups();
+      this.getRoles();
     }
   }
 })

@@ -41,14 +41,18 @@ export default defineComponent({
   components: {
   },
   data:()=>({
+    message:'',
 	username:'',
     password:'',
   }),
+  mounted(){
+    localStorage.removeItem('token');
+  },
   computed:{
     ...mapState(useAuthStore, ['getUser','getReturnUrl']),
   },
   methods:{
-    ...mapActions(useAuthStore, ['setUser','setToken']),
+    ...mapActions(useAuthStore, ['setToken']),
     async login(){
         if(this.validation()){
             try{
@@ -61,10 +65,12 @@ export default defineComponent({
                     this.setToken(response.data.token);
                     this.$router.push({ name: this.getReturnUrl })
                 }else{
+                    this.message='帐号或密码错误';
                     this.showDialog();
                 }
             }
             catch(error) {
+                this.message='网络错误';
                 this.showDialog();
             };
         }
@@ -74,6 +80,7 @@ export default defineComponent({
     },
 	validation(){
         if(this.username==''||this.password==''){
+            this.message='请输入所有字段'
             return false;
         }
         return true;
@@ -83,7 +90,7 @@ export default defineComponent({
             type:1,
             offset:'b',
             title:false,
-            content: '帐号或密码错误',
+            content: this.message,
             closeBtn: 0,
             shadeClose:1,
         });
