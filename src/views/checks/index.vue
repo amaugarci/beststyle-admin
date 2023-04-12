@@ -24,34 +24,42 @@
                 <th>平台</th>
                 <th>平台账号</th>
                 <th>客户姓名</th>
-                <th>客户简介</th>
+                <th>客户性别</th>
+                <th>客户年龄</th>
+                <th>平台账号</th>
                 <th>客户状态</th>
-                <th>客户电话</th>
+                <th>新增日期</th>
                 <th class="w-[172px]">操作</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item,index) in list" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="checks[index]">业务组</td>
+                <td v-if="checks[index]">{{ checks[index].group.name}}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">业务员</td>
+                <td v-if="checks[index]">{{ checks[index].sale_man }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">平台</td>
+                <td v-if="checks[index]">{{ checks[index].platform.name }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">平台账号</td>
+                <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">客户姓名</td>
+                <td v-if="checks[index]">{{ checks[index].client_name }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">客户简介</td>
+                <td v-if="checks[index]">{{ checks[index].client_sex==1?'男':'女' }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">客户状态</td>
+                <td v-if="checks[index]">{{ checks[index].client_age }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">客户电话</td>
+                <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
+                <td v-else></td>
+                <td v-if="checks[index]">{{ checks[index].client_status.name }}</td>
+                <td v-else></td>
+                <td v-if="checks[index]">
+                 {{moment().utc(new Date(checks[index].added_date)).local().format("yyyy-MM-DD") }}
+                </td>
                 <td v-else></td>
                 <td v-if="checks[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>showDeleteCheck(1)">删除</button>
-                  <button ref="useredit"  @click="editUser(1)">编辑</button>
+                  <button ref="useredit"  @click="showEditCheck(index)">编辑</button>
+                  <button @click="()=>showDeleteCheck(checks[index].id)">删除</button>
                 </td>
                 <td v-else></td>
               </tr>
@@ -62,6 +70,7 @@
       <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
       </div>
       <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="checks[itemid]" />
+      <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />
   </template>
 </template>
 
@@ -96,6 +105,7 @@ export default defineComponent({
     showdialog:false,
     list:Array(15).fill(0),
     checks:[],
+    itemid:null,
     currentPage:1,
     totalPage:null,
     index:15,
@@ -128,12 +138,15 @@ export default defineComponent({
       ...mapState(useAuthStore, ['getAdmin']),
   },
   methods:{
+    moment: function () {
+        return moment;
+    },
     ...mapActions(useAuthStore, ['fetchAdmin']),
     showAddCheck(){
       this.showdialog=true;
       this.itemid=false;
     },
-    showEditTraining(index){
+    showEditCheck(index){
       this.itemid=index;
       this.showdialog=true;
     },
@@ -142,7 +155,7 @@ export default defineComponent({
         const response = await axios.get(`/checks?page=${this.currentPage}&count=${this.index}`);
         if(response.data.status==1){
           this.checks = response.data.checks.data;
-          this.totalPage=response.data.staffs.total;
+          this.totalPage=response.data.checks.total;
         }else{
           this.fetchAdmin();
         }
@@ -175,9 +188,28 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
+          this.deletecheck(index);
           layer.close(i);
         },
       });
+    },
+    async deletecheck(id) {
+      try {
+        const response = await axios.get(`/deletecheck/${id}`);
+        if(response.data.status==1){
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
+        }else{
+          this.message='网络错误';
+          this.showDialog();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
     },
     changepage(value){
       this.currentPage=value;
@@ -185,11 +217,40 @@ export default defineComponent({
     },
     onchangePage(value){
         this.index=value;
+        this.changepage(1);
         this.list=Array(Number(value)).fill(0);
     },
-    editUser(value){
-      this.showdialog=true
-    }
+    refresh(){
+      this.showdialog=false;
+      this.currentPage=1;
+      this.getChecks();
+    },
+    showDialog(){
+        layer.config({
+          skin: 'login-class'
+        })
+        layer.open({
+            type:1,
+            offset:'b',
+            title:false,
+            content: this.message,
+            closeBtn: 0,
+            shadeClose:1,
+        });
+    },
+    showSucss(){
+      layer.config({
+        skin: 'success-class'
+      })
+      layer.open({
+        title:false,
+        content: '成功',
+        btn:'确定',
+        btnAlign: 'c',
+        closeBtn: 0,
+        shadeClose:1,
+      });
+    },
   }
 })
 </script>

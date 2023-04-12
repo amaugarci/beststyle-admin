@@ -132,9 +132,6 @@ mounted(){
    selectImage() {
      this.$refs.imageInput.click()
    },
-   removeImage(){
-     this.images='';
-   },
    async uploadImage() {
     let file = this.$refs.imageInput.files[0];
     const formData = new FormData();
