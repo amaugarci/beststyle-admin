@@ -70,6 +70,8 @@ import { defineComponent } from 'vue'
 import {BIconArrowRepeat } from 'bootstrap-icons-vue';
 import IconMyButton from '@/components/IconButton.vue'
 import SelectBox from '@/components/SelectBox.vue'
+import { useAuthStore } from '@/pinia/modules/useAuthStore';
+import { mapState, mapActions } from 'pinia'
 import axios from 'axios'
 import moment from 'moment'
 export default defineComponent({
@@ -189,6 +191,7 @@ export default defineComponent({
     period:'',
   }),
   methods:{
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getList() {
       try {
         const response = await axios.get(`/stafflist`);

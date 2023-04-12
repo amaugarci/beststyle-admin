@@ -117,6 +117,7 @@ export default defineComponent({
     this.getTrainingGroup();
   },
   methods:{
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getTrainingGroup() {
       try {
         const response = await axios.get(`/traininggroups`);
@@ -131,7 +132,7 @@ export default defineComponent({
       };
     },
     isAvailable(){
-        if(this.getAdmin.permissions[5]!=null){
+        if(this.getAdmin.permissions[11]!=null){
             return true;
         }
         return false;

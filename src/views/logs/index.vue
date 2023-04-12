@@ -120,6 +120,7 @@ export default defineComponent({
         }
         return false;
     },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getLogs() {
       try {
         const response = await axios.get(`/logs?page=${this.currentPage}&count=${this.index}`);

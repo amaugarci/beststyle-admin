@@ -111,6 +111,7 @@ export default defineComponent({
         }
         return false;
     },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getCategories() {
       try {
         const response = await axios.get(`/categories?page=${this.currentPage}&count=${this.index}`);

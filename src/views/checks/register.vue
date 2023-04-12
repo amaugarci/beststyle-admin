@@ -1,5 +1,5 @@
 <template>
-   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[1100px] bg-[#FFFFFF] fixed top-[50px] left-1/2 -translate-x-1/2">
+   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[1100px] bg-[#FFFFFF] top-[50px] left-1/2 -translate-x-1/2">
       <div class="flex items-center">
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
         <p class="font-black text-[#0B88F9]">添加查重</p>
@@ -9,10 +9,10 @@
         <div v-if="image" class=" relative">
           <img :src="image" class="w-[100px] h-[130px] mt-[10px]"/>
         </div>
-        <div v-else  class="flex items-center justify-center flex-shrink-0 flex-shrink-0 bg-[#F0F0F0] w-[100px] h-[130px]">
+        <div v-else  class="flex items-center justify-center  flex-shrink-0 bg-[#F0F0F0] w-[100px] h-[130px]">
           <BIconPlus class="text-[30px]"/>
         </div>
-        <input type="file" accept="image/*" style="display:none" ref="imageInput" @change="uploadImage">
+        <input type="file" accept="image/*,video/*" style="display:none" ref="imageInput" @change="uploadImage">
       </div>
       <div class="mt-[100px] grid grid-cols-2 w-[900px] ">
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
@@ -72,11 +72,11 @@
       <div class="w-full flex justify-center mt-[50px]">
         <div class="w-[825px] flex items-center gap-2 overflow-x-auto">
           <img v-for="(item,index) in images" :src="item" class=" w-[150px] h-[200px]"/>
-          <div @click="selectImages" class="flex items-center justify-center flex-shrink-0 flex-shrink-0 bg-[#F0F0F0] w-[150px] h-[200px]">
+          <div @click="selectImages" class="flex items-center justify-center  flex-shrink-0 bg-[#F0F0F0] w-[150px] h-[200px]">
             <BIconPlus class="text-[30px]"/>
           </div>
         </div>
-        <input multiple  type="file" accept="image/*" style="display:none" ref="imageInputs" @change="uploadImages">
+        <input multiple  type="file" accept="image/*,video/*" style="display:none" ref="imageInputs" @change="uploadImages">
       </div>
       <div class="flex justify-center mt-[50px]">
         <IconMyButton icon="none" name="确定" class="ml-[37px] w-[153px]" ></IconMyButton>

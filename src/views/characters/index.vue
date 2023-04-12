@@ -108,21 +108,21 @@ data:()=>({
   ],
   group:'',
   groups:[
-    {
-      id:1,
-      name:'first'
-    },
-    {
-      id:2,
-      name:'twice'
-    },
-    {
-      id:3,
-      name:'third'
-    }
-  ],
-}),
-computed: {
+      {
+        id:1,
+        name:'first'
+      },
+      {
+        id:2,
+        name:'twice'
+      },
+      {
+        id:3,
+        name:'third'
+      }
+    ],
+  }),
+  computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted() {
@@ -220,6 +220,32 @@ computed: {
     this.showdialog=false;
     this.currentPage=1;
     this.getCharacters();
+  },
+  showDialog(){
+      layer.config({
+        skin: 'login-class'
+      })
+      layer.open({
+          type:1,
+          offset:'b',
+          title:false,
+          content: this.message,
+          closeBtn: 0,
+          shadeClose:1,
+      });
+  },
+  showSucss(){
+    layer.config({
+      skin: 'success-class'
+    })
+    layer.open({
+      title:false,
+      content: '成功',
+      btn:'确定',
+      btnAlign: 'c',
+      closeBtn: 0,
+      shadeClose:1,
+    });
   },
 }
 })

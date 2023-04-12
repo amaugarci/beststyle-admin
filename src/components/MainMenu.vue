@@ -10,7 +10,7 @@
     <ul v-if="showSubmenu&&getAdmin" class="bg-[#2E313B] ">
         <template v-for="(item, index) in value.submenu" :key="index"  >
             <li v-if="isAvailable(item)" class="py-4 px-[44px]" :class="{'px-[8px]':!append}">
-                <router-link :to="item.url" class="font-bold text-center  text-[16px] nav-link" active-class="active-nav-link"><p class="font-bold">{{ append? item.name:item.name.slice(0,2) }}</p></router-link>
+                <router-link :to="{name:item.url}" class="font-bold text-center  text-[16px] nav-link" active-class="active-nav-link"><p class="font-bold">{{ append? item.name:item.name.slice(0,2) }}</p></router-link>
             </li>
         </template>
 

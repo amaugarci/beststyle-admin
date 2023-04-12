@@ -111,6 +111,7 @@ export default defineComponent({
         }
         return false;
     },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getStates() {
       try {
         const response = await axios.get(`/states?page=${this.currentPage}&count=${this.index}`);
@@ -169,9 +170,27 @@ export default defineComponent({
         shadeClose: 1,
         yes: (i, layero) => {
           layer.close(i);
-          this.deleteDepartment(index);
+          this.deleteState(index);
         },
       });
+    },
+    async deleteState(id) {
+      try {
+        const response = await axios.get(`/deletestate/${id}`);
+        if(response.data.status==1){
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
+        }else{
+          this.message='网络错误';
+          this.showDialog();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
     },
     async goCreate(name){
       try{

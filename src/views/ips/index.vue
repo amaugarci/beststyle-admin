@@ -112,6 +112,7 @@ export default defineComponent({
         }
         return false;
     },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getIps() {
       try {
         const response = await axios.get(`/ips?page=${this.currentPage}&count=${this.index}`);

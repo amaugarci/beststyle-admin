@@ -150,6 +150,7 @@ export default defineComponent({
         },
       });
     },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getDepartments() {
       try {
         const response = await axios.get(`/departments?page=${this.currentPage}&count=${this.index}`);

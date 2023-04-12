@@ -37,7 +37,7 @@
               {{ trainings[index].title }}
               </td>
               <td v-else></td>
-              <td class="" v-if="trainings[index]" v-html="trainings[index].description">
+              <td class="ql-editor" v-if="trainings[index]" v-html="trainings[index].description">
               </td>
               <td v-else></td>
               <td v-if="trainings[index]">{{trainings[index].count}}</td>
@@ -222,6 +222,32 @@ computed: {
       this.showdialog=false;
       this.currentPage=1;
       this.getTraining();
+    },
+    showDialog(){
+        layer.config({
+          skin: 'login-class'
+        })
+        layer.open({
+            type:1,
+            offset:'b',
+            title:false,
+            content: this.message,
+            closeBtn: 0,
+            shadeClose:1,
+        });
+    },
+    showSucss(){
+      layer.config({
+        skin: 'success-class'
+      })
+      layer.open({
+        title:false,
+        content: '成功',
+        btn:'确定',
+        btnAlign: 'c',
+        closeBtn: 0,
+        shadeClose:1,
+      });
     },
 }
 })

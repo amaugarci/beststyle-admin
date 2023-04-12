@@ -104,6 +104,7 @@ export default defineComponent({
     this.getCharacterGroup();
   },
   methods:{
+    ...mapActions(useAuthStore, ['fetchAdmin']),
     async getCharacterGroup() {
       try {
         const response = await axios.get(`/charactergroups`);
