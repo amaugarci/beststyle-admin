@@ -58,6 +58,7 @@
                 </td>
                 <td v-else></td>
                 <td v-if="checks[index]" class="flex justify-around items-center text-[#0B88F9]">
+                  <button ref="useredit"  @click="()=>goComment(checks[index].id)">评论</button>
                   <button ref="useredit"  @click="showEditCheck(index)">编辑</button>
                   <button @click="()=>showDeleteCheck(checks[index].id)">删除</button>
                 </td>
@@ -176,6 +177,9 @@ export default defineComponent({
           this.showdialog=false;
         }
       }
+    },
+    goComment(value){
+      this.$router.push({ name: 'checkcomments', params: { id:value, }});
     },
     showDeleteCheck(index){
       layer.config({
