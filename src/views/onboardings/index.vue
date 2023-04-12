@@ -231,6 +231,7 @@ export default defineComponent({
     },
     changepage(value){
       this.currentPage=value;
+      this.getStaffs();
     },
     onchangePage(value){
         this.index=value;

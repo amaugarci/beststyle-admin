@@ -46,13 +46,13 @@ export default defineComponent({
     password:'',
   }),
   mounted(){
-    localStorage.removeItem('token');
+    this.logout();
   },
   computed:{
     ...mapState(useAuthStore, ['getUser','getReturnUrl']),
   },
   methods:{
-    ...mapActions(useAuthStore, ['setToken']),
+    ...mapActions(useAuthStore, ['setToken','logout']),
     async login(){
         if(this.validation()){
             try{

@@ -1,6 +1,6 @@
 <template>
     <div class="pagination mt-[24px] flex items-center justify-center">
-        <p class="mr-[13px]">共1条</p>
+        <!-- <p class="mr-[13px]">共1条</p> -->
         <select class="form-control mr-[28px] pagination-select" :value="index" @change="onchangePage" >
             <option value="15" >15条/页</option>
             <option value="30" >30条/页</option>

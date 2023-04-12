@@ -1,65 +1,71 @@
 <template>
-  <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
-    <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-     <MyButton name="培训管理" :active="false"></MyButton>
-     <MyButton name="培训列表" :active="true"></MyButton>
-  </div>
-  <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-    <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-    <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
-    <IconMyButton ref="addbutton"  @onclick="()=>this.showdialog=true" icon="circleplus" name="添加培训" ></IconMyButton>
-  </div>
-  <div class="w-full px-[37px] mb-[106px]">
-    <table class="w-full p-[1px]">
-        <thead>
-          <tr>
-            <th class="w-[55px]">序号</th>
-            <th class="w-[150px]">图片</th>
-            <th>标题</th>
-            <th>描述</th>
-            <th>观众人数</th>
-            <th>建组时间</th>
-            <th class="w-[172px]">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item,index) in list" :key="index">
-            <td >{{ index+1 }}</td>
-            <td class="flex justify-center" v-if="Itemlist[index]">
-              <img class="w-[140px] h-[200px]" :src="Itemlist[index].photo">
-            </td>
-            <td v-else></td>
-            <td v-if="Itemlist[index]">
-            {{ Itemlist[index].title }}
-            </td>
-            <td v-else></td>
-            <td class="" v-if="Itemlist[index]" v-html="Itemlist[index].description">
-            </td>
-            <td v-else></td>
-            <td v-if="Itemlist[index]">{{Itemlist[index].viewers}}</td>
-            <td v-else></td>
-            <td v-if="Itemlist[index]">
-              {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
-            </td>
-            <td v-else></td>
-            <td v-if="Itemlist[index]" >
-              <div class="flex justify-around items-center text-[#0B88F9]">
-                <button ref="useredit"  @click="()=>goComment(1)">评论</button>
-                <button ref="useredit"  @click="()=>editUser(1)">编辑</button>
-                <button @click="()=>{showDeleteGroup(1)}" >删除</button>
-              </div>
-            </td>
-            <td v-else></td>
-          </tr>
-        </tbody>
-    </table>
-    <Pagination :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
-  </div>
-  <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
-  </div>
-  <Register ref="dialog" :class="{'hidden':!showdialog}"/>
-</template>
+  <template v-if="!getAdmin">
+  </template>
+  <Notfound v-else-if="!isAvailable()"/>
+  <template v-else>
+    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
+      <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
+      <MyButton name="培训管理" :active="false"></MyButton>
+      <MyButton name="培训列表" :active="true"></MyButton>
+    </div>
+    <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
+      <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+      <IconMyButton v-if="getAdmin.permissions[10]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
+    </div>
+    <div class="w-full px-[37px] mb-[106px]">
+      <table class="w-full p-[1px]">
+          <thead>
+            <tr>
+              <th class="w-[55px]">序号</th>
+              <th class="w-[150px]">图片</th>
+              <th>标题</th>
+              <th>描述</th>
+              <th>观众人数</th>
+              <th>建组时间</th>
+              <th v-if="getAdmin.permissions[10]" class="w-[172px]">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in list" :key="index">
+              <td >{{ index+1 }}</td>
+              <td class="flex justify-center" v-if="trainings[index]">
+                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${trainings[index].photo}`">
+              </td>
+              <td v-else></td>
+              <td v-if="trainings[index]">
+              {{ trainings[index].title }}
+              </td>
+              <td v-else></td>
+              <td class="" v-if="trainings[index]" v-html="trainings[index].description">
+              </td>
+              <td v-else></td>
+              <td v-if="trainings[index]">{{trainings[index].count}}</td>
+              <td v-else></td>
+              <td v-if="trainings[index]">
+                {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
+              </td>
+              <td v-else></td>
+              <td v-if="getAdmin.permissions[10]&&trainings[index]" >
+                <div class="flex justify-around items-center text-[#0B88F9]">
+                  <button ref="useredit"  @click="()=>goComment(1)">评论</button>
+                  <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
+                  <button @click="()=>{showDeleteTraining(trainings[index].id)}" >删除</button>
+                </div>
+              </td>
+              <td v-else-if="getAdmin.permissions[10]"></td>
+            </tr>
+          </tbody>
+      </table>
+      <Pagination v-if="totalPage" :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
+    </div>
+    <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    </div>
+    <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="trainings[itemid]" />
+    <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />
+  </template>
 
+</template>
 <script>
 
 import { defineComponent } from 'vue'
@@ -69,9 +75,13 @@ import MyButton from '@/components/Button.vue'
 import IconMyButton from '@/components/IconButton.vue'
 import Pagination from '@/components/Pagination.vue'
 import SelectBox from '@/components/SelectBox.vue'
+import { useAuthStore } from '@/pinia/modules/useAuthStore';
 import Register from './register.vue'
+import { mapState, mapActions } from 'pinia'
+import Notfound from '@/views/notfound/index.vue'
 import axios from 'axios'
 import moment from 'moment'
+const VITE_BACKEND_URL = import.meta.env.VITE_IMAGE_URL;
 export default defineComponent({
 name: 'trainings',
 components: {
@@ -81,33 +91,18 @@ components: {
   IconMyButton,
   Pagination,
   SelectBox,
-  Register
+  Register,
+  Notfound
 },
 data:()=>({
+  itemid:null,
+  message:'',
   showdialog:false,
   list:Array(15).fill(0),
   currentPage:1,
-  totalPage:50,
+  totalPage:null,
   index:15,
-  Itemlist:[
-    {
-      photo:'https://i.ibb.co/Xjwh9Rv/3.png',
-      title:'最新养号方法',
-      description:'<p style="color: blue;">上号前要把定位关闭，IG份额我还哦IG何物很尬iu额好哇</p>',
-      viewers:159,
-    },
-    {
-      photo:'https://i.ibb.co/Xjwh9Rv/3.png',
-      title:'最新养号方法',
-      description:'<p style="color: black;">上号前要把定位关闭，IG份额我还哦IG何物很尬iu额好哇</p>',
-      viewers:159,
-    },
-    {
-      photo:'https://i.ibb.co/Xjwh9Rv/3.png',
-      title:'最新养号方法',
-      description:'<p style="font-weight: bold;">上号前要把定位关闭，IG份额我还哦IG何物很尬iu额好哇</p>',
-      viewers:159,
-    }
+  trainings:[
   ],
   group:'',
   groups:[
@@ -124,55 +119,110 @@ data:()=>({
       name:'third'
     }
   ],
+  VITE_BACKEND_URL
 }),
-mounted() {
-  document.addEventListener('click', this.handleClickOutside);
-},
-beforeRouteLeave(to, from, next) {
-  document.removeEventListener('click', this.handleClickOutside);
-  next();
-},
-
-methods:{
-  moment: function () {
+computed: {
+      ...mapState(useAuthStore, ['getAdmin']),
+  },
+  mounted() {
+    this.getTraining();
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener('click', this.handleClickOutside);
+    next();
+  },
+  methods:{
+    showAddTraining(){
+      this.showdialog=true;
+      this.itemid=false;
+    },
+    showEditTraining(index){
+      this.itemid=index;
+      this.showdialog=true;
+    },
+    moment: function () {
       return moment;
-  },
-  handleClickOutside(event) {
-    if(this.showdialog){
-      if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) || this.$refs.addbutton.$el.contains(event.target) ||this.$refs.dialog.$el.contains(event.target)){
-      }else{
-        this.showdialog=false;
+    },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
+    async getTraining() {
+      try {
+        const response = await axios.get(`/trainings?page=${this.currentPage}&count=${this.index}`);
+        if(response.data.status==1){
+          this.trainings = response.data.trainings.data;
+          this.totalPage=response.data.trainings.total;
+        }else{
+          this.fetchAdmin();
+        }
       }
-    }
-  },
-  showDeleteGroup(index){
-    layer.config({
-      skin: ''
-    })
-    layer.open({
-      title:`删除分组`,
-      content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
-      btn:['确定','取消'],
-      closeBtn: 0,
-      shadeClose: 1,
-      yes: (i, layero) => {
-        layer.close(i);
-      },
-    });
-  },
-  changepage(value){
-    this.currentPage=value;
-  },
-  onchangePage(value){
-      this.index=value;
-      this.list=Array(Number(value)).fill(0);
-  },
-  editUser(value){
-    this.showdialog=true
-  },
-  goComment(value){
-    this.$router.push({ name: 'trainingcomments', params: { id:value, }});
-  }
+      catch (error) {
+        console.log(error);
+      };
+    },
+    isAvailable(){
+        if(this.getAdmin.permissions[10]!=null){
+            return true;
+        }
+        return false;
+    },
+    handleClickOutside(event) {
+      if(this.showdialog){
+        if(this.$refs.dialog.contains(event.target)){
+          this.showdialog=false;
+        }
+      }
+    },
+    showDeleteTraining(index){
+      layer.config({
+        skin: ''
+      })
+      layer.open({
+        title:`删除分组`,
+        content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>删除后无法恢复</span>`,
+        btn:['确定','取消'],
+        closeBtn: 0,
+        shadeClose: 1,
+        yes: (i, layero) => {
+          this.deleteTraining(index);
+          layer.close(i);
+        },
+      });
+    },
+    async deleteTraining(id) {
+      try {
+        const response = await axios.get(`/deletetraining/${id}`);
+        if(response.data.status==1){
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
+        }else{
+          this.message='网络错误';
+          this.showDialog();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
+    changepage(value){
+      this.currentPage=value;
+      this.getTraining();
+    },
+    onchangePage(value){
+        this.index=value;
+        this.changepage(1);
+        this.list=Array(Number(value)).fill(0);
+    },
+    goComment(value){
+      this.$router.push({ name: 'trainingcomments', params: { id:value, }});
+    },
+    refresh(){
+      this.showdialog=false;
+      this.currentPage=1;
+      this.getTraining();
+    },
 }
 })
 </script>
