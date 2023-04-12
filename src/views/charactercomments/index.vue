@@ -5,14 +5,14 @@
   <template v-else>
     <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-      <MyButton name="培训管理" :active="false"></MyButton>
-      <MyButton name="培训列表" :active="false" @onclick="()=>{this.$router.push({ name: 'trainings'});}"></MyButton>
+      <MyButton name="人物包装" :active="false"></MyButton>
+      <MyButton name="包装列表" :active="false" @onclick="()=>{this.$router.push({ name: 'characters'});}"></MyButton>
       <MyButton name="评论列表" :active="true" ></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
       <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
       <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
-      <IconMyButton v-if="getAdmin.permissions[10]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
+      <IconMyButton v-if="getAdmin.permissions[20]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">
       <table class="w-full p-[1px]">
@@ -22,7 +22,7 @@
               <th>用户名</th>
               <th>评论</th>
               <th>建组时间</th>
-              <th v-if="getAdmin.permissions[10]" class="w-[172px]">操作</th>
+              <th v-if="getAdmin.permissions[20]" class="w-[172px]">操作</th>
             </tr>
           </thead>
           <tbody>
@@ -40,13 +40,13 @@
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
               <td v-else></td>
-              <td v-if="getAdmin.permissions[10]&&comments[index]" >
+              <td v-if="getAdmin.permissions[20]&&comments[index]" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
                   <button @click="()=>{showDeleteTraining(comments[index].id)}" >删除</button>
                 </div>
               </td>
-              <td v-else-if="getAdmin.permissions[10]"></td>
+              <td v-else-if="getAdmin.permissions[20]"></td>
             </tr>
           </tbody>
       </table>
@@ -140,7 +140,7 @@ computed: {
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getComments() {
       try {
-        const response = await axios.get(`/training/${this.$route.params.id}/comments?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/character/${this.$route.params.id}/comments?page=${this.currentPage}&count=${this.index}`);
         if(response.data.status==1){
           this.comments = response.data.comments.data;
           this.totalPage=response.data.comments.total;
@@ -153,7 +153,7 @@ computed: {
       };
     },
     isAvailable(){
-        if(this.getAdmin.permissions[10]!=null){
+        if(this.getAdmin.permissions[20]!=null){
             return true;
         }
         return false;
@@ -183,7 +183,7 @@ computed: {
     },
     async deleteTraining(id) {
       try {
-        const response = await axios.get(`/training/${this.$route.params.id}/deletecomment/${id}`);
+        const response = await axios.get(`/character/${this.$route.params.id}/deletecomment/${id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
@@ -207,9 +207,6 @@ computed: {
         this.index=value;
         this.changepage(1);
         this.list=Array(Number(value)).fill(0);
-    },
-    goComment(value){
-      this.$router.push({ name: 'trainingcomments', params: { id:value, }});
     },
     refresh(){
       this.showdialog=false;

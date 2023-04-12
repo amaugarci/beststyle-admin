@@ -48,7 +48,7 @@
               <td v-else></td>
               <td v-if="getAdmin.permissions[10]&&trainings[index]" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="()=>goComment(1)">评论</button>
+                  <button ref="useredit"  @click="()=>goComment(trainings[index].id)">评论</button>
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
                   <button @click="()=>{showDeleteTraining(trainings[index].id)}" >删除</button>
                 </div>

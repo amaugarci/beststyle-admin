@@ -74,7 +74,7 @@ export default defineComponent({
     },
     async goEdit(id){
       try{
-        const response=await axios.post(`/training/${this.$route.params.id}/editcomment/${id}`, {
+        const response=await axios.post(`/character/${this.$route.params.id}/editcomment/${id}`, {
           comment:this.comment,
         });
         if(response.status==422){
@@ -92,7 +92,7 @@ export default defineComponent({
     },
     async goCreate(){
       try{
-        const response=await axios.post(`/training/${this.$route.params.id}/createcomment`, {
+        const response=await axios.post(`/character/${this.$route.params.id}/createcomment`, {
             comment:this.comment,
         });
         if(response.status==422){

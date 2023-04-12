@@ -51,7 +51,8 @@
               <td v-else></td>
               <td v-if="getAdmin.permissions[20]&&characters[index]" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="()=>{showEditCharacter(index)}">编辑</button>
+                  <button  @click="()=>goComment(characters[index].id)">评论</button>
+                  <button  @click="()=>{showEditCharacter(index)}">编辑</button>
                   <button @click="()=>{showDeleteGroup(1)}" >删除</button>
                 </div>
               </td>
@@ -233,6 +234,9 @@ data:()=>({
           closeBtn: 0,
           shadeClose:1,
       });
+  },
+  goComment(value){
+      this.$router.push({ name: 'charactercomments', params: { id:value, }});
   },
   showSucss(){
     layer.config({
