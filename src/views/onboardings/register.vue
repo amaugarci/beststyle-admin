@@ -1,5 +1,5 @@
 <template>
-   <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[870px] bg-[#FFFFFF] top-[200px] left-1/2 -translate-x-1/2">
+   <div class="fixed z-[99991] px-[29px] py-[18px] w-[980px] h-[870px] bg-[#FFFFFF] top-[200px] left-1/2 -translate-x-1/2">
       <div class="flex items-center">
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
         <p class="font-black text-[#0B88F9]">添加用户</p>

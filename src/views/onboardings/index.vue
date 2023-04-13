@@ -84,7 +84,7 @@
       </div>
       <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
       </div>
-      <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+      <div ref="dialog" class="fixed z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
         </div>
       <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="staffs[itemid]" />
       <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />

@@ -75,7 +75,7 @@
           </tbody>
       </table>
     </div>
-    <div class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    <div class="fixed z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
     </div>
     <Register ref="dialog" :class="{'hidden':!showdialog}"/>
   </template>
