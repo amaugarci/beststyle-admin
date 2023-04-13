@@ -3,7 +3,7 @@
   </template>
   <Notfound v-else-if="!isAvailable()"/>
   <template v-else>
-    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
+    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-2xl">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
       <MyButton name="培训管理" :active="false"></MyButton>
       <MyButton name="培训列表" :active="true"></MyButton>
@@ -19,10 +19,10 @@
             <tr>
               <th class="w-[55px]">序号</th>
               <th class="w-[150px]">图片</th>
-              <th>标题</th>
+              <th class="2xl:w-[150px]">标题</th>
               <th>描述</th>
-              <th>观众人数</th>
-              <th>建组时间</th>
+              <th class="2xl:w-[100px]">观众人数</th>
+              <th class="2xl:w-[200px]">建组时间</th>
               <th v-if="getAdmin.permissions[10]" class="w-[172px]">操作</th>
             </tr>
           </thead>

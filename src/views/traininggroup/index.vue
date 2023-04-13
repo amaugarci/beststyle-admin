@@ -105,6 +105,7 @@ export default defineComponent({
     IconMyButton,
     Pagination,
     SelectBox,
+    Notfound
   },
   data:()=>({
     traininggroups:[],
