@@ -6,10 +6,16 @@
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]" />
         <p class="font-black text-[#0B88F9]">添加素材</p>
       </div>
-      <div class="flex flex-row gap-[6px] my-[30px]  items-center ">
-        <p class="font-black mr-[17px]">标题</p>
-        <input type="text" placeholder="输入标题" v-model="title"
-          class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px] mr-[28px]">
+      <div class="flex items-center gap-28">
+        <div class="flex flex-row gap-[6px] my-[30px]  items-center ">
+          <p class="font-black mr-[17px]">标题</p>
+          <input type="text" placeholder="输入标题" v-model="title"
+            class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px] mr-[28px]">
+        </div>
+        <div class="flex items-center">
+          <p class="font-black mr-[17px]">视频</p>
+          <VideoButton :active="active" @onclick="()=>{changeType()}"/>
+        </div>
       </div>
       <p class="font-black mr-[17px]">分类</p>
       <div class="mb-[30px] mt-[10px] flex">
@@ -23,14 +29,19 @@
         </div>
       </div>
       <div @click="selectImage" class="w-[150px] h-[200px] mt-[25px] top-[0px] right-[10px] absolute">
-        <div v-if="images" class=" relative">
+        <div v-if="thumb" class=" relative">
           <img :src="VITE_BACKEND_URL+thumb" class="w-[150px] h-[200px] mt-[10px]"/>
         </div>
         <div v-else class="flex items-center justify-center flex-shrink-0 bg-[#F0F0F0] w-[150px] h-[200px]">
           <BIconPlus class="text-[30px]" />
         </div>
-        <input type="file" accept="image/*,video/*" style="display:none" ref="imageInput" @change="uploadImage">
+        <input type="file" accept="image/*" style="display:none" ref="imageInput" @change="uploadImage">
       </div>
+      <div v-if="active" @click="selectVideo"   class="absolute right-[10px] top-[250px] flex items-center justify-center rounded-md flex-shrink-0 w-[150px] h-[30px]" :class="{'bg-[#1aef2a]':images,'bg-[#F0F0F0]':!images}" >
+        <BIconPlus v-if="!images" class="text-[30px]" />
+        <BIconTrash v-else class="text-[20px] text-[#f11717]" />
+      </div>
+      <input type="file" accept="video/*" style="display:none" ref="videoInput" @change="uploadVideo">
       <div class="flex justify-center mt-[70px]">
         <IconMyButton icon="none" name="确定" class="ml-[37px] w-[153px]" @onclick="submit"></IconMyButton>
       </div>
@@ -40,9 +51,10 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { BIconArrowRepeat, BIconPlus, BIconXCircle } from 'bootstrap-icons-vue';
+import { BIconArrowRepeat, BIconPlus,BIconTrash, BIconXCircle } from 'bootstrap-icons-vue';
 import IconMyButton from '@/components/IconButton.vue'
 import SelectBox from '@/components/SelectBox.vue'
+import VideoButton from '@/components/VideoButton.vue'
 import { useAuthStore } from '@/pinia/modules/useAuthStore';
 import { mapState, mapActions } from 'pinia'
 const VITE_BACKEND_URL = import.meta.env.VITE_IMAGE_URL;
@@ -52,9 +64,11 @@ export default defineComponent({
   name: 'registermaterial',
   components: {
     SelectBox,
+    BIconTrash,
     IconMyButton,
     BIconPlus,
     BIconXCircle,
+    VideoButton
   },
   props: {
     item: {
@@ -64,10 +78,10 @@ export default defineComponent({
     }
   },
   data: () => ({
+    active:false,
     title: '',
-    images: '',
+    images: null,
     thumb: '',
-    type: 1,
     description: '',
     material_group_id: '',
     category2_id: '',
@@ -84,16 +98,16 @@ export default defineComponent({
         this.description = this.item.description;
         this.images = this.item.photo;
         this.thumb = this.item.thumb;
-        this.type = this.item.type;
+        this.active = this.item.type==2?true:false;
         this.material_group_id = this.item.material_group_id;
         this.category2_id = this.item.material_group.parent.id,
           this.category1_id = this.item.material_group.parent.parent.id,
           this.selectCategory1(this.category1_id);
       } else {
         this.title = '';
-        this.images = '';
+        this.images = null;
         this.thumb = '',
-          this.type = 1;
+        this.active=false;
         this.description = '';
         this.material_group_id = '';
         this.categorys2 = [];
@@ -114,7 +128,7 @@ export default defineComponent({
       this.description = this.item.description;
       this.images = this.item.photo;
       this.thumb = this.item.thumb;
-      this.type = this.item.type;
+      this.active = this.item.type==2?true:false;
       this.material_group_id = this.item.material_group_id;
       this.category2_id = this.item.material_group.parent.id,
         this.category1_id = this.item.material_group.parent.parent.id,
@@ -168,6 +182,34 @@ export default defineComponent({
     selectImage() {
       this.$refs.imageInput.click()
     },
+    selectVideo() {
+      this.$refs.videoInput.click()
+    },
+    async uploadVideo() {
+      this.images=null;
+      let file = this.$refs.videoInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const response = await axios.post(`/uploadfile`, formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        );
+        if (response.status == 422) {
+          this.message = '网络错误';
+          this.showDialog();
+        }
+        else if (response.status == 200 && response.data.status == 1) {
+          this.images = response.data.image;
+        }
+      } catch (error) {
+        this.message = '网络错误';
+        this.showDialog();
+      };
+    },
     async uploadImage() {
       let file = this.$refs.imageInput.files[0];
       const formData = new FormData();
@@ -185,9 +227,7 @@ export default defineComponent({
           this.showDialog();
         }
         else if (response.status == 200 && response.data.status == 1) {
-          this.images = response.data.image[0];
-          this.thumb = response.data.image[1];
-          this.type = response.data.image[2];
+          this.thumb = response.data.image;
         }
       } catch (error) {
         this.message = '网络错误';
@@ -233,12 +273,17 @@ export default defineComponent({
         this.showDialog();
         return;
       }
+      if(this.active&&this.images==null){
+        this.message='视频是必需的';
+        this.showDialog();
+        return;
+      }
       try{
         const response=await axios.post(`/editmaterial/${id}`, {
           title:this.title,
-          photo:this.images,
+          photo:this.images!=null?this.images:this.thumb,
           thumb:this.thumb,
-          type:this.type,
+          type:this.active?2:1,
           description:this.description,
           material_group_id:this.material_group_id,
         });
@@ -263,9 +308,9 @@ export default defineComponent({
       try{
         const response=await axios.post('/creatematerial', {
             title:this.title,
-            photo:this.images,
+            photo:this.images!=null?this.images:this.thumb,
             thumb:this.thumb,
-            type:this.type,
+            type:this.active?2:1,
             description:this.description,
             material_group_id:this.material_group_id,
         });
@@ -287,7 +332,7 @@ export default defineComponent({
             this.message='标题是必需的';
             return false;
         }
-        else if(this.images==''){
+        else if(this.thumb==''){
           this.message='照片是必需的';
             return false;
         }
@@ -301,6 +346,10 @@ export default defineComponent({
         }
         return true;
     },
+    changeType(){
+      this.images=null;
+      this.active=!this.active;
+    }
   }
 })
 </script>

@@ -26,7 +26,7 @@
                 <th>客户姓名</th>
                 <th>客户性别</th>
                 <th>客户年龄</th>
-                <th>平台账号</th>
+                <!-- <th>平台账号</th> -->
                 <th>客户状态</th>
                 <th>新增日期</th>
                 <th class="w-[172px]">操作</th>
@@ -49,8 +49,8 @@
                 <td v-else></td>
                 <td v-if="checks[index]">{{ checks[index].client_age }}</td>
                 <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
-                <td v-else></td>
+                <!-- <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
+                <td v-else></td> -->
                 <td v-if="checks[index]">{{ checks[index].client_status.name }}</td>
                 <td v-else></td>
                 <td v-if="checks[index]">

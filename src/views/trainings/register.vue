@@ -175,7 +175,7 @@ export default defineComponent({
             this.showDialog();
         }
         else if(response.status==200&&response.data.status==1){
-          this.images=response.data.image[0];
+          this.images=response.data.image;
         }
       }catch(error) {
           this.message='网络错误';
