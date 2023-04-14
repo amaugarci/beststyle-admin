@@ -24,7 +24,7 @@
               </tr>
             </thead>
             <tbody style="text-align: start;">
-              <template v-for="(item,index) in charactergroups" :key="index">
+              <template v-for="(item,index) in charactergroups" :key="item.id">
                 <tr>
                   <td class="text-start pl-[20px]">
                     <div @click="()=>item.visible=!item.visible" class="flex items-center cursor-pointer">
@@ -35,24 +35,22 @@
                   </td>
                   <td>{{item.id}}</td>
                   <td v-if="getAdmin.permissions[21]"  class="flex justify-around items-center text-[#0B88F9]">
-                    <button @click="()=>{showAddCate(null,item.id)}">添加下级分类</button>
-                    <button @click="()=>{showAddCate(item)}">编辑</button>
-                    <button @click="()=>showDeleteTraining(item.id)">删除</button>
+                    <button @click="()=>{showAddCate(null,item.id,index)}">添加下级分类</button>
+                    <button @click="()=>{showAddCate(item,null,index)}">编辑</button>
+                    <button @click="()=>showDeleteTraining(item.id,index)">删除</button>
                   </td>
                 </tr>
-                <template v-for="(childItem, childIndex) in item.children" :key="childIndex" >
+                <template v-for="(childItem, childIndex) in item.children" :key="childItem.id" >
                     <tr :class="{'hidden':!item.visible}">
                       <td class="text-start pl-[50px]">
                         <div @click="()=>childItem.visible=!childItem.visible" class="flex items-center cursor-pointer">
-                          <BIconChevronRight v-if="childItem.children.length&&!childItem.visible" class="icon text-[10px]"/>
-                          <BIconChevronDown v-else-if="childItem.children.length&&childItem.visible" class="icon text-[10px]"/>
                           <p class="ml-[10px]">{{ childItem.name }}</p>
                         </div>
                       </td>
                       <td>{{ childItem.id }}</td>
                       <td v-if="getAdmin.permissions[21]" class="flex justify-around items-center text-[#0B88F9] pl-[135px]">
-                        <button @click="()=>{showAddCate(childItem)}">编辑</button>
-                        <button @click="()=>showDeleteTraining(childItem.id)">删除</button>
+                        <button @click="()=>{showAddCate(childItem,null,index,childIndex)}">编辑</button>
+                        <button @click="()=>showDeleteTraining(childItem.id,index,childIndex)">删除</button>
                       </td>
                     </tr>
                   </template>
@@ -121,7 +119,7 @@ export default defineComponent({
         }
         return false;
     },
-    showAddCate(index=null,parent_id=null){
+    showAddCate(index=null,parent_id=null,first=null, twice=null){
       layer.config({
         skin: ''
       })
@@ -134,7 +132,7 @@ export default defineComponent({
           closeBtn: 0,
           shadeClose: 1,
           yes: (i, layero) => {
-            this.goCreate(layero.find('input').val(),parent_id);
+            this.goCreate(layero.find('input').val(),parent_id,first);
             layer.close(i);
           },
         });
@@ -147,13 +145,13 @@ export default defineComponent({
           closeBtn: 0,
           shadeClose: 1,
           yes: (i, layero) => {
-            this.goEdit(layero.find('input').val(), index.id);
+            this.goEdit(layero.find('input').val(), index.id,first,twice);
             layer.close(i);
           },
         });
       }
     },
-    async goCreate(name,parent_id){
+    async goCreate(name,parent_id,first){
       try{
         const response=await axios.post('/createcharactergroup', {
             name:name,
@@ -165,7 +163,11 @@ export default defineComponent({
         }
         else if(response.status==200&&response.data.status==1){
           this.showSucss();
-          this.refresh();
+          if(first==null){
+            this.charactergroups.push(response.data.charactergroup);
+          }else{
+            this.charactergroups[first].children.push(response.data.charactergroup);
+          }
         }
         else{
             this.message='请输部门名';
@@ -176,7 +178,7 @@ export default defineComponent({
           this.showDialog();
       };
     },
-    async goEdit(name,id){
+    async goEdit(name,id,first,twice){
       try{
         const response=await axios.post(`/editcharactergroup/${id}`, {
             name:name,
@@ -187,7 +189,11 @@ export default defineComponent({
         }
         else if(response.status==200&&response.data.status==1){
           this.showSucss();
-          this.refresh();
+          if(twice!=null){
+            this.charactergroups[first].children[twice].name=name;
+          }else{
+            this.charactergroups[first].name=name;
+          }
         }
         else{
             this.message='请输部门名';
@@ -198,7 +204,7 @@ export default defineComponent({
           this.showDialog();
       };
     },
-    showDeleteTraining(index){
+    showDeleteTraining(index,first, twice=null){
       layer.config({
         skin: ''
       })
@@ -209,12 +215,12 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          this.deleteCharactergroup(index);
+          this.deleteCharactergroup(index,first, twice);
           layer.close(i);
         },
       });
     },
-    async deleteCharactergroup(id) {
+    async deleteCharactergroup(id,first, twice){
       try {
         const response = await axios.get(`/deletecharactergroup/${id}`);
         if(response.data.status==1){
@@ -222,7 +228,11 @@ export default defineComponent({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          if(twice!=null){
+            this.charactergroups[first].children.splice(twice,1);
+          }else{
+            this.charactergroups.splice(first,1);
+          }
         }else{
           this.message='网络错误';
           this.showDialog();
