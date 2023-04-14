@@ -33,36 +33,36 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in checks" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="checks[index]">{{ checks[index].group.name}}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].sale_man }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].platform.name }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].client_name }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].client_sex==1?'男':'女' }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">{{ checks[index].client_age }}</td>
-                <td v-else></td>
-                <!-- <td v-if="checks[index]">{{ checks[index].platform_nickname }}</td>
-                <td v-else></td> -->
-                <td v-if="checks[index]">{{ checks[index].client_status.name }}</td>
-                <td v-else></td>
-                <td v-if="checks[index]">
-                 {{moment().utc(new Date(checks[index].added_date)).local().format("yyyy-MM-DD") }}
+                <td v-if="item">{{ item.group.name}}</td>
+                
+                <td v-if="item">{{ item.sale_man }}</td>
+                
+                <td v-if="item">{{ item.platform.name }}</td>
+                
+                <td v-if="item">{{ item.platform_nickname }}</td>
+                
+                <td v-if="item">{{ item.client_name }}</td>
+                
+                <td v-if="item">{{ item.client_sex==1?'男':'女' }}</td>
+                
+                <td v-if="item">{{ item.client_age }}</td>
+                
+                <!-- <td v-if="item">{{ item.platform_nickname }}</td>
+                 -->
+                <td v-if="item">{{ item.client_status.name }}</td>
+                
+                <td v-if="item">
+                 {{moment().utc(new Date(item.added_date)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td v-if="checks[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="()=>goComment(checks[index].id)">评论</button>
+                
+                <td v-if="item" class="flex justify-around items-center text-[#0B88F9]">
+                  <button ref="useredit"  @click="()=>goComment(item.id)">评论</button>
                   <button ref="useredit"  @click="showEditCheck(index)">编辑</button>
-                  <button @click="()=>showDeleteCheck(checks[index].id)">删除</button>
+                  <button @click="()=>showDeleteCheck(item.id)">删除</button>
                 </td>
-                <td v-else></td>
+                
               </tr>
             </tbody>
         </table>

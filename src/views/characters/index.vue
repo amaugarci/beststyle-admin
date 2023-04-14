@@ -28,30 +28,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in list" :key="index">
+            <tr v-for="(item,index) in characters" :key="index">
               <td >{{ index+1 }}</td>
-              <td class="flex justify-center" v-if="characters[index]">
-                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${characters[index].photo}`">
+              <td class="flex justify-center" v-if="item">
+                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${item.photo}`">
               </td>
-              <td v-else></td>
-              <td v-if="characters[index]">
-              {{ characters[index].title }}
+              
+              <td v-if="item">
+              {{ item.title }}
               </td>
-              <td v-else></td>
-              <td class="ql-editor" v-if="characters[index]" v-html="characters[index].description">
+              
+              <td class="ql-editor" v-if="item" v-html="item.description">
               </td>
-              <td v-else></td>
-              <td v-if="characters[index]">{{characters[index].count}}</td>
-              <td v-else></td>
-              <td v-if="characters[index]">{{characters[index].character_group.name}}</td>
-              <td v-else></td>
-              <td v-if="characters[index]">
+              
+              <td v-if="item">{{item.count}}</td>
+              
+              <td v-if="item">{{item.character_group.name}}</td>
+              
+              <td v-if="item">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
-              <td v-else></td>
-              <td v-if="getAdmin.permissions[20]&&characters[index]" >
+              
+              <td v-if="getAdmin.permissions[20]&&item" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
-                  <button  @click="()=>goComment(characters[index].id)">评论</button>
+                  <button  @click="()=>goComment(item.id)">评论</button>
                   <button  @click="()=>{showEditCharacter(index)}">编辑</button>
                   <button @click="()=>{showDeleteGroup(1)}" >删除</button>
                 </div>

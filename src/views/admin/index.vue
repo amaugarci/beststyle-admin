@@ -31,26 +31,26 @@
           <tr v-for="(item,index) in list" :key="index">
             <td >{{ index+1 }}</td>
             <td v-if="Itemlist[index]">用户名</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">姓名</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">部门</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">状态</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">角色</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">管理员</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">IP地址</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]">地区</td>
-            <td v-else></td>
+            
             <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
               <button ref="useredit"  @click="editUser(1)">编辑</button>
               <button >删除</button>
             </td>
-            <td v-else></td>
+            
           </tr>
         </tbody>
     </table>

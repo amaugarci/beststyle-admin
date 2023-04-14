@@ -27,32 +27,32 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in list" :key="index">
+            <tr v-for="(item,index) in materials" :key="index">
               <td >{{ index+1 }}</td>
-              <td  v-if="materials[index]">
+              <td  v-if="item">
                 <div class="flex justify-center relative">
-                  <img class="w-[140px] h-[200px]" :src="VITE_BACKEND_URL + materials[index].thumb">
-                  <BIconPlayFill v-if="materials[index].photo.video" class="text-white text-[40px] absolute top-[80px] "/>
+                  <img class="w-[140px] h-[200px]" :src="VITE_BACKEND_URL + item.thumb">
+                  <BIconPlayFill v-if="item.photo.video" class="text-white text-[40px] absolute top-[80px] "/>
                 </div>
               </td>
-              <td v-else></td>
-              <td v-if="materials[index]">
-              {{ materials[index].title }}
+              
+              <td v-if="item">
+              {{ item.title }}
               </td>
-              <td v-else></td>
-              <td class="ql-editor" v-if="materials[index]" v-html="materials[index].description">
+              
+              <td class="ql-editor" v-if="item" v-html="item.description">
               </td>
-              <td v-else></td>
-              <td v-if="materials[index]">{{materials[index].viewers}}</td>
-              <td v-else></td>
-              <td v-if="materials[index]">
+              
+              <td v-if="item">{{item.viewers}}</td>
+              
+              <td v-if="item">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
-              <td v-else></td>
-              <td v-if="getAdmin.permissions[18]&&materials[index]" >
+              
+              <td v-if="getAdmin.permissions[18]&&item" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showEditMaterial(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(materials[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(item.id)}" >删除</button>
                 </div>
               </td>
               <td v-else-if="getAdmin.permissions[18]"></td>

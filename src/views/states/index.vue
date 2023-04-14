@@ -25,17 +25,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in states" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="states[index]">{{ states[index].name }}</td>
-                <td v-else></td>
-                <td v-if="states[index]">
-                  {{moment().utc(new Date(states[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td v-if="item">{{ item.name }}</td>
+                
+                <td v-if="item">
+                  {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td v-if="getAdmin.permissions[14]&&states[index]" class="flex justify-around items-center text-[#0B88F9]">
+                
+                <td v-if="getAdmin.permissions[14]&&item" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showAddDepartment(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(states[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(item.id)}" >删除</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[14]"></td>
               </tr>

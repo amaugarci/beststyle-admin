@@ -24,16 +24,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in ips" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="ips[index]">{{ ips[index].ip_address }}</td>
-                <td v-else></td>
-                <td v-if="ips[index]" :class="{'text-[#FF0044]':ips[index].status!=1}">{{ips[index].status==1?'允许':'冷冻'}}</td>
-                <td v-else></td>
-                <td v-if="getAdmin.permissions[24]&&ips[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button v-if="ips[index].status!=1"  @click="()=>{showChangeIps(ips[index].id,true)}">允许</button>
-                  <button v-else class="text-[#FF0044]" @click="()=>{showChangeIps(ips[index].id,false)}">冷冻</button>
-                  <button @click="()=>{showDeleteIp(ips[index].id)}">删除</button>
+                <td v-if="item">{{ item.ip_address }}</td>
+                
+                <td v-if="item" :class="{'text-[#FF0044]':item.status!=1}">{{item.status==1?'允许':'冷冻'}}</td>
+                
+                <td v-if="getAdmin.permissions[24]&&item" class="flex justify-around items-center text-[#0B88F9]">
+                  <button v-if="item.status!=1"  @click="()=>{showChangeIps(item.id,true)}">允许</button>
+                  <button v-else class="text-[#FF0044]" @click="()=>{showChangeIps(item.id,false)}">冷冻</button>
+                  <button @click="()=>{showDeleteIp(item.id)}">删除</button>
                   <button @click="()=>{showAddCate(index)}">编辑</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[24]"></td>

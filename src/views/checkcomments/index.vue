@@ -26,24 +26,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in list" :key="index">
+            <tr v-for="(item,index) in comments" :key="index">
               <td >{{ index+1 }}</td>
-              <td v-if="comments[index]">
-                {{ comments[index].user.name }}
+              <td v-if="item">
+                {{ item.user.name }}
               </td>
-              <td v-else></td>
-              <td v-if="comments[index]">
-                {{ comments[index].comment }}
+              
+              <td v-if="item">
+                {{ item.comment }}
               </td>
-              <td v-else></td>
-              <td v-if="comments[index]">
+              
+              <td v-if="item">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
-              <td v-else></td>
-              <td v-if="getAdmin.permissions[13]&&comments[index]" >
+              
+              <td v-if="getAdmin.permissions[13]&&item" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
-                  <button @click="()=>{showDeleteTraining(comments[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteTraining(item.id)}" >删除</button>
                 </div>
               </td>
               <td v-else-if="getAdmin.permissions[13]"></td>
