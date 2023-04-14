@@ -11,6 +11,10 @@ import material from './modules/material'
 import character from './modules/character'
 import check from './modules/check'
 import log from './modules/log'
+import notfound from './modules/notfound'
+import {useAuthStore} from '@/pinia/modules/useAuthStore';
+
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -28,7 +32,7 @@ const router = createRouter({
     ...character,
     ...check,
     ...log,
-
+    ...notfound
     // ...localization
   ],
   scrollBehavior(to, from, savedPosition) {
@@ -40,16 +44,16 @@ const router = createRouter({
   },
 })
 router.beforeEach(async (to) => {
-  // const publicPages = ['/login'];
-  // const authRequired = !publicPages.includes(to.path);
-  // const auth = useAuthStore();
-  // if(auth.system==null&&auth.token){
-  //   auth.fetchSystem();
-  // }
-  // if (authRequired && !auth.token) {
-  //     auth.returnUrl = to.name;
-  //     return '/login';
-  // }
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const auth = useAuthStore();
+  if(auth.admin==null&&auth.token){
+    auth.fetchAdmin();
+  }
+  if (authRequired && !auth.token) {
+      auth.returnUrl = to.name;
+      return '/login';
+  }
   
 });
 export default router

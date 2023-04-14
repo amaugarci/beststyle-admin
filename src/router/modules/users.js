@@ -1,5 +1,5 @@
 const User = () => import('@/views/user/index.vue')
-const Admin = () => import('@/views/admin/index.vue')
+const Roles = () => import('@/views/roles/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
 export default [
@@ -16,15 +16,15 @@ export default [
           affix: true,
         },
       },
-      // {
-      //   path: 'admin',
-      //   name: 'admin',
-      //   component: Admin,
-      //   meta: {
-      //     title: 'admin',
-      //     affix: true,
-      //   },
-      // }
+      {
+        path: 'roles',
+        name: 'roles',
+        component: Roles,
+        meta: {
+          title: 'role',
+          affix: true,
+        },
+      }
     ],
   },
 ]

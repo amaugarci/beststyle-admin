@@ -3,65 +3,58 @@
   </template>
   <Notfound v-else-if="!isAvailable()"/>
   <template v-else>
-    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-2xl">
+    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-      <MyButton name="培训管理" :active="false"></MyButton>
-      <MyButton name="培训列表" :active="true"></MyButton>
+      <MyButton name="查重管理" :active="false"></MyButton>
+      <MyButton name="查重列表" :active="false" @onclick="()=>{this.$router.push({ name: 'checks'});}"></MyButton>
+      <MyButton name="评论列表" :active="true" ></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" v-model="title" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <IconMyButton icon="iconsearch" name="首页"  @onclick="getTraining"></IconMyButton>
-      <IconMyButton v-if="getAdmin.permissions[10]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
+      <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+      <IconMyButton v-if="getAdmin.permissions[13]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">
       <table class="w-full p-[1px]">
           <thead>
             <tr>
               <th class="w-[55px]">序号</th>
-              <th class="w-[150px]">图片</th>
-              <th class="2xl:w-[150px]">标题</th>
-              <th>描述</th>
-              <th class="2xl:w-[100px]">观众人数</th>
-              <th class="2xl:w-[200px]">建组时间</th>
-              <th v-if="getAdmin.permissions[10]" class="w-[172px]">操作</th>
+              <th>用户名</th>
+              <th>评论</th>
+              <th>建组时间</th>
+              <th v-if="getAdmin.permissions[13]" class="w-[172px]">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item,index) in list" :key="index">
               <td >{{ index+1 }}</td>
-              <td class="flex justify-center" v-if="trainings[index]">
-                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${trainings[index].photo}`">
+              <td v-if="comments[index]">
+                {{ comments[index].user.name }}
               </td>
               <td v-else></td>
-              <td v-if="trainings[index]">
-              {{ trainings[index].title }}
+              <td v-if="comments[index]">
+                {{ comments[index].comment }}
               </td>
               <td v-else></td>
-              <td class="ql-editor" v-if="trainings[index]" v-html="trainings[index].description">
-              </td>
-              <td v-else></td>
-              <td v-if="trainings[index]">{{trainings[index].count}}</td>
-              <td v-else></td>
-              <td v-if="trainings[index]">
+              <td v-if="comments[index]">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
               <td v-else></td>
-              <td v-if="getAdmin.permissions[10]&&trainings[index]" >
+              <td v-if="getAdmin.permissions[13]&&comments[index]" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="()=>goComment(trainings[index].id)">评论</button>
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
-                  <button @click="()=>{showDeleteTraining(trainings[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteTraining(comments[index].id)}" >删除</button>
                 </div>
               </td>
-              <td v-else-if="getAdmin.permissions[10]"></td>
+              <td v-else-if="getAdmin.permissions[13]"></td>
             </tr>
           </tbody>
       </table>
       <Pagination v-if="totalPage" :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
     </div>
-    <div ref="dialog" class="fixed z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    <div ref="dialog" class="absolute z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
     </div>
-    <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="trainings[itemid]" />
+    <Register @onSuccess="refresh" v-if="itemid!=null" :class="{'hidden':!showdialog}" :item="comments[itemid]" />
     <Register @onSuccess="refresh" v-else :class="{'hidden':!showdialog}"  />
   </template>
 
@@ -83,7 +76,7 @@ import axios from 'axios'
 import moment from 'moment'
 const VITE_BACKEND_URL = import.meta.env.VITE_IMAGE_URL;
 export default defineComponent({
-name: 'trainings',
+name: 'checkcomments',
 components: {
   BIconArrowRepeat,
   IEcharts,
@@ -95,7 +88,6 @@ components: {
   Notfound
 },
 data:()=>({
-  title:'',
   itemid:null,
   message:'',
   showdialog:false,
@@ -103,7 +95,7 @@ data:()=>({
   currentPage:1,
   totalPage:null,
   index:15,
-  trainings:[
+  comments:[
   ],
   group:'',
   groups:[
@@ -126,7 +118,7 @@ computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted() {
-    this.getTraining();
+    this.getComments();
     document.addEventListener('click', this.handleClickOutside);
   },
   beforeRouteLeave(to, from, next) {
@@ -146,12 +138,12 @@ computed: {
       return moment;
     },
     ...mapActions(useAuthStore, ['fetchAdmin']),
-    async getTraining() {
+    async getComments() {
       try {
-        const response = await axios.get(`/trainings?page=${this.currentPage}&count=${this.index}&title=${this.title}`);
+        const response = await axios.get(`/check/${this.$route.params.id}/comments?page=${this.currentPage}&count=${this.index}`);
         if(response.data.status==1){
-          this.trainings = response.data.trainings.data;
-          this.totalPage=response.data.trainings.total;
+          this.comments = response.data.comments.data;
+          this.totalPage=response.data.comments.total;
         }else{
           this.fetchAdmin();
         }
@@ -161,7 +153,7 @@ computed: {
       };
     },
     isAvailable(){
-        if(this.getAdmin.permissions[10]!=null){
+        if(this.getAdmin.permissions[13]!=null){
             return true;
         }
         return false;
@@ -191,7 +183,7 @@ computed: {
     },
     async deleteTraining(id) {
       try {
-        const response = await axios.get(`/deletetraining/${id}`);
+        const response = await axios.get(`/check/${this.$route.params.id}/deletecomment/${id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
@@ -209,7 +201,7 @@ computed: {
     },
     changepage(value){
       this.currentPage=value;
-      this.getTraining();
+      this.getComments();
     },
     onchangePage(value){
         this.index=value;
@@ -217,12 +209,12 @@ computed: {
         this.list=Array(Number(value)).fill(0);
     },
     goComment(value){
-      this.$router.push({ name: 'trainingcomments', params: { id:value, }});
+      this.$router.push({ name: 'checkcomments', params: { id:value, }});
     },
     refresh(){
       this.showdialog=false;
       this.currentPage=1;
-      this.getTraining();
+      this.getComments();
     },
     showDialog(){
         layer.config({

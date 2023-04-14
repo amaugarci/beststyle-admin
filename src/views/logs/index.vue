@@ -1,51 +1,58 @@
 <template>
-    <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
-       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-       <MyButton name="日志管理" :active="false"></MyButton>
-       <MyButton name="登录日志" :active="true"></MyButton>
-    </div>
-    <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <SelectBox  @onchange="changegroup" placeholder="分组"  :groups="groups" :group="group" class="w-[200px]"/>
-      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
-    </div>
-    <div class="w-full px-[37px] mb-[106px]">
-      <table class="w-full p-[1px]">
-          <thead>
-            <tr>
-              <th class="w-[55px]">序号</th>
-              <th>用户ID</th>
-              <th>用户昵称</th>
-              <th>分组</th>
-              <th>IP地址</th>
-              <th>登录时间</th>
-              <th class="w-[170px]">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item,index) in list" :key="index">
-              <td >{{ index+1 }}</td>
-              <td v-if="Itemlist[index]">用户ID</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">用户昵称</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">分组</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">IP地址</td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]">登录时间</td>
-              <td v-else></td>
-              <td v-else></td>
-              <td v-if="Itemlist[index]" class="flex justify-around items-center text-[#0B88F9]">
-                <button @click="()=>{showDeleteLog(1)}">删除</button>
-                <!-- <button ref="useredit"  @click="editUser(1)">编辑</button> -->
-              </td>
-              <td v-else></td>
-            </tr>
-          </tbody>
-      </table>
-      <Pagination :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
-    </div>
+  <template v-if="!getAdmin">
+  </template>
+  <Notfound v-else-if="!isAvailable()"/>
+  <template v-else>
+      <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
+        <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
+        <MyButton name="日志管理" :active="false"></MyButton>
+        <MyButton name="登录日志" :active="true"></MyButton>
+      </div>
+      <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
+        <input type="text" v-model="name"  placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <!-- <SelectBox  @onchange="changegroup" placeholder="分组"  :groups="groups" :group="group" class="w-[200px]"/> -->
+        <IconMyButton icon="iconsearch" name="首页" @onclick="getLogs"></IconMyButton>
+      </div>
+      <div class="w-full px-[37px] mb-[106px]">
+        <table class="w-full p-[1px]">
+            <thead>
+              <tr>
+                <th class="w-[55px]">序号</th>
+                <th>用户ID</th>
+                <th>用户昵称</th>
+                <th>分组</th>
+                <th>IP地址</th>
+                <th>登录时间</th>
+                <th v-if="getAdmin.permissions[23]" class="w-[170px]">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in list" :key="index">
+                <td >{{ index+1 }}</td>
+                <td v-if="logs[index]">{{ logs[index].user.name }}</td>
+                <td v-else></td>
+                <td v-if="logs[index]">{{ logs[index].user.realname }}</td>
+                <td v-else></td>
+                <td v-if="logs[index]">{{ logs[index].user.group.name }}</td>
+                <td v-else></td>
+                <td v-if="logs[index]">{{ logs[index].ip_address }}</td>
+                <td v-else></td>
+                <td v-if="logs[index]">
+                  {{moment().utc(new Date(logs[index].created_at)).local().format("yyyy-MM-DD") }}
+                </td>
+                <td v-else></td>
+                <td v-else></td>
+                <td v-if="getAdmin.permissions[23]&&logs[index]" class="flex justify-around items-center text-[#0B88F9]">
+                  <button @click="()=>{showDeleteLog(logs[index].id)}">删除</button>
+                  <!-- <button ref="useredit"  @click="editUser(1)">编辑</button> -->
+                </td>
+                <td v-else-if="getAdmin.permissions[23]"></td>
+              </tr>
+            </tbody>
+        </table>
+        <Pagination v-if="totalPage" :index="index" :currentPage="currentPage" :totalItems="totalPage" @onClick="changepage" @onchangePage="onchangePage"/>
+      </div>
+  </template>
 </template>
 
 <script>
@@ -57,6 +64,9 @@ import MyButton from '@/components/Button.vue'
 import IconMyButton from '@/components/IconButton.vue'
 import Pagination from '@/components/Pagination.vue'
 import SelectBox from '@/components/SelectBox.vue'
+import Notfound from '@/views/notfound/index.vue'
+import { useAuthStore } from '@/pinia/modules/useAuthStore';
+import { mapState, mapActions } from 'pinia'
 import axios from 'axios'
 import moment from 'moment' 
 export default defineComponent({
@@ -68,39 +78,49 @@ export default defineComponent({
     IconMyButton,
     Pagination,
     SelectBox,
+    Notfound
   },
   data:()=>({
+    message:'',
     showdialog:false,
     list:Array(15).fill(0),
-    Itemlist:Array(4).fill(1),
+    logs:[],
     currentPage:1,
     totalPage:50,
     index:15,
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    name:'',
   }),
-  mounted() {
-    document.addEventListener('click', this.handleClickOutside);
+  computed: {
+      ...mapState(useAuthStore, ['getAdmin']),
   },
-  beforeRouteLeave(to, from, next) {
-    document.removeEventListener('click', this.handleClickOutside);
-    next();
+  mounted(){
+    this.getLogs();
   },
-
   methods:{
+    moment: function () {
+        return moment;
+    },
+    isAvailable(){
+        if(this.getAdmin.permissions[24]!=null){
+            return true;
+        }
+        return false;
+    },
+    ...mapActions(useAuthStore, ['fetchAdmin']),
+    async getLogs() {
+      try {
+        const response = await axios.get(`/logs?page=${this.currentPage}&count=${this.index}&name=${this.name}`);
+        if(response.data.status==1){
+          this.logs = response.data.logs.data;
+          this.totalPage=response.data.logs.total;
+        }else{
+          this.fetchAdmin();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
     showDeleteLog(index){
       layer.config({
         skin: ''
@@ -112,31 +132,72 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
+          this.deleteLog(index);
           layer.close(i);
         },
       });
     },
-    handleClickOutside(event) {
-      if(this.showdialog){
-        if((this.$refs.useredit && `${this.$refs.useredit[0]}`==`${event.target}`) || this.$refs.dialog.$el.contains(event.target)){
+    async deleteLog(id) {
+      try {
+        const response = await axios.get(`/deletelog/${id}`);
+        if(response.data.status==1){
+          layer.config({
+            skin: ''
+          })
+          layer.msg("操作成功");
+          this.refresh();
         }else{
-          this.showdialog=false;
+          this.message='网络错误';
+          this.showDialog();
         }
       }
+      catch (error) {
+        console.log(error);
+      };
     },
     changepage(value){
       this.currentPage=value;
+      this.getLogs();
     },
     onchangePage(value){
         this.index=value;
+        this.changepage(1);
         this.list=Array(Number(value)).fill(0);
     },
     changegroup(value){
       console.log(value);
       this.group=value;
     },
-    editUser(value){
-      this.showdialog=true
+    showDialog(){
+        layer.config({
+          skin: 'login-class'
+        })
+        layer.open({
+            type:1,
+            offset:'b',
+            title:false,
+            content: this.message,
+            closeBtn: 0,
+            shadeClose:1,
+        });
+    },
+    showSucss(){
+      layer.config({
+        skin: 'success-class'
+      })
+      layer.open({
+        title:false,
+        content: '成功',
+        btn:'确定',
+        btnAlign: 'c',
+        closeBtn: 0,
+        shadeClose:1,
+      });
+    },
+    refresh(){
+      this.showdialog=false;
+      this.currentPage=1;
+      this.getLogs();
     }
   }
 })

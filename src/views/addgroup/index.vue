@@ -72,6 +72,7 @@ export default defineComponent({
     },
     onchangePage(value){
         this.index=value;
+        this.changepage=1;
         this.list=Array(Number(value)).fill(0);
     },
   }

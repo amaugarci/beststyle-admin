@@ -1,4 +1,5 @@
 const Characters = () => import('@/views/characters/index.vue')
+const CharacterComment = () => import('@/views/charactercomments/index.vue')
 const Charactergroup = () => import('@/views/charactergroup/index.vue')
 const Layout = () => import('@/layout/index.vue')
 
@@ -13,6 +14,15 @@ export default [
         component: Characters,
         meta: {
           title: 'characters',
+          affix: true,
+        },
+      },
+      {
+        path: 'characters/:id',
+        name: 'charactercomments',
+        component: CharacterComment,
+        meta: {
+          title: 'groups',
           affix: true,
         },
       },

@@ -1,4 +1,5 @@
 const Checks = () => import('@/views/checks/index.vue')
+const CheckComment = () => import('@/views/checkcomments/index.vue')
 const Categories = () => import('@/views/categories/index.vue')
 const States = () => import('@/views/states/index.vue')
 const Layout = () => import('@/layout/index.vue')
@@ -14,6 +15,15 @@ export default [
         component: Checks,
         meta: {
           title: 'checks',
+          affix: true,
+        },
+      },
+      {
+        path: 'checks/:id',
+        name: 'checkcomments',
+        component: CheckComment,
+        meta: {
+          title: 'comments',
           affix: true,
         },
       },
