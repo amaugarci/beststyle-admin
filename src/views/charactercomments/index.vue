@@ -10,8 +10,8 @@
       <MyButton name="评论列表" :active="true" ></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+      <!-- <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton> -->
       <IconMyButton v-if="getAdmin.permissions[20]" ref="addbutton"  @onclick="()=>{showAddTraining()}" icon="circleplus" name="添加培训" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">

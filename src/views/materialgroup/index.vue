@@ -9,9 +9,9 @@
       <MyButton name="素材分类" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" placeholder="分类ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <!-- <input type="text" placeholder="分类ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
       <input type="text" placeholder="分类名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton> -->
       <IconMyButton  v-if="getAdmin.permissions[18]" ref="addbutton"  @onclick="()=>{showAddCate()}" icon="circleplus" name="添加一级分类" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">

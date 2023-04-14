@@ -10,8 +10,8 @@
         <MyButton name="状态列表" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="状态名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="name" placeholder="状态名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <IconMyButton icon="iconsearch" name="首页"  @onclick="getStates"></IconMyButton>
         <IconMyButton  v-if="getAdmin.permissions[14]" ref="addbutton"  @onclick="()=>showAddDepartment()" icon="circleplus" name="添加状态" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -79,21 +79,7 @@ export default defineComponent({
     currentPage:1,
     totalPage:null,
     index:15,
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    name:''
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
@@ -114,7 +100,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getStates() {
       try {
-        const response = await axios.get(`/states?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/states?page=${this.currentPage}&count=${this.index}&name=${this.name}`);
         if(response.data.status==1){
           this.states = response.data.states.data;
           this.totalPage=response.data.states.total;

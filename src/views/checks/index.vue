@@ -9,9 +9,9 @@
         <MyButton name="查重列表" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="账号" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <SelectBox @onchange="changegroup" placeholder=" 选择平台"  :groups="groups" :group="group" class="w-[200px]"/>
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="search.platform_nickname" placeholder="平台账号" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <SelectBox @onchange="(value)=>{search.platform_id=value}" placeholder=" 选择平台"  :groups="platforms" :group="search.platform_id" class="w-[200px]"/>
+        <IconMyButton icon="iconsearch" name="首页" @onclick="getChecks" ></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[13]" ref="addbutton"  @onclick="()=>{showAddCheck()}" icon="circleplus" name="添加培训" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -109,26 +109,17 @@ export default defineComponent({
     itemid:null,
     currentPage:1,
     totalPage:null,
+    platforms:[],
     index:15,
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    search:{
+      platform_nickname:'',
+      platform_id:''
+    },
     itemid:null,
   }),
   mounted() {
     this.getChecks();
+    this.getList();
     document.addEventListener('click', this.handleClickOutside);
   },
   beforeRouteLeave(to, from, next) {
@@ -151,9 +142,22 @@ export default defineComponent({
       this.itemid=index;
       this.showdialog=true;
     },
+    async getList() {
+      try {
+        const response = await axios.get(`/checkplatform`);
+        if(response.data.status==1){
+          this.platforms = response.data.platforms;
+        }else{
+          this.fetchAdmin();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
     async getChecks() {
       try {
-        const response = await axios.get(`/checks?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/checks?page=${this.currentPage}&count=${this.index}&platform_id=${this.search.platform_id}&platform_nickname=${this.search.platform_nickname}`);
         if(response.data.status==1){
           this.checks = response.data.checks.data;
           this.totalPage=response.data.checks.total;

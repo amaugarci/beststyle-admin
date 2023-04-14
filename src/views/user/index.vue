@@ -9,10 +9,10 @@
         <MyButton name="用户管理" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <input type="text" placeholder="IP地址" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <SelectBox placeholder="分组"  :groups="groups" :group="group"/>
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="search.name" placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <input type="text" v-model="search.realname" placeholder="用户姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <!-- <SelectBox placeholder="分组"  :groups="groups" :group="group"/> -->
+        <IconMyButton  @onclick="getUsers" icon="iconsearch" name="首页" ></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[2]" ref="addbutton"  @onclick="()=>showAddUser()" icon="circleplus" name="添加用户" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -100,6 +100,10 @@ export default defineComponent({
     Notfound
   },
   data:()=>({
+    search:{
+      name:'',
+      realname:'',
+    },
     itemid:null,
     message:'',
     showdialog:false,
@@ -147,7 +151,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getUsers() {
       try {
-        const response = await axios.get(`/users?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/users?page=${this.currentPage}&count=${this.index}&name=${this.search.name}&realname=${this.search.realname}`);
         if(response.data.status==1){
           this.users = response.data.users.data;
           this.totalPage=response.data.users.total;

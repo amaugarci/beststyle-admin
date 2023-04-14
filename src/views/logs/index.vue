@@ -9,9 +9,9 @@
         <MyButton name="登录日志" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <SelectBox  @onchange="changegroup" placeholder="分组"  :groups="groups" :group="group" class="w-[200px]"/>
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="name"  placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <!-- <SelectBox  @onchange="changegroup" placeholder="分组"  :groups="groups" :group="group" class="w-[200px]"/> -->
+        <IconMyButton icon="iconsearch" name="首页" @onclick="getLogs"></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
         <table class="w-full p-[1px]">
@@ -88,21 +88,7 @@ export default defineComponent({
     currentPage:1,
     totalPage:50,
     index:15,
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    name:'',
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
@@ -123,7 +109,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getLogs() {
       try {
-        const response = await axios.get(`/logs?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/logs?page=${this.currentPage}&count=${this.index}&name=${this.name}`);
         if(response.data.status==1){
           this.logs = response.data.logs.data;
           this.totalPage=response.data.logs.total;

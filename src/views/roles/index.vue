@@ -10,8 +10,8 @@
         <MyButton name="角色管理" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="角色名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="searchrole" placeholder="角色名称" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <IconMyButton icon="iconsearch" name="首页" @onclick="getRoles" ></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[3]" ref="addbutton"  @onclick="()=>showAddRole()" icon="circleplus" name="添加角色" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -88,6 +88,7 @@ export default defineComponent({
     totalPage:null,
     index:15,
     group:'',
+    searchrole:'',
     groups:[
       {
         id:1,
@@ -192,7 +193,7 @@ export default defineComponent({
     },
     async getRoles() {
       try {
-        const response = await axios.get(`/roles?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/roles?page=${this.currentPage}&count=${this.index}&role=${this.searchrole}`);
         if(response.data.status==1){
           this.roles = response.data.roles.data;
           this.totalPage=response.data.roles.total;

@@ -9,8 +9,8 @@
       <MyButton name="素材列表" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-      <input type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-      <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+      <input v-model="title" type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+      <IconMyButton icon="iconsearch" name="首页" @onclick="getMaterials"></IconMyButton>
       <IconMyButton v-if="getAdmin.permissions[18]" ref="addbutton"  @onclick="()=>{showAddMaterial()}" icon="circleplus" name="添加培训" ></IconMyButton>
     </div>
     <div class="w-full px-[37px] mb-[106px]">
@@ -108,21 +108,7 @@ export default defineComponent({
     index:15,
     materials:[
     ],
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    title:'',
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
@@ -150,7 +136,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getMaterials() {
       try {
-        const response = await axios.get(`/materials?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/materials?page=${this.currentPage}&count=${this.index}&title=${this.title}`);
         if(response.data.status==1){
           this.materials = response.data.materials.data;
           this.totalPage=response.data.materials.total;

@@ -9,10 +9,10 @@
         <MyButton name="职员列表" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <SelectBox placeholder="部门"  :groups="groups" :group="group" class="w-[200px]"/>
-        <SelectBox placeholder="分组"  :groups="groups" :group="group"/>
-        <IconMyButton icon="iconsearch" name="首页" ></IconMyButton>
+        <input type="text" v-model="name" placeholder="姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <SelectBox placeholder="部门"  :groups="departments" :group="search.department_id" class="w-[200px]" @onchange="(value)=>{search.department_id=value}"/>
+        <SelectBox placeholder="分组"  :groups="groups" :group="search.group_id" @onchange="(value)=>{search.group_id=value}"/>
+        <IconMyButton icon="iconsearch" name="首页"  @onclick="getStaffs" ></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[8]" ref="addbutton"  @onclick="()=>showAddStaff()" icon="circleplus" name="添加职员" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -128,26 +128,41 @@ export default defineComponent({
     totalPage:null,
     index:15,
     group:'',
+    departments:[],
     groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
     ],
+    search :{
+      name:'',
+      department_id:'',
+      group_id:'',
+    }
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
+  watch:{
+  'search.department_id':function(newVal, oldVal) {
+       this.groups=[];
+      if(this.departments.length==0){
+        this.search.group_id='';
+      }
+      for(let i=0;i<this.departments.length;i++){
+        if(this.departments[i].id==this.search.department_id){
+          this.groups=this.departments[i].group;
+          for(let i=0;i<this.departments.length;i++){
+            if(this.groups[i].id==this.search.group_id){
+              return;
+            }
+          }
+          this.search.group_id='';
+          return;
+        }
+      }
+    }
+  },
   mounted() {
     this.getStaffs();
+    this.getList();
     document.addEventListener('click', this.handleClickOutside);
   },
   beforeRouteLeave(to, from, next) {
@@ -181,9 +196,22 @@ export default defineComponent({
       this.itemid=index;
       this.showdialog=true;
     },
+    async getList() {
+      try {
+        const response = await axios.get(`/stafflist`);
+        if(response.data.status==1){
+          this.departments = response.data.departments;
+        }else{
+          this.fetchAdmin();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
     async getStaffs() {
       try {
-        const response = await axios.get(`/staffs?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/staffs?page=${this.currentPage}&count=${this.index}&name=${this.search.name}&department_id=${this.search.department_id}&group_id=${this.search.group_id}`);
         if(response.data.status==1){
           this.staffs = response.data.staffs.data;
           this.totalPage=response.data.staffs.total;

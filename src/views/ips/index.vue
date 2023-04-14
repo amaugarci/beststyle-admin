@@ -9,8 +9,8 @@
         <MyButton name="系统白名单" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" placeholder="IP地址" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
-        <IconMyButton  icon="iconsearch" name="首页" ></IconMyButton>
+        <input v-model="ip" type="text" placeholder="IP地址" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <IconMyButton  icon="iconsearch" name="首页"  @onclick="getIps"></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[24]" @onclick="()=>{showAddCate()}" icon="circleplus" name="添加IP地址" ></IconMyButton>
       </div>
       <div class="w-[1000px]  px-[37px] mb-[106px]">
@@ -80,21 +80,7 @@ export default defineComponent({
     currentPage:1,
     totalPage:null,
     index:15,
-    group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    ip:''
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
@@ -115,7 +101,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getIps() {
       try {
-        const response = await axios.get(`/ips?page=${this.currentPage}&count=${this.index}`);
+        const response = await axios.get(`/ips?page=${this.currentPage}&count=${this.index}&ip=${this.ip}`);
         if(response.data.status==1){
           this.ips = response.data.ips.data;
           this.totalPage=response.data.ips.total;
