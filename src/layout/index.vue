@@ -73,7 +73,7 @@ export default defineComponent({
         return true;
       }
     }
-    return true;
+    return false;
    },
    signOut(){
     this.logout();

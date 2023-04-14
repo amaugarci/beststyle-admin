@@ -57,7 +57,7 @@ export default {
             if(this.getAdmin.permissions[item.id]){
                 return true;
             }
-            return true;
+            return false;
         }
     },
 };
