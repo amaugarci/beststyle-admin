@@ -3,11 +3,13 @@ import axios from 'axios'
 export const useAuthStore = defineStore('useAuthStore', {
   state: () => ({
     token:localStorage.getItem('token'),
+    ip_address:'',
     admin:null,
     returnUrl:'home',
   }),
   getters:{
     getToken:(state)=>state.token,
+    getIp:(state)=>state.ip_address,
     getAdmin:(state)=>state.admin,
     getReturnUrl:(state)=>state.returnUrl,
   },
@@ -15,6 +17,10 @@ export const useAuthStore = defineStore('useAuthStore', {
     setToken(value) {
       this.token=value;
       localStorage.setItem('token',value);
+    },
+    setIp(value) {
+      this.ip_address=value;
+      this.logout();
     },
     async fetchAdmin () {
       try {

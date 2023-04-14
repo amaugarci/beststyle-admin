@@ -11,6 +11,7 @@ import material from './modules/material'
 import character from './modules/character'
 import check from './modules/check'
 import log from './modules/log'
+import blocked from './modules/blocked'
 import notfound from './modules/notfound'
 import {useAuthStore} from '@/pinia/modules/useAuthStore';
 
@@ -23,6 +24,7 @@ const router = createRouter({
       redirect: '/home',
     },
     ...login,
+    ...blocked,
     ...home,
     ...user,
     ...group,
@@ -44,7 +46,7 @@ const router = createRouter({
   },
 })
 router.beforeEach(async (to) => {
-  const publicPages = ['/login'];
+  const publicPages = ['/login','/blocked'];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
   if(auth.admin==null&&auth.token){
