@@ -1,5 +1,5 @@
 <template>
-   <div class="fixed z-[99991] px-[29px] py-[18px] w-[680px] h-[630px] bg-[#FFFFFF] top-[300px] left-1/2  -translate-x-1/2">
+   <div class="absolute z-[99991] px-[29px] py-[18px] w-[680px] h-[630px] bg-[#FFFFFF] top-[300px] left-1/2  -translate-x-1/2">
     <div class="relative">
       <div class="flex items-center">
         <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
