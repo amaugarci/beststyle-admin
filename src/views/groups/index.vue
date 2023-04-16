@@ -27,23 +27,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in groups" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="groups[index]">{{groups[index].department.name}}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].name }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].boss?groups[index].boss.name:'-' }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">{{ groups[index].count }}</td>
-                <td v-else></td>
-                <td v-if="groups[index]">
-                  {{moment().utc(new Date(groups[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td>{{item.department.name}}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.boss?item.boss.name:'-' }}</td>
+                <td>{{ item.count }}</td>
+                <td>
+                  {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td v-if="getAdmin.permissions[6]&&groups[index]" class="flex justify-around items-center text-[#0B88F9]">
+                
+                <td v-if="getAdmin.permissions[6]" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showEditGroup(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(groups[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(item.id)}" >删除</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[6]"></td>
               </tr>

@@ -38,42 +38,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in staffs" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="staffs[index]">{{ staffs[index].name }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].group.department.name }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].group.name }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].sex==1?'男':'女' }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].age }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].country }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].married==1?'已婚':'未婚' }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].mail }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].phone }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].refername }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].referphone }}</td>
-                <td v-else></td>
-                <td v-if="staffs[index]">
-                  {{staffs[index].period}}
+                <td>{{ item.name }}</td>
+                <td>{{ item.group.department.name }}</td>
+                <td>{{ item.group.name }}</td>
+                <td>{{ item.sex==1?'男':'女' }}</td>
+                <td>{{ item.age }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.married==1?'已婚':'未婚' }}</td>
+                <td>{{ item.mail }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.refername }}</td>
+                <td>{{ item.referphone }}</td>
+                <td>
+                  {{item.period}}
                 </td>
-                <td v-else></td>
-                <td v-if="staffs[index]">
-                  {{moment().utc(new Date(staffs[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td v-if="item">
+                  {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td v-if="staffs[index]">{{ staffs[index].status==1?'在职':'离职' }}</td>
-                <td v-else></td>
-                <td v-if="getAdmin.permissions[8]&&staffs[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>{showDeleteStaff(staffs[index].id)}" >删除</button>
+                <td v-if="item">{{ item.status==1?'在职':'离职' }}</td>
+                <td v-if="getAdmin.permissions[8]" class="flex justify-around items-center text-[#0B88F9]">
+                  <button @click="()=>{showDeleteStaff(item.id)}" >删除</button>
                   <button ref="useredit"  @click="showEditStaff(index)">编辑</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[8]"></td>

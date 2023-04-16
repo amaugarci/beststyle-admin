@@ -27,30 +27,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in list" :key="index">
+            <tr v-for="(item,index) in trainings" :key="index">
               <td >{{ index+1 }}</td>
-              <td class="flex justify-center" v-if="trainings[index]">
-                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${trainings[index].photo}`">
+              <td class="flex justify-center" v-if="item">
+                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${item.photo}`">
               </td>
-              <td v-else></td>
-              <td v-if="trainings[index]">
-              {{ trainings[index].title }}
+              <td v-if="item">
+              {{ item.title }}
               </td>
-              <td v-else></td>
-              <td class="ql-editor" v-if="trainings[index]" v-html="trainings[index].description">
+              <td class="ql-editor" v-if="item" v-html="item.description">
               </td>
-              <td v-else></td>
-              <td v-if="trainings[index]">{{trainings[index].count}}</td>
-              <td v-else></td>
-              <td v-if="trainings[index]">
+              <td v-if="item">{{item.count}}</td>
+              <td v-if="item">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
-              <td v-else></td>
-              <td v-if="getAdmin.permissions[10]&&trainings[index]" >
+              <td v-if="getAdmin.permissions[10]&&item" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
-                  <button ref="useredit"  @click="()=>goComment(trainings[index].id)">评论</button>
+                  <button ref="useredit"  @click="()=>goComment(item.id)">评论</button>
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
-                  <button @click="()=>{showDeleteTraining(trainings[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteTraining(item.id)}" >删除</button>
                 </div>
               </td>
               <td v-else-if="getAdmin.permissions[10]"></td>

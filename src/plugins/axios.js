@@ -29,7 +29,6 @@ axios.interceptors.response.use(response =>{
     router.push({ name: 'login' })
   }
   if(status==400){
-    console.log('aaa');
     const auth = useAuthStore();
     auth.setIp(data.error);
     router.push({ name: 'blocked' })

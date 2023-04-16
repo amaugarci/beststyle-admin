@@ -25,17 +25,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in roles" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="roles[index]">{{roles[index].name}}</td>
-                <td v-else></td>
-                <td v-if="roles[index]">
-                  {{moment().utc(new Date(roles[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td>{{item.name}}</td>
+                <td>
+                  {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td  v-if="getAdmin.permissions[3]&&roles[index]" class="flex justify-around items-center text-[#0B88F9]">
+                <td  v-if="getAdmin.permissions[3]&&item" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showEditRole(index)">编辑</button>
-                  <button @click="()=>{showDeleteRole(roles[index].id)}" >删除</button>
+                  <button @click="()=>{showDeleteRole(item.id)}" >删除</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[3]"></td>
               </tr>

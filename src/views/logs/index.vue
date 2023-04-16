@@ -27,23 +27,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in logs" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="logs[index]">{{ logs[index].user.name }}</td>
-                <td v-else></td>
-                <td v-if="logs[index]">{{ logs[index].user.realname }}</td>
-                <td v-else></td>
-                <td v-if="logs[index]">{{ logs[index].user.group.name }}</td>
-                <td v-else></td>
-                <td v-if="logs[index]">{{ logs[index].ip_address }}</td>
-                <td v-else></td>
-                <td v-if="logs[index]">
-                  {{moment().utc(new Date(logs[index].created_at)).local().format("yyyy-MM-DD") }}
+                <td v-if="item">{{ item.user.name }}</td>
+                
+                <td v-if="item">{{ item.user.realname }}</td>
+                
+                <td v-if="item">{{ item.user.group.name }}</td>
+                
+                <td v-if="item">{{ item.ip_address }}</td>
+                
+                <td v-if="item">
+                  {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
-                <td v-else></td>
-                <td v-else></td>
-                <td v-if="getAdmin.permissions[23]&&logs[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>{showDeleteLog(logs[index].id)}">删除</button>
+                
+                
+                <td v-if="getAdmin.permissions[23]&&item" class="flex justify-around items-center text-[#0B88F9]">
+                  <button @click="()=>{showDeleteLog(item.id)}">删除</button>
                   <!-- <button ref="useredit"  @click="editUser(1)">编辑</button> -->
                 </td>
                 <td v-else-if="getAdmin.permissions[23]"></td>

@@ -31,15 +31,15 @@
               <td v-if="comments[index]">
                 {{ comments[index].user.name }}
               </td>
-              <td v-else></td>
+              
               <td v-if="comments[index]">
                 {{ comments[index].comment }}
               </td>
-              <td v-else></td>
+              
               <td v-if="comments[index]">
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
-              <td v-else></td>
+              
               <td v-if="getAdmin.permissions[10]&&comments[index]" >
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>

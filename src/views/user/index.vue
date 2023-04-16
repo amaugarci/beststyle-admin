@@ -33,29 +33,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in list" :key="index">
+              <tr v-for="(item,index) in users" :key="index">
                 <td >{{ index+1 }}</td>
-                <td v-if="users[index]">{{ users[index].name }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].realname }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].group.department.name }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{users[index].group.name}}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].status!=1?'冻结':'正常' }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].role.name }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].admin?users[index].admin.name:'-' }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{  users[index].ip_address }}</td>
-                <td v-else></td>
-                <td v-if="users[index]">{{ users[index].region }}</td>
-                <td v-else></td>
-                <td  v-if="getAdmin.permissions[2]&&users[index]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>showChangeUser( users[index].id, true)" >冻结</button>
-                  <button @click="()=>showChangeUser( users[index].id, false)">正常</button>
+                <td>{{ item.name }}</td>
+                <td>{{ item.realname }}</td>
+                <td>{{ item.group.department.name }}</td>
+                <td>{{item.group.name}}</td>
+                <td>{{ item.status!=1?'冻结':'正常' }}</td>
+                <td>{{ item.role.name }}</td>
+                <td>{{ item.admin?item.admin.name:'-' }}</td>
+                <td>{{  item.ip_address }}</td>
+                <td>{{ item.region }}</td>                
+                <td  v-if="getAdmin.permissions[2]" class="flex justify-around items-center text-[#0B88F9]">
+                  <button @click="()=>showChangeUser( item.id, true)" >冻结</button>
+                  <button @click="()=>showChangeUser( item.id, false)">正常</button>
                   <button ref="useredit"  @click="showEditUser(index)">编辑</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[2]"></td>
@@ -113,20 +104,7 @@ export default defineComponent({
     totalPage:null,
     index:15,
     group:'',
-    groups:[
-      {
-        id:1,
-        name:'first'
-      },
-      {
-        id:2,
-        name:'twice'
-      },
-      {
-        id:3,
-        name:'third'
-      }
-    ],
+    groups:[],
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),

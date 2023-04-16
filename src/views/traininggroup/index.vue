@@ -24,7 +24,7 @@
               </tr>
             </thead>
             <tbody style="text-align: start;">
-              <template v-for="(item,index) in traininggroups" :key="index">
+              <template v-for="(item,index) in traininggroups" :key="item.id">
                 <tr>
                   <td class="text-start pl-[20px]">
                     <div @click="()=>item.visible=!item.visible" class="flex items-center cursor-pointer">
@@ -35,12 +35,12 @@
                   </td>
                   <td>{{item.id}}</td>
                   <td v-if="getAdmin.permissions[11]"  class="flex justify-around items-center text-[#0B88F9]">
-                    <button @click="()=>{showAddCate(null,item.id)}">添加下级分类</button>
-                    <button @click="()=>{showAddCate(item)}">编辑</button>
-                    <button @click="()=>showDeleteTraining(item.id)">删除</button>
+                    <button @click="()=>{showAddCate(null,item.id,index)}">添加下级分类</button>
+                    <button @click="()=>{showAddCate(item,null,index)}">编辑</button>
+                    <button @click="()=>showDeleteTraining(item.id,index)">删除</button>
                   </td>
                 </tr>
-                <template v-for="(childItem, childIndex) in item.children" :key="childIndex" >
+                <template v-for="(childItem, childIndex) in item.children" :key="childItem.id" >
                     <tr :class="{'hidden':!item.visible}">
                       <td class="text-start pl-[50px]">
                         <div @click="()=>childItem.visible=!childItem.visible" class="flex items-center cursor-pointer">
@@ -51,24 +51,22 @@
                       </td>
                       <td>{{ childItem.id }}</td>
                       <td v-if="getAdmin.permissions[11]"  class="flex justify-around items-center text-[#0B88F9]">
-                        <button @click="()=>{showAddCate(null,childItem.id)}">添加下级分类</button>
-                        <button @click="()=>{showAddCate(childItem)}">编辑</button>
-                        <button @click="()=>showDeleteTraining(childItem.id)">删除</button>
+                        <button @click="()=>{showAddCate(null,childItem.id,index,childIndex)}">添加下级分类</button>
+                        <button @click="()=>{showAddCate(childItem,null,index,childIndex)}">编辑</button>
+                        <button @click="()=>showDeleteTraining(childItem.id,index,childIndex)">删除</button>
                       </td>
                     </tr>
-                    <template v-for="(grandChildItem, grandChildIndex) in childItem.children" :key="grandChildIndex">
+                    <template v-for="(grandChildItem, grandChildIndex) in childItem.children" :key="grandChildItem.id">
                       <tr :class="{'hidden':!childItem.visible}">
                         <td class="text-start pl-[80px]">
                           <div @click="()=>grandChildItem.visible=!grandChildItem.visible" class="flex items-center cursor-pointer">
-                            <BIconChevronRight v-if="grandChildItem.children&&!grandChildItem.visible" class="icon text-[10px]"/>
-                            <BIconChevronDown v-else-if="grandChildItem.children&&grandChildItem.visible" class="icon text-[10px]"/>
                             <p class="ml-[10px]">{{ grandChildItem.name }}</p>
                           </div>
                         </td>
                         <td>{{ grandChildItem.id }}</td>
                         <td v-if="getAdmin.permissions[11]" class="flex justify-around items-center text-[#0B88F9] pl-[135px]">
-                          <button @click="()=>{showAddCate(grandChildItem)}">编辑</button>
-                          <button @click="()=>showDeleteTraining(grandChildItem.id)">删除</button>
+                          <button @click="()=>{showAddCate(grandChildItem,null,index,childIndex,grandChildIndex)}">编辑</button>
+                          <button @click="()=>showDeleteTraining(grandChildItem.id,index,childIndex,grandChildIndex)">删除</button>
                         </td>
                       </tr>
                     </template>
@@ -138,7 +136,7 @@ export default defineComponent({
         }
         return false;
     },
-    showAddCate(index=null,parent_id=null){
+    showAddCate(index=null,parent_id=null,first=null, twice=null,last=null){
       layer.config({
         skin: ''
       })
@@ -151,7 +149,7 @@ export default defineComponent({
           closeBtn: 0,
           shadeClose: 1,
           yes: (i, layero) => {
-            this.goCreate(layero.find('input').val(),parent_id);
+            this.goCreate(layero.find('input').val(),parent_id,first, twice);
             layer.close(i);
           },
         });
@@ -164,13 +162,13 @@ export default defineComponent({
           closeBtn: 0,
           shadeClose: 1,
           yes: (i, layero) => {
-            this.goEdit(layero.find('input').val(), index.id);
+            this.goEdit(layero.find('input').val(), index.id,first,twice,last);
             layer.close(i);
           },
         });
       }
     },
-    async goCreate(name,parent_id){
+    async goCreate(name,parent_id,first,twice){
       try{
         const response=await axios.post('/createtraininggroup', {
             name:name,
@@ -182,7 +180,13 @@ export default defineComponent({
         }
         else if(response.status==200&&response.data.status==1){
           this.showSucss();
-          this.refresh();
+          if(first==null){
+            this.traininggroups.push(response.data.traininggroup);
+          }else if(twice==null){
+            this.traininggroups[first].children.push(response.data.traininggroup);
+          }else{
+            this.traininggroups[first].children[twice].children.push(response.data.traininggroup);
+          }
         }
         else{
             this.message='请输部门名';
@@ -193,7 +197,7 @@ export default defineComponent({
           this.showDialog();
       };
     },
-    async goEdit(name,id){
+    async goEdit(name,id,first,twice,last){
       try{
         const response=await axios.post(`/edittraininggroup/${id}`, {
             name:name,
@@ -204,7 +208,13 @@ export default defineComponent({
         }
         else if(response.status==200&&response.data.status==1){
           this.showSucss();
-          this.refresh();
+          if(last!=null){
+            this.traininggroups[first].children[twice].children[last].name=name;
+          }else if(twice!=null){
+            this.traininggroups[first].children[twice].name=name;
+          }else{
+            this.traininggroups[first].name=name;
+          }
         }
         else{
             this.message='请输部门名';
@@ -215,7 +225,7 @@ export default defineComponent({
           this.showDialog();
       };
     },
-    showDeleteTraining(index){
+    showDeleteTraining(index,first, twice=null, last=null){
       layer.config({
         skin: ''
       })
@@ -226,12 +236,12 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          this.deleteTraininggroup(index);
+          this.deleteTraininggroup(index,first, twice, last);
           layer.close(i);
         },
       });
     },
-    async deleteTraininggroup(id) {
+    async deleteTraininggroup(id,first, twice, last) {
       try {
         const response = await axios.get(`/deletetraininggroup/${id}`);
         if(response.data.status==1){
@@ -239,7 +249,13 @@ export default defineComponent({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          if(last!=null){
+            this.traininggroups[first].children[twice].children.splice(twice,1);
+          }else if(twice!=null){
+            this.traininggroups[first].children.splice(twice,1);
+          }else{
+            this.traininggroups.splice(first,1);
+          }
         }else{
           this.message='网络错误';
           this.showDialog();
