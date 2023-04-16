@@ -7,7 +7,7 @@ pipeline {
         stage('git'){
             steps {
                 // 
-                git branch: "${bbranch}",credentialsId: '007', url: 'git@github.com:BlockBeliever/bourse-admin.git'
+                git branch: "${bbranch}",credentialsId: '007', url: 'git@github.com:Ares90125/beststyle-admin.git'
                 echo "${bbranch}";
                 echo Branch;
                 // def check_groovy_file="./Jenkinsfile2";
