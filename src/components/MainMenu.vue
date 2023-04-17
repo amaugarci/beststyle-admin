@@ -1,7 +1,7 @@
 <template>
     <div class=" py-4 px-[24px] flex justify-between items-center border-l-5 text-gray-500 cursor-pointer" :class="{'':!append}" @click="toggleSubmenu">
         <div class="flex items-center">
-            <img :src="'../src/assets/icons/'+value.icon+'.svg'" class="icon mr-[12px]"/>
+            <img :src="'/assets/icons/'+value.icon+'.svg'" class="icon mr-[12px]"/>
             <p class="font-bold text-[#B2B2B2]  text-[16px]"  :class="{'hidden':!append}">{{ value.name }}</p>
         </div>
         <BIconChevronDown v-if="showSubmenu" class="icon text-[18px]"  :class="{'hidden':!append}"/>

@@ -2,7 +2,7 @@
    <div class="absolute z-[99991] px-[29px] py-[18px] w-[680px] h-[330px] bg-[#FFFFFF] top-[300px] left-1/2  -translate-x-1/2">
     <div class="relative">
       <div class="flex items-center">
-        <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
+        <img src="/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
         <p class="font-black text-[#0B88F9]">添加评论</p>
       </div>
       <div class="w-full flex justify-center">

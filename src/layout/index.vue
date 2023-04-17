@@ -11,7 +11,7 @@
         <BIconPower @click="signOut" class="float-right text-[25px] text-[#BAA372] inline-block" :class="{'hidden':!append}"/>
       </div>
       <router-link :to="{name:'home'}" class="flex items-center text-center bg-[#494B52] px-[24px]  nav-link py-4 text-[16px]" active-class="active-nav-link">
-        <img :src="currentUrl.includes('home')?'../src/assets/icons/chome.svg':'../src/assets/icons/home.svg'"  class="icon mr-[12px] font-bold text-[22px] " />
+        <img :src="currentUrl.includes('home')?'/assets/icons/chome.svg':'/assets/icons/home.svg'"  class="icon mr-[12px] font-bold text-[22px] " />
         <p class="font-bold leading-none"  :class="{'hidden':!append}">
             首页
         </p>
@@ -23,7 +23,7 @@
     </div>
     <div class="h-auto min-w-980 bg-white w-full min-w-[980px] relative">
       <div class="w-full py-[18.2px] px-[17px] flex items-center">
-        <img :src="append?'../src/assets/icons/indent-left.svg':'../src/assets/icons/indent-right.svg'"  class="w-[29px] h-[29px]" @click="()=>append=!append"/>
+        <img :src="append?'/assets/icons/indent-left.svg':'/assets/icons/indent-right.svg'"  class="w-[29px] h-[29px]" @click="()=>append=!append"/>
         <p class="font-bold text-[#B2B2B2] text-[22px] ml-[14px]">面板</p>
       </div>
       <router-view />

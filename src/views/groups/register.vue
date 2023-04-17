@@ -1,7 +1,7 @@
 <template>
    <div class="absolute z-[99991] px-[29px] py-[18px] w-[980px] h-[400px] bg-[#FFFFFF] fixed top-1/2 left-1/2 -translate-y-2/3 -translate-x-1/2">
       <div class="flex items-center">
-        <img src="../../../src/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
+        <img src="/assets/icons/blueplus.svg" class="icon mr-[12px]"/>
         <p class="font-black text-[#0B88F9]">添加用户</p>
       </div>
       <div class="mt-[53px] grid grid-cols-2 w-[900px] ">
