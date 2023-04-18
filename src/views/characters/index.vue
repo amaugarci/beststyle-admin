@@ -30,10 +30,11 @@
           <tbody>
             <tr v-for="(item,index) in characters" :key="index">
               <td >{{ index+1 }}</td>
-              <td class="flex justify-center" v-if="item">
-                <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${item.photo}`">
+              <td  v-if="item">
+                <div class="flex justify-center">
+                  <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${item.photo}`">
+                </div>
               </td>
-              
               <td v-if="item">
               {{ item.title }}
               </td>

@@ -9,16 +9,14 @@ import 'vue3-layer/dist/s3Layer.css';
 import axios from 'axios';
 import VueAwesomePaginate from "vue-awesome-paginate";
 import "vue-awesome-paginate/dist/style.css";
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-
+import RichText from '@/components/RichText.vue'
 
 
 import '@/plugins';
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 const app = createApp(App)
-app.component('QuillEditor', QuillEditor)
+app.component('RichText', RichText)
 app.use(router)
    .use(VueAwesomePaginate)
    .use(i18n)

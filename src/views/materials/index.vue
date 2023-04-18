@@ -32,7 +32,7 @@
               <td  v-if="item">
                 <div class="flex justify-center relative">
                   <img class="w-[140px] h-[200px]" :src="VITE_BACKEND_URL + item.thumb">
-                  <BIconPlayFill v-if="item.photo.video" class="text-white text-[40px] absolute top-[80px] "/>
+                  <BIconPlayFill v-if="item.type==2" class="text-white text-[40px] absolute top-[80px] "/>
                 </div>
               </td>
               

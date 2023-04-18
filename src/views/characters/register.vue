@@ -16,9 +16,10 @@
          <!-- <SelectBox placeholder="三级分类"  :groups="[]" :group="group" class="w-[200px]"/> -->
      </div>
      <div class="w-full flex">
-       <div class="relative w-[660px] h-[200px]">
-        <QuillEditor theme="snow" contentType="html" :content="description" ref="myEditor"/>
-       </div>
+        <div class="relative w-[700px] h-[200px]">
+          <RichText :content="description" ref="myEditor" @saveHtml="(html)=>{this.description=html}"/>
+          <!-- <QuillEditor theme="snow" contentType="html" :content="description" ref="myEditor"/> -->
+        </div>
      </div>
      <div @click="selectImage" class="w-[150px] h-[200px] mt-[25px] top-[0px] right-[10px] absolute">
        <div v-if="images" class=" relative">
@@ -183,7 +184,6 @@ mounted(){
       });
     },
     submit(){
-      this.description=this.$refs.myEditor.getHTML();
       if(this.item){
         this.goEdit(this.item.id);
       }else{
