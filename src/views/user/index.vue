@@ -161,7 +161,7 @@ export default defineComponent({
       if(flag){
         layer.open({
           title:`冻结用户`,
-          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想冻结?</span>`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>冻结用户提示文字？</span>`,
           btn:['确定','取消'],
           closeBtn: 0,
           shadeClose: 1,
@@ -173,7 +173,7 @@ export default defineComponent({
       }else{
         layer.open({
           title:`正常用户`,
-          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>真的很想正常?</span>`,
+          content: `<i class="layui-layer-ico layui-layer-ico3 "></i><span class='ml-[40px]'>冻结用户提示文字？</span>`,
           btn:['确定','取消'],
           closeBtn: 0,
           shadeClose: 1,

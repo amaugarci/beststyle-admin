@@ -5,7 +5,7 @@
   <template v-else>
     <div class="w-full py-[9px] flex items-center gap-[17px] pl-[17px] bg-[#F9F9F9] shadow-md">
       <MyButton @onclick="()=>$router.push({ name: 'home' })" name="首页" :active="false"></MyButton>
-      <MyButton name="培训管理" :active="false"></MyButton>
+      <MyButton name="素材管理" :active="false"></MyButton>
       <MyButton name="素材分类" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">

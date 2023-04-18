@@ -12,7 +12,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">账号管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">用户管理</p> 
+            <p class="font-black mr-[177px] w-[80px]">用户管理</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[2]" @onclick="()=>list[2]=0"/>
                 <RadioButton name="手术" index=1  :value="list[2]" @onclick="()=>list[2]=1"/>
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">角色管理</p> 
+            <p class="font-black mr-[177px] w-[80px]">角色管理</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[3]" @onclick="()=>list[3]=0"/>
                 <RadioButton name="手术" index=1  :value="list[3]" @onclick="()=>list[3]=1"/>
@@ -34,7 +34,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">分组管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">部门列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">部门列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[5]" @onclick="()=>list[5]=0"/>
                 <RadioButton name="手术" index=1  :value="list[5]" @onclick="()=>list[5]=1"/>
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">分组列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">分组列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[6]" @onclick="()=>list[6]=0"/>
                 <RadioButton name="手术" index=1  :value="list[6]" @onclick="()=>list[6]=1"/>
@@ -56,7 +56,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">入职管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">职员列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">职员列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[8]" @onclick="()=>list[8]=0"/>
                 <RadioButton name="手术" index=1  :value="list[8]" @onclick="()=>list[8]=1"/>
@@ -70,7 +70,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">培训管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">培训列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">培训列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[10]" @onclick="()=>list[10]=0"/>
                 <RadioButton name="手术" index=1  :value="list[10]" @onclick="()=>list[10]=1"/>
@@ -78,7 +78,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">培训分类</p> 
+            <p class="font-black mr-[177px] w-[80px]">培训分类</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[11]" @onclick="()=>list[11]=0"/>
                 <RadioButton name="手术" index=1  :value="list[11]" @onclick="()=>list[11]=1"/>
@@ -92,7 +92,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">查重管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">查重列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">查重列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[13]" @onclick="()=>list[13]=0"/>
                 <RadioButton name="手术" index=1  :value="list[13]" @onclick="()=>list[13]=1"/>
@@ -100,7 +100,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">平台列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">平台列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[14]" @onclick="()=>list[14]=0"/>
                 <RadioButton name="手术" index=1  :value="list[14]" @onclick="()=>list[14]=1"/>
@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">状态列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">状态列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[15]" @onclick="()=>list[15]=0"/>
                 <RadioButton name="手术" index=1  :value="list[15]" @onclick="()=>list[15]=1"/>
@@ -122,7 +122,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">素材管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">素材列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">素材列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[17]" @onclick="()=>list[17]=0"/>
                 <RadioButton name="手术" index=1  :value="list[17]" @onclick="()=>list[17]=1"/>
@@ -130,7 +130,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">素材分类</p> 
+            <p class="font-black mr-[177px] w-[80px]">素材分类</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[18]" @onclick="()=>list[18]=0"/>
                 <RadioButton name="手术" index=1  :value="list[18]" @onclick="()=>list[18]=1"/>
@@ -144,7 +144,7 @@
         <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">人物包装</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">包装列表</p> 
+            <p class="font-black mr-[177px] w-[80px]">包装列表</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[20]" @onclick="()=>list[20]=0"/>
                 <RadioButton name="手术" index=1  :value="list[20]" @onclick="()=>list[20]=1"/>
@@ -152,7 +152,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">包装分类</p> 
+            <p class="font-black mr-[177px] w-[80px]">包装分类</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[21]" @onclick="()=>list[21]=0"/>
                 <RadioButton name="手术" index=1  :value="list[21]" @onclick="()=>list[21]=1"/>
@@ -163,10 +163,10 @@
       </div>
 
       <div class="mb-[20px] flex justify-start">
-        <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px]">日志管理</p>
+        <p class="font-black mr-[17px] mb-[10px] text-[#0B88F9] text-[20px] ">日志管理</p>
         <div class="pl-[100px] flex flex-col gap-2">
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">登录日志</p> 
+            <p class="font-black mr-[177px] w-[80px]">登录日志</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[23]" @onclick="()=>list[23]=0"/>
                 <RadioButton name="手术" index=1  :value="list[23]" @onclick="()=>list[23]=1"/>
@@ -174,7 +174,7 @@
             </div>
           </div>
           <div class="flex items-center">
-            <p class="font-black mr-[177px]">系统名单</p> 
+            <p class="font-black mr-[177px] w-[80px]">系统名单</p> 
             <div class="flex gap-20">
                 <RadioButton name="视图" index=0  :value="list[24]" @onclick="()=>list[24]=0"/>
                 <RadioButton name="手术" index=1  :value="list[24]" @onclick="()=>list[24]=1"/>
