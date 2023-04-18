@@ -9,7 +9,7 @@
         <MyButton name="用户管理" :active="true"></MyButton>
       </div>
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
-        <input type="text" v-model="search.name" placeholder="用户ID" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
+        <input type="text" v-model="search.name" placeholder="用户名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
         <input type="text" v-model="search.realname" placeholder="用户姓名" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
         <!-- <SelectBox placeholder="分组"  :groups="groups" :group="group"/> -->
         <IconMyButton  @onclick="getUsers" icon="iconsearch" name="首页" ></IconMyButton>
