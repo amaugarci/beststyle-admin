@@ -20,6 +20,9 @@
               <th class="w-[55px]">序号</th>
               <th class="w-[150px]">图片</th>
               <th class="2xl:w-[150px]">标题</th>
+              <th class="2xl:w-[80px]">分类</th>
+              <th class="2xl:w-[80px]">1分类</th>
+              <th class="2xl:w-[80px]">2分类</th>
               <th>描述</th>
               <th class="2xl:w-[100px]">观众人数</th>
               <th class="2xl:w-[200px]">建组时间</th>
@@ -29,18 +32,27 @@
           <tbody>
             <tr v-for="(item,index) in trainings" :key="index">
               <td >{{ index+1 }}</td>
-              <td  v-if="item">
+              <td >
                 <div class="flex justify-center">
                   <img class="w-[140px] h-[200px]" :src="`${VITE_BACKEND_URL}${item.photo}`">
                 </div>
               </td>
-              <td v-if="item">
+              <td>
+               {{ item.training_group.name }}
+              </td>
+              <td>
+                {{ item.training_group.parent.name }}
+              </td>
+              <td>
+                {{ item.training_group.parent.parent.name }}
+              </td>
+              <td>
               {{ item.title }}
               </td>
-              <td class="ql-editor" v-if="item" v-html="item.description">
+              <td class="ql-editor" v-html="item.description">
               </td>
-              <td v-if="item">{{item.count}}</td>
-              <td v-if="item">
+              <td>{{item.count}}</td>
+              <td>
                 {{moment().utc(new Date()).local().format("yyyy-MM-DD") }}
               </td>
               <td v-if="getAdmin.permissions[10]&&item" >
