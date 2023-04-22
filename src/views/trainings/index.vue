@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in trainings" :key="index">
+            <tr v-for="(item,index) in trainings" :key="item.id">
               <td >{{ index+1 }}</td>
               <td >
                 <div class="flex justify-center">
@@ -49,7 +49,8 @@
               <td>
               {{ item.title }}
               </td>
-              <td class="ql-editor" v-html="item.description">
+              <td>
+                <div class="ql-editor max-w-[1100px]" v-html="item.description" contenteditable="true"></div>
               </td>
               <td>{{item.count}}</td>
               <td>

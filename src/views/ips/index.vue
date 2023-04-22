@@ -24,7 +24,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in ips" :key="index">
+              <tr v-for="(item,index) in ips" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td v-if="item">{{ item.ip_address }}</td>
                 

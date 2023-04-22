@@ -33,7 +33,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in checks" :key="index">
+              <tr v-for="(item,index) in checks" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td v-if="item">{{ item.group.name}}</td>
                 

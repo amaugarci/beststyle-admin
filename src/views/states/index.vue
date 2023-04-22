@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in states" :key="index">
+              <tr v-for="(item,index) in states" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td v-if="item">{{ item.name }}</td>
                 

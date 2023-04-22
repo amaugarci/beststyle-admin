@@ -27,7 +27,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in groups" :key="index">
+              <tr v-for="(item,index) in groups" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td>{{item.department.name}}</td>
                 <td>{{ item.name }}</td>

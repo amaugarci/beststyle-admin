@@ -33,7 +33,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in users" :key="index">
+              <tr v-for="(item,index) in users" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.realname }}</td>

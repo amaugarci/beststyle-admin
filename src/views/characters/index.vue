@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in characters" :key="index">
+            <tr v-for="(item,index) in characters" :key="item.id">
               <td >{{ index+1 }}</td>
               <td  v-if="item">
                 <div class="flex justify-center">
@@ -39,7 +39,8 @@
               {{ item.title }}
               </td>
               
-              <td class="ql-editor" v-if="item" v-html="item.description">
+              <td >
+                <div class="ql-editor max-w-[1100px]" v-html="item.description" contenteditable="true"></div>
               </td>
               
               <td v-if="item">{{item.count}}</td>

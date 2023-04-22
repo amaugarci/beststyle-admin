@@ -30,7 +30,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in materials" :key="index">
+            <tr v-for="(item,index) in materials" :key="item.id">
               <td >{{ index+1 }}</td>
               <td >
                 <div class="flex justify-center relative">
@@ -51,7 +51,8 @@
               <td>
                 {{ item.material_group.parent.parent.name }}
               </td>
-              <td class="ql-editor" v-html="item.description">
+              <td >
+                <div class="ql-editor max-w-[1100px]" v-html="item.description" contenteditable="true"></div>
               </td>
               
               <td>{{item.viewers}}</td>

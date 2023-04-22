@@ -25,7 +25,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item,index) in departments" :key="index">
+              <tr v-for="(item,index) in departments" :key="item.id">
                 <td >{{ index+1 }}</td>
                 <td>{{item.name}}</td>
                 <td>{{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}</td>
