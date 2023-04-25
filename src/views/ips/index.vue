@@ -33,7 +33,7 @@
                 <td v-if="getAdmin.permissions[24]&&item" class="flex justify-around items-center text-[#0B88F9]">
                   <button v-if="item.status!=1"  @click="()=>{showChangeIps(item.id,true)}">允许</button>
                   <button v-else class="text-[#FF0044]" @click="()=>{showChangeIps(item.id,false)}">冷冻</button>
-                  <button @click="()=>{showDeleteIp(item.id)}">删除</button>
+                  <button @click="()=>{showDeleteIp(index)}">删除</button>
                   <button @click="()=>{showAddCate(index)}">编辑</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[24]"></td>
@@ -287,15 +287,15 @@ export default defineComponent({
         },
       });
     },
-    async deleteIp(id) {
+    async deleteIp(index) {
       try {
-        const response = await axios.get(`/deleteip/${id}`);
+        const response = await axios.get(`/deleteip/${this.ips[index].ip}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.ips.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

@@ -43,7 +43,7 @@
                 
                 
                 <td v-if="getAdmin.permissions[23]&&item" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>{showDeleteLog(item.id)}">删除</button>
+                  <button @click="()=>{showDeleteLog(index)}">删除</button>
                   <!-- <button ref="useredit"  @click="editUser(1)">编辑</button> -->
                 </td>
                 <td v-else-if="getAdmin.permissions[23]"></td>
@@ -137,15 +137,15 @@ export default defineComponent({
         },
       });
     },
-    async deleteLog(id) {
+    async deleteLog(index) {
       try {
-        const response = await axios.get(`/deletelog/${id}`);
+        const response = await axios.get(`/deletelog/${this.logs[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.logs.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

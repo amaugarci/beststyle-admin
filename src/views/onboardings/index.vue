@@ -59,7 +59,7 @@
                 </td>
                 <td v-if="item">{{ item.status==1?'在职':'离职' }}</td>
                 <td v-if="getAdmin.permissions[8]" class="flex justify-around items-center text-[#0B88F9]">
-                  <button @click="()=>{showDeleteStaff(item.id)}" >删除</button>
+                  <button @click="()=>{showDeleteStaff(index)}" >删除</button>
                   <button ref="useredit"  @click="showEditStaff(index)">编辑</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[8]"></td>
@@ -209,7 +209,7 @@ export default defineComponent({
         console.log(error);
       };
     },
-    showDeleteStaff(id){
+    showDeleteStaff(index){
       layer.config({
         skin: ''
       })
@@ -220,20 +220,20 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose: 1,
         yes: (i, layero) => {
-          this.deleteStaff(id);
+          this.deleteStaff(index);
           layer.close(i);
         },
       });
     },
-    async deleteStaff(id) {
+    async deleteStaff(index) {
       try {
-        const response = await axios.get(`/deletestaff/${id}`);
+        const response = await axios.get(`/deletestaff/${this.staffs[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.staffs.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

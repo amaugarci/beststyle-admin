@@ -35,7 +35,7 @@
                 
                 <td v-if="getAdmin.permissions[14]&&item" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showAddDepartment(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(item.id)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(index)}" >删除</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[14]"></td>
               </tr>
@@ -160,15 +160,15 @@ export default defineComponent({
         },
       });
     },
-    async deleteState(id) {
+    async deleteState(index) {
       try {
-        const response = await axios.get(`/deletestate/${id}`);
+        const response = await axios.get(`/deletestate/${this.states[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.states.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

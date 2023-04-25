@@ -11,7 +11,7 @@
       <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
         <input type="text" v-model="search.platform_nickname" placeholder="平台账号" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
         <SelectBox @onchange="(value)=>{search.platform_id=value}" placeholder=" 选择平台"  :groups="platforms" :group="search.platform_id" class="w-[200px]"/>
-        <IconMyButton icon="iconsearch" name="首页" @onclick="getChecks" ></IconMyButton>
+        <IconMyButton icon="iconsearch" name="首页" @onclick="getChecks"></IconMyButton>
         <IconMyButton v-if="getAdmin.permissions[13]" ref="addbutton"  @onclick="()=>{showAddCheck()}" icon="circleplus" name="添加培训" ></IconMyButton>
       </div>
       <div class="w-full px-[37px] mb-[106px]">
@@ -60,7 +60,7 @@
                 <td v-if="item" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="()=>goComment(item.id)">评论</button>
                   <button ref="useredit"  @click="showEditCheck(index)">编辑</button>
-                  <button @click="()=>showDeleteCheck(item.id)">删除</button>
+                  <button @click="()=>showDeleteCheck(index)">删除</button>
                 </td>
                 
               </tr>
@@ -201,15 +201,15 @@ export default defineComponent({
         },
       });
     },
-    async deletecheck(id) {
+    async deletecheck(index) {
       try {
-        const response = await axios.get(`/deletecheck/${id}`);
+        const response = await axios.get(`/deletecheck/${this.checks[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.checks.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

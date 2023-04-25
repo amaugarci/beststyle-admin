@@ -25,15 +25,15 @@
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">部门</p>
-            <SelectBox placeholder="选择部门"  :groups="departments" :group="department_id" class="w-[281px]" @onchange="(value)=>{selectDepartment(value)}"/>
+            <p class="w-[281px] mr-[28px] align-middle">{{ getAdmin.department_name }}</p>
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">业务室/组</p>
-            <SelectBox placeholder="选择业务室/组"  :groups="groups" :group="group_id" class="w-[281px]" @onchange="(value)=>{group_id=value}"/>
+            <p class="w-[281px] mr-[28px] align-middle">{{ getAdmin.group_name }}</p>
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center ">
             <p class="font-black mr-[17px]">业务员</p>
-            <input type="text" v-model="sale_man" placeholder="输入业务员" class="border solid border-gray-300 p-2 rounded-[12px] w-[281px] h-[41px] mr-[28px]">
+            <p class="w-[281px] mr-[28px] align-middle">{{ getAdmin.name }}</p>
         </div>
         <div class="flex flex-row gap-[6px] justify-end my-[30px] ml-[37px] items-center">
             <p class="font-black mr-[17px]">客户状态</p>
@@ -101,9 +101,6 @@ export default defineComponent({
     ],
     platform_id:'',
     added_date:new Date(),
-    department_id:'',
-    group_id:'',
-    sale_man:'',
     client_status_id:'',
     client_name:'',
     client_sex:'',
@@ -121,9 +118,6 @@ export default defineComponent({
       if(this.item){
         this.platform_id=this.item.platform_id;
         this.added_date=this.item.added_date;
-        this.group_id=this.item.group_id;
-        this.department_id=this.item.group.department.id;
-        this.sale_man=this.item.sale_man;
         this.client_status_id=this.item.client_status_id;
         this.client_name=this.item.client_name;
         this.client_sex=this.item.client_sex;
@@ -131,13 +125,9 @@ export default defineComponent({
         this.platform_nickname=this.item.platform_nickname;
         this.image=this.item.photo;
         this.loading=false;
-        this.selectDepartment(this.department_id);
       }else{
         this.platform_id='';
-        this.department_id='',
         this.added_date=new Date();
-        this.group_id='';
-        this.sale_man='';
         this.client_status_id='';
         this.client_name='';
         this.client_sex='';
@@ -147,18 +137,16 @@ export default defineComponent({
         this.loading=false;
       }
     },
-    departments:function(newVal, oldVal) {
-      this.selectDepartment(this.department_id);
-    },
+  },
+  computed:{
+    ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted(){
     this.getList();
       if(this.item){
         this.platform_id=this.item.platform_id;
         this.added_date=this.item.added_date;
-        this.group_id=this.item.group_id;
-        this.department_id=this.item.group.department.id;
-        this.sale_man=this.item.sale_man;
+
         this.client_status_id=this.item.client_status_id;
         this.client_name=this.item.client_name;
         this.client_sex=this.item.client_sex;
@@ -166,7 +154,6 @@ export default defineComponent({
         this.platform_nickname=this.item.platform_nickname;
         this.image=this.item.photo;
         this.loading=false;
-        this.selectDepartment(this.department_id);
       }
   },
   methods:{
@@ -186,17 +173,6 @@ export default defineComponent({
       catch (error) {
         console.log(error);
       };
-    },
-    selectDepartment(value){
-      this.department_id=value;
-      for(let i=0;i<this.departments.length;i++){
-        if(this.departments[i].id==value){
-          this.groups=this.departments[i].group;
-          return;
-        }else if(i==this.departments.length-1){
-          this.group_id='';
-        }
-      }
     },
     selectImage() {
       this.$refs.imageInput.click()
@@ -245,8 +221,8 @@ export default defineComponent({
         const response=await axios.post(`/editcheck/${id}`, {
             platform_id:this.platform_id,
             added_date:this.added_date,
-            group_id:this.group_id,
-            sale_man:this.sale_man,
+            group_id:this.getAdmin.group_id,
+            sale_man:this.getAdmin.name,
             client_status_id:this.client_status_id,
             client_name:this.client_name,
             client_sex:this.client_sex,
@@ -276,8 +252,8 @@ export default defineComponent({
         const response=await axios.post('/createcheck', {
             platform_id:this.platform_id,
             added_date:this.added_date,
-            group_id:this.group_id,
-            sale_man:this.sale_man,
+            group_id:this.getAdmin.group_id,
+            sale_man:this.getAdmin.name,
             client_status_id:this.client_status_id,
             client_name:this.client_name,
             client_sex:this.client_sex,
@@ -305,18 +281,6 @@ export default defineComponent({
         }
         else if(this.added_date==''){
           this.message='新增日期是必需的';
-            return false;
-        }
-        else if(this.department_id==''){
-          this.message='部门是必需的';
-            return false;
-        }
-        else if(this.group_id==''){
-          this.message='业务室/组是必需的';
-            return false;
-        }
-        else if(this.sale_man==''){
-          this.message='业务员是必需的';
             return false;
         }
         else if(this.client_status_id==''){

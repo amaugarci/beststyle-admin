@@ -60,7 +60,7 @@
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="()=>goComment(item.id)">评论</button>
                   <button ref="useredit"  @click="()=>{showEditTraining(index)}">编辑</button>
-                  <button @click="()=>{showDeleteTraining(item.id)}" >删除</button>
+                  <button @click="()=>{showDeleteTraining(index)}" >删除</button>
                 </div>
               </td>
               <td v-else-if="getAdmin.permissions[10]"></td>
@@ -109,7 +109,6 @@ data:()=>({
   itemid:null,
   message:'',
   showdialog:false,
-  list:Array(15).fill(0),
   currentPage:1,
   totalPage:null,
   index:15,
@@ -199,15 +198,15 @@ computed: {
         },
       });
     },
-    async deleteTraining(id) {
+    async deleteTraining(index) {
       try {
-        const response = await axios.get(`/deletetraining/${id}`);
+        const response = await axios.get(`/deletetraining/${this.trainings[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.trainings.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();
@@ -224,7 +223,6 @@ computed: {
     onchangePage(value){
         this.index=value;
         this.changepage(1);
-        this.list=Array(Number(value)).fill(0);
     },
     goComment(value){
       this.$router.push({ name: 'trainingcomments', params: { id:value, }});

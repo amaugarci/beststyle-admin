@@ -35,7 +35,7 @@
                 
                 <td v-if="getAdmin.permissions[15]&&item" class="flex justify-around items-center text-[#0B88F9]">
                   <button ref="useredit"  @click="showAddDepartment(index)">编辑</button>
-                  <button @click="()=>{showDeleteGroup(item.id)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(index)}" >删除</button>
                 </td>
                 <td v-else-if="getAdmin.permissions[15]"></td>
               </tr>
@@ -213,15 +213,15 @@ export default defineComponent({
         this.changepage(1);
         this.list=Array(Number(value)).fill(0);
     },
-    async deletecategory(id) {
+    async deletecategory(index) {
       try {
-        const response = await axios.get(`/deletecategory/${id}`);
+        const response = await axios.get(`/deletecategory/${this.categories[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.categories.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();

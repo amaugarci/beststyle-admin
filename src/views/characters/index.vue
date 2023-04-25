@@ -55,7 +55,7 @@
                 <div class="flex justify-around items-center text-[#0B88F9]">
                   <button  @click="()=>goComment(item.id)">评论</button>
                   <button  @click="()=>{showEditCharacter(index)}">编辑</button>
-                  <button @click="()=>{showDeleteGroup(1)}" >删除</button>
+                  <button @click="()=>{showDeleteGroup(index)}" >删除</button>
                 </div>
               </td>
               <td v-else-if="getAdmin.permissions[20]"></td>
@@ -178,15 +178,15 @@ data:()=>({
       },
     });
   },
-  async deleteCharacter(id) {
+  async deleteCharacter(index) {
       try {
-        const response = await axios.get(`/deletecharacter/${id}`);
+        const response = await axios.get(`/deletecharacter/${this.characters[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
           })
           layer.msg("操作成功");
-          this.refresh();
+          this.characters.splice(index,1);
         }else{
           this.message='网络错误';
           this.showDialog();
