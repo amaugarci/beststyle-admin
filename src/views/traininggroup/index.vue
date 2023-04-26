@@ -250,7 +250,7 @@ export default defineComponent({
           })
           layer.msg("操作成功");
           if(last!=null){
-            this.traininggroups[first].children[twice].children.splice(twice,1);
+            this.traininggroups[first].children[twice].children.splice(last,1);
           }else if(twice!=null){
             this.traininggroups[first].children.splice(twice,1);
           }else{

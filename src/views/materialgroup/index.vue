@@ -252,7 +252,7 @@ export default defineComponent({
           })
           layer.msg("操作成功");
           if(last!=null){
-            this.materialgroups[first].children[twice].children.splice(twice,1);
+            this.materialgroups[first].children[twice].children.splice(last,1);
           }else if(twice!=null){
             this.materialgroups[first].children.splice(twice,1);
           }else{
