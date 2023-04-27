@@ -289,7 +289,7 @@ export default defineComponent({
     },
     async deleteIp(index) {
       try {
-        const response = await axios.get(`/deleteip/${this.ips[index].ip}`);
+        const response = await axios.get(`/deleteip/${this.ips[index].id}`);
         if(response.data.status==1){
           layer.config({
             skin: ''
