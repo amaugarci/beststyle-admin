@@ -36,6 +36,7 @@
                   <td>{{item.id}}</td>
                   <td v-if="getAdmin.permissions[11]"  class="flex justify-around items-center text-[#0B88F9]">
                     <button @click="()=>{showAddCate(null,item.id,index)}">添加下级分类</button>
+                    <button @click="()=>{showEditRole(item,index)}">设置权限</button>
                     <button @click="()=>{showAddCate(item,null,index)}">编辑</button>
                     <button @click="()=>showDeleteTraining(item.id,index)">删除</button>
                   </td>
@@ -52,6 +53,7 @@
                       <td>{{ childItem.id }}</td>
                       <td v-if="getAdmin.permissions[11]"  class="flex justify-around items-center text-[#0B88F9]">
                         <button @click="()=>{showAddCate(null,childItem.id,index,childIndex)}">添加下级分类</button>
+                        <button @click="()=>{showEditRole(childItem, index, childIndex)}">设置权限</button>
                         <button @click="()=>{showAddCate(childItem,null,index,childIndex)}">编辑</button>
                         <button @click="()=>showDeleteTraining(childItem.id,index,childIndex)">删除</button>
                       </td>
@@ -64,7 +66,8 @@
                           </div>
                         </td>
                         <td>{{ grandChildItem.id }}</td>
-                        <td v-if="getAdmin.permissions[11]" class="flex justify-around items-center text-[#0B88F9] pl-[135px]">
+                        <td v-if="getAdmin.permissions[11]" class="flex justify-around items-center text-[#0B88F9] pl-[105px]">
+                          <button @click="()=>{showEditRole(grandChildItem ,index, childIndex, grandChildIndex)}">设置权限</button>
                           <button @click="()=>{showAddCate(grandChildItem,null,index,childIndex,grandChildIndex)}">编辑</button>
                           <button @click="()=>showDeleteTraining(grandChildItem.id,index,childIndex,grandChildIndex)">删除</button>
                         </td>
@@ -75,6 +78,9 @@
             </tbody>
         </table>
       </div>
+      <div ref="dialog" class="fixed z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    </div>
+    <Register @onSuccess="success" :roles="roles" :groupid="groupid" :groupRole="groupRole" :class="{'hidden':!showdialog}"/>
   </template>
 </template>
 
@@ -91,6 +97,7 @@ import { useAuthStore } from '@/pinia/modules/useAuthStore';
 import { mapState, mapActions } from 'pinia'
 import SelectBox from '@/components/SelectBox.vue'
 import axios from 'axios'
+import Register from './register.vue'
 import moment from 'moment'
 export default defineComponent({
   name: 'traininggroup',
@@ -103,25 +110,44 @@ export default defineComponent({
     IconMyButton,
     Pagination,
     SelectBox,
-    Notfound
+    Notfound,
+    Register
   },
   data:()=>({
     traininggroups:[],
     message:'',
+    roles:[],
+    groupRole:[],
+    showdialog:false,
+    groupid:null,
+    index:[]
   }),
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted(){
     this.getTrainingGroup();
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener('click', this.handleClickOutside);
+    next();
   },
   methods:{
     ...mapActions(useAuthStore, ['fetchAdmin']),
+    handleClickOutside(event) {
+      if(this.showdialog){
+        if(this.$refs.dialog.contains(event.target)){
+          this.showdialog=false;
+        }
+      }
+    },
     async getTrainingGroup() {
       try {
         const response = await axios.get(`/traininggroups`);
         if(response.data.status==1){
           this.traininggroups = response.data.traininggroups;
+          this.roles = response.data.roles;
         }else{
           this.fetchAdmin();
         }
@@ -167,6 +193,18 @@ export default defineComponent({
           },
         });
       }
+    },
+    showEditRole(item,index, childIndex=null,grandChildIndex=null){
+      if(grandChildIndex!=null){
+        this.indexs=[index,childIndex,grandChildIndex];
+      }else if(childIndex!=null){
+        this.indexs=[index,childIndex];
+      }else{
+        this.indexs=[index];
+      }
+      this.groupRole=item.group_role;
+      this.showdialog=true;
+      this.groupid=item.id;
     },
     async goCreate(name,parent_id,first,twice){
       try{
@@ -290,6 +328,32 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose:1,
       });
+    },
+    success(roleid){
+      // console.log(this.indexs);
+      this.showdialog=false;
+      if(this.indexs.length==3){
+        this.traininggroups[this.indexs[0]].children[[this.indexs[1]]].children[[this.indexs[2]]].group_role=[];
+        for(let i=0;i<roleid.length;i++){
+          this.traininggroups[this.indexs[0]].children[[this.indexs[1]]].children[[this.indexs[2]]].group_role.push({
+            role_id:roleid[i]
+          });
+        }
+      }else if(this.indexs.length==2){
+        this.traininggroups[this.indexs[0]].children[[this.indexs[1]]].group_role=[];
+        for(let i=0;i<roleid.length;i++){
+          this.traininggroups[this.indexs[0]].children[[this.indexs[1]]].group_role.push({
+            role_id:roleid[i]
+          });
+        }
+      }else{
+        this.traininggroups[this.indexs[0]].group_role=[];
+        for(let i=0;i<roleid.length;i++){
+          this.traininggroups[this.indexs[0]].group_role.push({
+            role_id:roleid[i]
+          });
+        }
+      }
     },
     refresh(){
       this.getTrainingGroup();

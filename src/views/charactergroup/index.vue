@@ -36,6 +36,7 @@
                   <td>{{item.id}}</td>
                   <td v-if="getAdmin.permissions[21]"  class="flex justify-around items-center text-[#0B88F9]">
                     <button @click="()=>{showAddCate(null,item.id,index)}">添加下级分类</button>
+                    <button @click="()=>{showEditRole(item,index)}">设置权限</button>
                     <button @click="()=>{showAddCate(item,null,index)}">编辑</button>
                     <button @click="()=>showDeleteTraining(item.id,index)">删除</button>
                   </td>
@@ -48,7 +49,8 @@
                         </div>
                       </td>
                       <td>{{ childItem.id }}</td>
-                      <td v-if="getAdmin.permissions[21]" class="flex justify-around items-center text-[#0B88F9] pl-[135px]">
+                      <td v-if="getAdmin.permissions[21]" class="flex justify-around items-center text-[#0B88F9] pl-[105px]">
+                        <button @click="()=>{showEditRole(childItem, index, childIndex)}">设置权限</button>
                         <button @click="()=>{showAddCate(childItem,null,index,childIndex)}">编辑</button>
                         <button @click="()=>showDeleteTraining(childItem.id,index,childIndex)">删除</button>
                       </td>
@@ -58,6 +60,9 @@
             </tbody>
         </table>
       </div>
+      <div ref="dialog" class="fixed z-[99991] top-0 right-0 left-0 bottom-0 bg-[#000] opacity-[0.3]" v-if="showdialog">
+    </div>
+    <Register @onSuccess="success" :roles="roles" :groupid="groupid" :groupRole="groupRole" :class="{'hidden':!showdialog}"/>
   </template>
 </template>
 
@@ -74,6 +79,7 @@ import Notfound from '@/views/notfound/index.vue'
 import { useAuthStore } from '@/pinia/modules/useAuthStore';
 import { mapState, mapActions } from 'pinia'
 import axios from 'axios'
+import Register from './register.vue'
 import moment from 'moment'
 export default defineComponent({
   name: 'charactergroup',
@@ -86,25 +92,44 @@ export default defineComponent({
     IconMyButton,
     Pagination,
     SelectBox,
-    Notfound
+    Notfound,
+    Register
   },
   data:()=>({
     charactergroups:[],
     message:'',
+    roles:[],
+    groupRole:[],
+    showdialog:false,
+    groupid:null,
+    index:[]
   }),
   computed: {
     ...mapState(useAuthStore, ['getAdmin']),
   },
   mounted(){
     this.getCharacterGroup();
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener('click', this.handleClickOutside);
+    next();
   },
   methods:{
+    handleClickOutside(event) {
+      if(this.showdialog){
+        if(this.$refs.dialog.contains(event.target)){
+          this.showdialog=false;
+        }
+      }
+    },
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getCharacterGroup() {
       try {
         const response = await axios.get(`/charactergroups`);
         if(response.data.status==1){
           this.charactergroups = response.data.charactergroups;
+          this.roles = response.data.roles;
         }else{
           this.fetchAdmin();
         }
@@ -150,6 +175,16 @@ export default defineComponent({
           },
         });
       }
+    },
+    showEditRole(item,index, childIndex=null){
+      if(childIndex!=null){
+        this.indexs=[index,childIndex];
+      }else{
+        this.indexs=[index];
+      }
+      this.groupRole=item.group_role;
+      this.showdialog=true;
+      this.groupid=item.id;
     },
     async goCreate(name,parent_id,first){
       try{
@@ -267,6 +302,25 @@ export default defineComponent({
         closeBtn: 0,
         shadeClose:1,
       });
+    },
+    success(roleid){
+      // console.log(this.indexs);
+      this.showdialog=false;
+      if(this.indexs.length==2){
+        this.charactergroups[this.indexs[0]].children[[this.indexs[1]]].group_role=[];
+        for(let i=0;i<roleid.length;i++){
+          this.charactergroups[this.indexs[0]].children[[this.indexs[1]]].group_role.push({
+            role_id:roleid[i]
+          });
+        }
+      }else{
+        this.charactergroups[this.indexs[0]].group_role=[];
+        for(let i=0;i<roleid.length;i++){
+          this.charactergroups[this.indexs[0]].group_role.push({
+            role_id:roleid[i]
+          });
+        }
+      }
     },
     refresh(){
       this.getCharacterGroup();
