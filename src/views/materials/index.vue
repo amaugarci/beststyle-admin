@@ -9,6 +9,9 @@
       <MyButton name="素材列表" :active="true"></MyButton>
     </div>
     <div class="flex flex-row gap-[6px] my-[30px] ml-[37px] ">
+      <SelectBox placeholder="一级分类" :groups="categorys1" :group="category1_id" class="w-[200px]" @onchange="(value)=>{selectCategory1(value)}"/>
+      <SelectBox placeholder="二级分类" :groups="categorys2" :group="category2_id" class="w-[200px]" @onchange="(value)=>{selectCategory2(value)}"/>
+      <SelectBox placeholder="三级分类" :groups="categorys3" :group="material_group_id" class="w-[200px]" @onchange="(value)=>{material_group_id=value}"/>
       <input v-model="title" type="text" placeholder="标题" class="border solid border-gray-300 p-2 rounded-[12px] w-[200px] h-[41px]">
       <IconMyButton icon="iconsearch" name="首页" @onclick="getMaterials"></IconMyButton>
       <IconMyButton v-if="getAdmin.permissions[18]" ref="addbutton"  @onclick="()=>{showAddMaterial()}" icon="circleplus" name="添加培训" ></IconMyButton>
@@ -118,6 +121,12 @@ export default defineComponent({
     itemid:null,
     totalPage:null,
     index:15,
+    categorys1: [],
+    categorys2: [],
+    categorys3: [],
+    material_group_id: '',
+    category2_id: '',
+    category1_id: '',
     materials:[
     ],
     title:'',
@@ -125,8 +134,17 @@ export default defineComponent({
   computed: {
       ...mapState(useAuthStore, ['getAdmin']),
   },
+  watch: {
+    categorys1: function (newVal, oldVal) {
+      this.selectCategory1(this.category1_id);
+    },
+    categorys2: function (newVal, oldVal) {
+      this.selectCategory2(this.category2_id);
+    }
+  },
   mounted() {
     this.getMaterials();
+    this.getList();
     document.addEventListener('click', this.handleClickOutside);
   },
   beforeRouteLeave(to, from, next) {
@@ -159,6 +177,48 @@ export default defineComponent({
       catch (error) {
         console.log(error);
       };
+    },
+    async getList() {
+      try {
+        const response = await axios.get(`/materiallist`);
+        if (response.data.status == 1) {
+          this.categorys1 = response.data.materialgroups;
+        } else {
+          this.fetchAdmin();
+        }
+      }
+      catch (error) {
+        console.log(error);
+      };
+    },
+    selectCategory1(value) {
+      this.category1_id = value;
+      for (let i = 0; i < this.categorys1.length; i++) {
+        if (this.categorys1[i].id == value) {
+          this.categorys2 = this.categorys1[i].children;
+          return;
+        } else if (i == this.categorys1.length - 1) {
+          this.category2_id = '';
+          this.material_group_id = '';
+        }
+      }
+    },
+    selectCategory2(value) {
+      this.category2_id = value;
+      if (this.categorys2.length == 0) {
+        this.category2_id = '';
+        this.material_group_id = '';
+      } else {
+        for (let i = 0; i < this.categorys2.length; i++) {
+          if (this.categorys2[i].id == value) {
+            this.categorys3 = this.categorys2[i].children;
+            return;
+          } else if (i == this.categorys2.length - 1) {
+            this.category2_id = '';
+            this.material_group_id = '';
+          }
+        }
+      }
     },
     isAvailable(){
         if(this.getAdmin.permissions[18]!=null){

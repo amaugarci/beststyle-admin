@@ -50,7 +50,8 @@
                       </td>
                       <td>{{ childItem.id }}</td>
                       <td v-if="getAdmin.permissions[21]" class="flex justify-around items-center text-[#0B88F9] pl-[105px]">
-                        <button @click="()=>{showEditRole(childItem, index, childIndex)}">设置权限</button>
+                        <button class="invisible"  @click="()=>{}">设置权限</button>
+                        <!-- <button @click="()=>{showEditRole(childItem, index, childIndex)}">设置权限</button> -->
                         <button @click="()=>{showAddCate(childItem,null,index,childIndex)}">编辑</button>
                         <button @click="()=>showDeleteTraining(childItem.id,index,childIndex)">删除</button>
                       </td>
