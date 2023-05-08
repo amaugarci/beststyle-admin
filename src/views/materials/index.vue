@@ -166,7 +166,7 @@ export default defineComponent({
     ...mapActions(useAuthStore, ['fetchAdmin']),
     async getMaterials() {
       try {
-        const response = await axios.get(`/materials?page=${this.currentPage}&count=${this.index}&title=${this.title}`);
+        const response = await axios.get(`/materials?page=${this.currentPage}&count=${this.index}&title=${this.title}&category1_id=${this.category1_id}&category2_id=${this.category2_id}&material_group_id=${this.material_group_id}`);
         if(response.data.status==1){
           this.materials = response.data.materials.data;
           this.totalPage=response.data.materials.total;
