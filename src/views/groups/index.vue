@@ -32,7 +32,7 @@
                 <td>{{item.department.name}}</td>
                 <td>{{ item.name }}</td>
                 <td>{{ item.boss?item.boss.name:'-' }}</td>
-                <td>{{ item.count }}</td>
+                <td>{{ item.user.length }}</td>
                 <td>
                   {{moment().utc(new Date(item.created_at)).local().format("yyyy-MM-DD") }}
                 </td>
