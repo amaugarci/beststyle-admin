@@ -1,11 +1,11 @@
 #!/bin/bash
 
-docker login  -u admin -p Fh7FSgEQ6hMn8MB7Q4URnh76eEDdIXAg https://docker.biyong001.com/
+docker login  -u bourse -p bourseOcRqW9852 https://docker.flct.io/
 
 if [ "${EVN}" = "pre" ];then
-    docker tag pre-learn-admin:${VERSION}-${BUILD_ID} docker.biyong001.com/pre/learn-admin:${VERSION}-${BUILD_ID}
-    docker push docker.biyong001.com/pre/learn-admin:${VERSION}-${BUILD_ID}
+    docker tag pre-learn-admin:${VERSION}-${BUILD_ID} docker.flct.io/bourse/pre-learn-admin:${VERSION}-${BUILD_ID}
+    docker push docker.flct.io/bourse/pre-learn-admin:${VERSION}-${BUILD_ID}
 else
-    docker tag learn-admin:${VERSION}-${BUILD_ID} docker.biyong001.com/learn/learn-admin:${VERSION}-${BUILD_ID}
-    docker push docker.biyong001.com/learn/learn-admin:${VERSION}-${BUILD_ID}
+    docker tag learn-admin:${VERSION}-${BUILD_ID} docker.flct.io/bourse/learn-admin:${VERSION}-${BUILD_ID}
+    docker push docker.flct.io/bourse/learn-admin:${VERSION}-${BUILD_ID}
 fi
